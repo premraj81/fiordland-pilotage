@@ -9,6 +9,11 @@ export default defineConfig({
     VitePWA({
       registerType: 'autoUpdate',
       includeAssets: ['favicon.ico', 'apple-touch-icon.png', 'masked-icon.svg'],
+      workbox: {
+        globPatterns: ['**/*.{js,css,html,ico,png,svg,pdf}'],
+        maximumFileSizeToCacheInBytes: 5000000,
+        navigateFallback: '/index.html',
+      },
       manifest: {
         name: 'Fiordland Pilotage',
         short_name: 'Pilotage',
