@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { ArrowLeft, CheckCircle, AlertTriangle, ArrowUpDown, Download, FileText, UserPlus, X } from 'lucide-react';
+import { ArrowLeft, CheckCircle, AlertTriangle, ArrowUpDown, UserPlus, X } from 'lucide-react';
 import { CHECKLISTS } from '../lib/data';
 import { saveChecklist } from '../lib/db';
 import SignaturePad from '../components/SignaturePad';

@@ -1,4 +1,4 @@
-import { Phone, Mail, ShieldAlert, Anchor, Ship, PlusSquare, MapPin } from 'lucide-react';
+import { Mail, ShieldAlert, Anchor, Ship, PlusSquare } from 'lucide-react';
 
 export default function EmergencyContacts() {
     return (

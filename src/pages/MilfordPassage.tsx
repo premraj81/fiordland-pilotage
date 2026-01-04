@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { AlertTriangle, Navigation, Info, ArrowUp, ArrowDown } from 'lucide-react';
+import { AlertTriangle, Navigation, Info } from 'lucide-react';
 import { cn } from '../lib/utils'; // Assuming this utility exists
 
 // Data for "IN"
