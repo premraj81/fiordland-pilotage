@@ -43,7 +43,7 @@ export default function PassagePlan() {
             </div>
 
             <div ref={containerRef} className="flex-1 bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden relative min-h-[600px] group">
-                <iframe src="/Passage_Plan.pdf" className="w-full h-full" title="Passage Plan PDF" />
+                <iframe src="./Passage_Plan.pdf" className="w-full h-full" title="Passage Plan PDF" />
 
                 {isFullScreen && (
                     <button
