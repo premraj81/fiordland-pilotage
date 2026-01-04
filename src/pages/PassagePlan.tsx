@@ -1,5 +1,5 @@
 import { useRef, useState, useEffect } from 'react';
-import { Maximize, Minimize, FileText } from 'lucide-react';
+import { Maximize, Minimize, FileText, Download } from 'lucide-react';
 
 export default function PassagePlan() {
     const containerRef = useRef<HTMLDivElement>(null);
@@ -43,7 +43,31 @@ export default function PassagePlan() {
             </div>
 
             <div ref={containerRef} className="flex-1 bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden relative min-h-[600px] group">
-                <iframe src="./Passage_Plan.pdf" className="w-full h-full" title="Passage Plan PDF" />
+                <div className="w-full h-full bg-gray-50">
+                    <object
+                        data="/passage-plan.pdf?v=2"
+                        type="application/pdf"
+                        className="w-full h-full"
+                    >
+                        <div className="flex flex-col items-center justify-center h-full p-8 text-center text-gray-500 space-y-4">
+                            <div className="p-4 bg-gray-100 rounded-full">
+                                <FileText className="w-8 h-8 text-gray-400" />
+                            </div>
+                            <div>
+                                <h3 className="text-lg font-semibold text-gray-900 mb-1">Preview Not Available</h3>
+                                <p className="text-sm">Your browser doesn't support embedding PDFs.</p>
+                            </div>
+                            <a
+                                href="/passage-plan.pdf"
+                                download
+                                className="flex items-center gap-2 px-6 py-2.5 bg-brand-teal text-white rounded-lg hover:bg-brand-teal/90 transition-all font-medium shadow-sm"
+                            >
+                                <Download className="w-4 h-4" />
+                                Download PDF
+                            </a>
+                        </div>
+                    </object>
+                </div>
 
                 {isFullScreen && (
                     <button
