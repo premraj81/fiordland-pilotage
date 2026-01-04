@@ -1,0 +1,28 @@
+@import "tailwindcss";
+
+@theme {
+  --color-fiordland-900: #0f172a;
+  --color-fiordland-800: #1e293b;
+  --color-fiordland-700: #334155;
+  --color-fiordland-600: #475569;
+  --color-fiordland-500: #64748b;
+  --color-fiordland-400: #94a3b8;
+  --color-fiordland-300: #cbd5e1;
+  --color-fiordland-200: #e2e8f0;
+  --color-fiordland-100: #f1f5f9;
+  --color-fiordland-50: #f8fafc;
+
+  --color-brand-gold: #d4af37;
+  --color-brand-teal: #0d9488;
+
+  --font-sans: 'Inter', system-ui, sans-serif;
+}
+
+@utility antialiased {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  @apply bg-fiordland-50 text-fiordland-900 antialiased;
+}
