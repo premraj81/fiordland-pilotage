@@ -4,11 +4,11 @@ import { cn } from '../lib/utils'; // Assuming this utility exists
 
 // Data for "IN"
 const IN_WAYPOINTS = [
-    { lat: "44° 32.65'S", long: "167° 45.27'E", wpt: "WP001", name: "Pilot Boarding Ground", rad: "0.5'", crs: "114°", dist: "1.6'", spd: "12" },
-    { lat: "44° 33.31'S", long: "167° 47.38'E", wpt: "WP002", name: "St Anne's Point", rad: "0.5'", crs: "160°", dist: "2.9'", spd: "10" },
-    { lat: "44° 36.01'S", long: "167° 48.80'E", wpt: "WP003", name: "Dale Point", rad: "0.5'", crs: "100°", dist: "0.9'", spd: "10" },
-    { lat: "44° 36.26'S", long: "167° 50.02'E", wpt: "WP004", name: "Stirling Falls", rad: "1.0'", crs: "115°", dist: "0.9'", spd: "8" },
-    { lat: "44° 36.62'S", long: "167° 51.11'E", wpt: "WP005", name: "Copper Point", rad: "1.0'", crs: "128°", dist: "1.3'", spd: "8" },
+    { lat: "44° 32.65'S", long: "167° 45.27'E", wpt: "WP001", name: "Pilot Boarding Ground", rad: "0.5'", crs: "114°", dist: "1.6'", spd: "12", wo: "St. Anne 136, Dale Pt. Opens" },
+    { lat: "44° 33.31'S", long: "167° 47.38'E", wpt: "WP002", name: "St Anne's Point", rad: "0.5'", crs: "160°", dist: "2.9'", spd: "10", pi: ".2 stbd", wo: "Creek Bed to Stbd, VRM .1" },
+    { lat: "44° 36.01'S", long: "167° 48.80'E", wpt: "WP003", name: "Dale Point", rad: "0.5'", crs: "100°", dist: "0.9'", spd: "10", pi: ".13 stbd", wo: "Copper Pt. @ .9" },
+    { lat: "44° 36.26'S", long: "167° 50.02'E", wpt: "WP004", name: "Stirling Falls", rad: "1.0'", crs: "115°", dist: "0.9'", spd: "8", pi: ".12 stbd", wo: "Copper Pt Abeam" },
+    { lat: "44° 36.62'S", long: "167° 51.11'E", wpt: "WP005", name: "Copper Point", rad: "1.0'", crs: "128°", dist: "1.3'", spd: "8", pi: ".17 stbd" },
     { lat: "44° 37.42'S", long: "167° 52.55'E", wpt: "WP006", name: "Mitre Peak", rad: "1.0'", crs: "136°", dist: "1.4'", spd: "8" },
     { lat: "44° 38.39'S", long: "167° 53.88'E", wpt: "WP007", name: "Bridget Point", rad: "1.0'", crs: "158°", dist: "1.1'", spd: "6" },
     { lat: "44° 39.66'S", long: "167° 54.49'E", wpt: "WP008", name: "Milford Sound", rad: "0.5'", crs: "-", dist: "-", spd: "-" },
@@ -18,10 +18,10 @@ const IN_WAYPOINTS = [
 const OUT_WAYPOINTS = [
     { lat: "44° 39.46'S", long: "167° 54.49'E", wpt: "WP008", name: "Milford Sound", rad: "0.5'", crs: "338°", dist: "1.1'", spd: "6" },
     { lat: "44° 38.38'S", long: "167° 53.88'E", wpt: "WP007", name: "Bridget point", rad: "1.0'", crs: "316°", dist: "1.4'", spd: "8" },
-    { lat: "44° 37.42'S", long: "167° 52.55'E", wpt: "WP006", name: "Mitre Peak", rad: "1.0'", crs: "308°", dist: "1.3'", spd: "8" },
-    { lat: "44° 36.62'S", long: "167° 51.11'E", wpt: "WP005", name: "Copper point", rad: "1.0'", crs: "295°", dist: "0.9'", spd: "8" },
-    { lat: "44° 36.26'S", long: "167° 50.02'E", wpt: "WP004", name: "Stirling Falls", rad: "1.0'", crs: "280°", dist: "0.9'", spd: "10" },
-    { lat: "44° 36.01'S", long: "167° 48.80'E", wpt: "WP003", name: "Dale Point", rad: "0.5'", crs: "340°", dist: "2.9'", spd: "10" },
+    { lat: "44° 37.42'S", long: "167° 52.55'E", wpt: "WP006", name: "Mitre Peak", rad: "1.0'", crs: "308°", dist: "1.3'", spd: "8", pi: ".3 port", wo: "Copper Pt. @ .5" },
+    { lat: "44° 36.62'S", long: "167° 51.11'E", wpt: "WP005", name: "Copper point", rad: "1.0'", crs: "295°", dist: "0.9'", spd: "8", pi: ".12 port" },
+    { lat: "44° 36.26'S", long: "167° 50.02'E", wpt: "WP004", name: "Stirling Falls", rad: "1.0'", crs: "280°", dist: "0.9'", spd: "10", pi: ".13 port", wo: "Dale Pt. @ .8, St A. Pt Opens" },
+    { lat: "44° 36.01'S", long: "167° 48.80'E", wpt: "WP003", name: "Dale Point", rad: "0.5'", crs: "340°", dist: "2.9'", spd: "10", pi: ".2 port" },
     { lat: "44° 33.31'S", long: "167° 47.38'E", wpt: "WP002", name: "St Anne's Point", rad: "0.5'", crs: "294°", dist: "1.6'", spd: "12" },
     { lat: "44° 33.15'S", long: "167° 45.27'E", wpt: "WP001", name: "Pilot Boarding Ground", rad: "0.5'", crs: "-", dist: "-", spd: "-" },
 ];
@@ -159,6 +159,8 @@ export default function MilfordPassage() {
                                 <th className="px-6 py-3">Course</th>
                                 <th className="px-6 py-3">Dist (nm)</th>
                                 <th className="px-6 py-3">Speed (kn)</th>
+                                <th className="px-6 py-3 text-brand-teal">P.I. Ref</th>
+                                <th className="px-6 py-3 text-brand-teal">Wheel Over</th>
                             </tr>
                         </thead>
                         <tbody className="divide-y divide-gray-100">
@@ -172,6 +174,12 @@ export default function MilfordPassage() {
                                     <td className="px-6 py-4 text-gray-600 font-mono">{row.crs}</td>
                                     <td className="px-6 py-4 text-gray-600">{row.dist}</td>
                                     <td className="px-6 py-4 text-gray-600">{row.spd}</td>
+                                    <td className="px-6 py-4 font-mono text-xs text-brand-teal font-medium whitespace-pre-line max-w-[150px]">
+                                        {row.pi || '-'}
+                                    </td>
+                                    <td className="px-6 py-4 text-xs text-gray-600 italic max-w-[200px] leading-tight">
+                                        {row.wo || '-'}
+                                    </td>
                                 </tr>
                             ))}
                         </tbody>

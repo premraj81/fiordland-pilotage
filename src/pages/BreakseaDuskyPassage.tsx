@@ -4,30 +4,30 @@ import { cn } from '../lib/utils';
 
 // Data for "North Bound" (Dusky to Breaksea)
 const NORTH_BOUND_WAYPOINTS = [
-    { lat: "45° 48.43'S", long: "166° 22.79'E", wpt: "WP002", name: "Enter dusky Sound", rad: "3.0'", crs: "073°", dist: "3.3'", spd: "16", time: "12" },
-    { lat: "45° 47.48'S", long: "166° 27.35'E", wpt: "WP003", name: "Anchor Island", rad: "3.0'", crs: "084°", dist: "4.3'", spd: "16", time: "16" },
-    { lat: "45° 47.02'S", long: "166° 33.55'E", wpt: "WP004", name: "Normans Island", rad: "1.0'", crs: "045°", dist: "1.2'", spd: "16", time: "5" },
-    { lat: "45° 46.14'S", long: "166° 34.83'E", wpt: "WP005", name: "Indian Island", rad: "1.0'", crs: "075°", dist: "3.0'", spd: "16", time: "11" },
-    { lat: "45° 45.36'S", long: "166° 38.96'E", wpt: "WP006", name: "Duck Cove", rad: "2.0'", crs: "090°", dist: "1.2'", spd: "16", time: "5" },
-    { lat: "45° 45.36'S", long: "166° 40.76'E", wpt: "WP007", name: "Bowen Channel", rad: "1.0'", crs: "054°", dist: "2.1'", spd: "16", time: "8" },
-    { lat: "45° 44.07'S", long: "166° 43.27'E", wpt: "WP008", name: "Front Island", rad: "2.0'", crs: "007°", dist: "2.6'", spd: "16", time: "10" },
-    { lat: "45° 41.41'S", long: "166° 43.74'E", wpt: "WP009", name: "Passage Point", rad: "1.0'", crs: "356°", dist: "4.4'", spd: "16", time: "17" },
-    { lat: "45° 36.96'S", long: "166° 43.30'E", wpt: "WP010", name: "Occasional Cove", rad: "1.0'", crs: "310°", dist: "3.3'", spd: "16", time: "12" },
-    { lat: "45° 34.84'S", long: "166° 39.68'E", wpt: "WP011", name: "Breaksea Island", rad: "1.0'", crs: "348°", dist: "4.1'", spd: "16", time: "15" },
+    { lat: "45° 48.43'S", long: "166° 22.79'E", wpt: "WP002", name: "Enter dusky Sound", rad: "3.0'", crs: "073°", dist: "3.3'", spd: "16", time: "12", wo: "South Point Abeam" },
+    { lat: "45° 47.48'S", long: "166° 27.35'E", wpt: "WP003", name: "Anchor Island", rad: "3.0'", crs: "084°", dist: "4.3'", spd: "16", time: "16", pi: ".4 port", wo: "Conspicuous Cape Abm" },
+    { lat: "45° 47.02'S", long: "166° 33.55'E", wpt: "WP004", name: "Normans Island", rad: "1.0'", crs: "045°", dist: "1.2'", spd: "16", time: "5", pi: ".2 port", wo: "Thrum Cap 045" },
+    { lat: "45° 46.14'S", long: "166° 34.83'E", wpt: "WP005", name: "Indian Island", rad: "1.0'", crs: "075°", dist: "3.0'", spd: "16", time: "11", pi: ".23 stbd", wo: "Porpoise Pt @ .8" },
+    { lat: "45° 45.36'S", long: "166° 38.96'E", wpt: "WP006", name: "Duck Cove", rad: "2.0'", crs: "090°", dist: "1.2'", spd: "16", time: "5", pi: ".2 port", wo: "Porpoise Pt Abeam" },
+    { lat: "45° 45.36'S", long: "166° 40.76'E", wpt: "WP007", name: "Bowen Channel", rad: "1.0'", crs: "054°", dist: "2.1'", spd: "16", time: "8", pi: ".25 port", wo: "Passage Pt @ 1.0" },
+    { lat: "45° 44.07'S", long: "166° 43.27'E", wpt: "WP008", name: "Front Island", rad: "2.0'", crs: "007°", dist: "2.6'", spd: "16", time: "10", pi: ".2 port", wo: "Clearing Narrows" },
+    { lat: "45° 41.41'S", long: "166° 43.74'E", wpt: "WP009", name: "Passage Point", rad: "1.0'", crs: "356°", dist: "4.4'", spd: "16", time: "17", pi: ".28 port", wo: "Occ Cove 313, Brksea in tx" },
+    { lat: "45° 36.96'S", long: "166° 43.30'E", wpt: "WP010", name: "Occasional Cove", rad: "1.0'", crs: "310°", dist: "3.3'", spd: "16", time: "12", pi: ".15 stbd", wo: "Gilbert I. Abeam" },
+    { lat: "45° 34.84'S", long: "166° 39.68'E", wpt: "WP011", name: "Breaksea Island", rad: "1.0'", crs: "348°", dist: "4.1'", spd: "16", time: "15", pi: ".5 port" },
     { lat: "45° 30.80'S", long: "166° 38.43'E", wpt: "WP012", name: "Exit Breaksea Sound", rad: "3.0'", crs: "-", dist: "30.0NM", spd: "-", time: "1h 51m" },
 ];
 
 // Data for "South Bound" (Breaksea to Dusky)
 const SOUTH_BOUND_WAYPOINTS = [
-    { lat: "45° 30.80'S", long: "166° 38.43'E", wpt: "WP012", name: "Enter Breaksea Sound", rad: "3.0'", crs: "168°", dist: "4.1'", spd: "16", time: "15" },
-    { lat: "45° 34.84'S", long: "166° 39.68'E", wpt: "WP011", name: "Breaksea Island", rad: "1.0'", crs: "130°", dist: "3.3'", spd: "16", time: "12" },
-    { lat: "45° 36.96'S", long: "166° 43.30'E", wpt: "WP010", name: "Occasional Cove", rad: "1.0'", crs: "176°", dist: "4.4'", spd: "16", time: "17" },
-    { lat: "45° 41.41'S", long: "166° 43.74'E", wpt: "WP009", name: "Passage Point", rad: "1.0'", crs: "187°", dist: "2.6'", spd: "16", time: "10" },
-    { lat: "45° 44.07'S", long: "166° 43.27'E", wpt: "WP008", name: "Front Island", rad: "1.0'", crs: "234°", dist: "2.1'", spd: "16", time: "8" },
-    { lat: "45° 45.36'S", long: "166° 40.76'E", wpt: "WP007", name: "Bowen Channel", rad: "1.0'", crs: "270°", dist: "1.2'", spd: "16", time: "5" },
-    { lat: "45° 45.36'S", long: "166° 38.96'E", wpt: "WP006", name: "Duck Cove", rad: "2.0'", crs: "255°", dist: "3.0'", spd: "16", time: "11" },
-    { lat: "45° 46.14'S", long: "166° 34.83'E", wpt: "WP005", name: "Indian Island", rad: "1.0'", crs: "255°", dist: "1.2'", spd: "16", time: "5" },
-    { lat: "45° 47.02'S", long: "166° 33.55'E", wpt: "WP004", name: "Normans Island", rad: "1.0'", crs: "264°", dist: "4.3'", spd: "16", time: "16" },
+    { lat: "45° 30.80'S", long: "166° 38.43'E", wpt: "WP012", name: "Enter Breaksea Sound", rad: "3.0'", crs: "168°", dist: "4.1'", spd: "16", time: "15", wo: "Breaksea Islet 084" },
+    { lat: "45° 34.84'S", long: "166° 39.68'E", wpt: "WP011", name: "Breaksea Island", rad: "1.0'", crs: "130°", dist: "3.3'", spd: "16", time: "12", pi: ".14 port", wo: "Conspicious Pt Abm Stbd" },
+    { lat: "45° 36.96'S", long: "166° 43.30'E", wpt: "WP010", name: "Occasional Cove", rad: "1.0'", crs: "176°", dist: "4.4'", spd: "16", time: "17", pi: ".2 port", wo: "Conspicious Cove Abm Port" },
+    { lat: "45° 41.41'S", long: "166° 43.74'E", wpt: "WP009", name: "Passage Point", rad: "1.0'", crs: "187°", dist: "2.6'", spd: "16", time: "10", pi: ".11 port", wo: "Conspicious Pt 207" },
+    { lat: "45° 44.07'S", long: "166° 43.27'E", wpt: "WP008", name: "Front Island", rad: "1.0'", crs: "234°", dist: "2.1'", spd: "16", time: "8", pi: ".23 stbd", wo: "Porpoise Pt 260" },
+    { lat: "45° 45.36'S", long: "166° 40.76'E", wpt: "WP007", name: "Bowen Channel", rad: "1.0'", crs: "270°", dist: "1.2'", spd: "16", time: "5", pi: ".2 stbd", wo: "Conspicious Pt 240" },
+    { lat: "45° 45.36'S", long: "166° 38.96'E", wpt: "WP006", name: "Duck Cove", rad: "2.0'", crs: "255°", dist: "3.0'", spd: "16", time: "11", pi: ".22, .29 stbd", wo: "Indian I. 226" },
+    { lat: "45° 46.14'S", long: "166° 34.83'E", wpt: "WP005", name: "Indian Island", rad: "1.0'", crs: "255°", dist: "1.2'", spd: "16", time: "5", pi: ".21 port", wo: "Thrum Cap 256" },
+    { lat: "45° 47.02'S", long: "166° 33.55'E", wpt: "WP004", name: "Normans Island", rad: "1.0'", crs: "264°", dist: "4.3'", spd: "16", time: "16", pi: ".43 port" },
     { lat: "45° 47.48'S", long: "166° 27.35'E", wpt: "WP003", name: "Anchor Island", rad: "1.0'", crs: "253°", dist: "3.3'", spd: "16", time: "12" },
     { lat: "45° 48.43'S", long: "166° 22.79'E", wpt: "WP002", name: "Exit dusky Sound", rad: "3.0'", crs: "-", dist: "30NM", spd: "-", time: "1h 51M" },
 ];
@@ -123,6 +123,8 @@ export default function BreakseaDuskyPassage() {
                                 <th className="px-6 py-3">Dist (nm)</th>
                                 <th className="px-6 py-3">Speed (kn)</th>
                                 <th className="px-6 py-3">Time (min)</th>
+                                <th className="px-6 py-3 text-brand-teal">P.I. Ref</th>
+                                <th className="px-6 py-3 text-brand-teal">Wheel Over</th>
                             </tr>
                         </thead>
                         <tbody className="divide-y divide-gray-100">
@@ -137,6 +139,12 @@ export default function BreakseaDuskyPassage() {
                                     <td className="px-6 py-4 text-gray-600">{row.dist}</td>
                                     <td className="px-6 py-4 text-gray-600">{row.spd}</td>
                                     <td className="px-6 py-4 text-gray-600">{row.time}</td>
+                                    <td className="px-6 py-4 font-mono text-xs text-brand-teal font-medium whitespace-pre-line max-w-[150px]">
+                                        {row.pi || '-'}
+                                    </td>
+                                    <td className="px-6 py-4 text-xs text-gray-600 italic max-w-[200px] leading-tight">
+                                        {row.wo || '-'}
+                                    </td>
                                 </tr>
                             ))}
                         </tbody>

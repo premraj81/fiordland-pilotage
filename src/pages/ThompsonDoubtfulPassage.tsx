@@ -4,34 +4,34 @@ import { cn } from '../lib/utils';
 
 // Data for "North Bound" (Image 0)
 const NORTH_BOUND_WAYPOINTS = [
-    { lat: "45° 15.77'S", long: "166° 47.36'E", wpt: "WP001", name: "Febrero Point", rad: "2.0'", crs: "091°", dist: "3.2'", spd: "16", time: "12" },
-    { lat: "45° 15.83'S", long: "166° 51.89'E", wpt: "WP002", name: "Enter Doubtful", rad: "1.0'", crs: "121°", dist: "1.6'", spd: "16", time: "6" },
-    { lat: "45° 17.32'S", long: "166° 52.61'E", wpt: "WP003", name: "Jamieson Head", rad: "1.0'", crs: "160°", dist: "1.3'", spd: "16", time: "5" },
-    { lat: "45° 17.98'S", long: "166° 54.22'E", wpt: "WP004", name: "Utah Island", rad: "1.0'", crs: "107°", dist: "1.9'", spd: "16", time: "7" },
-    { lat: "45° 18.55'S", long: "166° 56.86'E", wpt: "WP005", name: "Marcaciones Point", rad: "1.0'", crs: "090°", dist: "2.0'", spd: "16", time: "7" },
-    { lat: "45° 18.55'S", long: "166° 59.64'E", wpt: "WP006", name: "Seymour Island", rad: "1.0'", crs: "055°", dist: "1.1'", spd: "14", time: "8" },
-    { lat: "45° 17.90'S", long: "167° 00.96'E", wpt: "WP007", name: "Common Head", rad: "0.5'", crs: "331°", dist: "1.6'", spd: "14", time: "6" },
-    { lat: "45° 16.54'S", long: "166° 59.87'E", wpt: "WP008", name: "Surgeon Bay", rad: "1.0'", crs: "350°", dist: "1.5'", spd: "14", time: "6" },
-    { lat: "45° 15.07'S", long: "166° 59.52'E", wpt: "WP009", name: "Lieutenant Head", rad: "1.0'", crs: "335°", dist: "3.6'", spd: "16", time: "14" },
-    { lat: "45° 11.79'S", long: "166° 57.33'E", wpt: "WP010", name: "Deas Cove", rad: "1.0'", crs: "029°", dist: "2.2'", spd: "16", time: "8" },
-    { lat: "45° 09.85'S", long: "166° 58.85'E", wpt: "WP011", name: "Open Cove", rad: "1.0'", crs: "334°", dist: "1.4'", spd: "16", time: "5" },
-    { lat: "45° 08.59'S", long: "166° 57.98'E", wpt: "WP012", name: "Colonial head", rad: "1.0'", crs: "349°", dist: "2.5'", spd: "16", time: "9" },
+    { lat: "45° 15.77'S", long: "166° 47.36'E", wpt: "WP001", name: "Febrero Point", rad: "2.0'", crs: "091°", dist: "3.2'", spd: "16", time: "12", wo: "Jamieson Head 135" },
+    { lat: "45° 15.83'S", long: "166° 51.89'E", wpt: "WP002", name: "Enter Doubtful", rad: "1.0'", crs: "121°", dist: "1.6'", spd: "16", time: "6", pi: ".2 stbd", wo: "Jamieson Head @ .6" },
+    { lat: "45° 17.32'S", long: "166° 52.61'E", wpt: "WP003", name: "Jamieson Head", rad: "1.0'", crs: "160°", dist: "1.3'", spd: "16", time: "5", pi: ".15 port", wo: "Marcac./Espin. Pts in tx" },
+    { lat: "45° 17.98'S", long: "166° 54.22'E", wpt: "WP004", name: "Utah Island", rad: "1.0'", crs: "107°", dist: "1.9'", spd: "16", time: "7", pi: ".17 port", wo: "Marcacionses Pt Abeam" },
+    { lat: "45° 18.55'S", long: "166° 56.86'E", wpt: "WP005", name: "Marcaciones Point", rad: "1.0'", crs: "090°", dist: "2.0'", spd: "16", time: "7", pi: ".3 port", wo: "Seymour I. @ .9" },
+    { lat: "45° 18.55'S", long: "166° 59.64'E", wpt: "WP006", name: "Seymour Island", rad: "1.0'", crs: "055°", dist: "1.1'", spd: "14", time: "8", pi: "VRM .1" },
+    { lat: "45° 17.90'S", long: "167° 00.96'E", wpt: "WP007", name: "Common Head", rad: "0.5'", crs: "331°", dist: "1.6'", spd: "14", time: "6", pi: "VRM .1" },
+    { lat: "45° 16.54'S", long: "166° 59.87'E", wpt: "WP008", name: "Surgeon Bay", rad: "1.0'", crs: "350°", dist: "1.5'", spd: "14", time: "6", pi: ".3 stbd", wo: "Lyall Bay Abeam" },
+    { lat: "45° 15.07'S", long: "166° 59.52'E", wpt: "WP009", name: "Lieutenant Head", rad: "1.0'", crs: "335°", dist: "3.6'", spd: "16", time: "14", pi: ".22 stbd", wo: "Deas Cove Ent @ 1.1" },
+    { lat: "45° 11.79'S", long: "166° 57.33'E", wpt: "WP010", name: "Deas Cove", rad: "1.0'", crs: "029°", dist: "2.2'", spd: "16", time: "8", pi: ".17 stbd", wo: "Channel Side 350" },
+    { lat: "45° 09.85'S", long: "166° 58.85'E", wpt: "WP011", name: "Open Cove", rad: "1.0'", crs: "334°", dist: "1.4'", spd: "16", time: "5", pi: ".23 stbd", wo: "Shanks Hd 335" },
+    { lat: "45° 08.59'S", long: "166° 57.98'E", wpt: "WP012", name: "Colonial head", rad: "1.0'", crs: "349°", dist: "2.5'", spd: "16", time: "9", pi: ".3 stbd", wo: "Shanks Hd 015" },
     { lat: "45° 06.18'S", long: "166° 57.25'E", wpt: "WP013", name: "Exit Doubtful", rad: "3.0'", crs: "-", dist: "24nm", spd: "-", time: "1h 34m" },
 ];
 
 // Data for "South Bound" (Image 1)
 const SOUTH_BOUND_WAYPOINTS = [
     { lat: "45° 06.18'S", long: "166° 57.25'E", wpt: "WP013", name: "Enter Doubtful", rad: "3.0'", crs: "168°", dist: "2.5'", spd: "16", time: "9" },
-    { lat: "45° 08.59'S", long: "166° 57.98'E", wpt: "WP012", name: "Colonial head", rad: "1.0'", crs: "154°", dist: "1.4'", spd: "16", time: "5" },
-    { lat: "45° 09.85'S", long: "166° 58.85'E", wpt: "WP011", name: "Open Cove", rad: "1.0'", crs: "209°", dist: "2.2'", spd: "16", time: "8" },
-    { lat: "45° 11.79'S", long: "166° 57.33'E", wpt: "WP010", name: "Deas Cove", rad: "1.0'", crs: "155°", dist: "3.6'", spd: "16", time: "14" },
-    { lat: "45° 15.07'S", long: "166° 59.52'E", wpt: "WP009", name: "Lieutenant Head", rad: "1.0'", crs: "170°", dist: "1.5'", spd: "16", time: "6" },
-    { lat: "45° 16.54'S", long: "166° 59.87'E", wpt: "WP008", name: "Surgeon Bay", rad: "1.0'", crs: "151°", dist: "1.4'", spd: "14", time: "6" },
-    { lat: "45° 17.90'S", long: "167° 00.96'E", wpt: "WP007", name: "Common Head", rad: "0.5'", crs: "235°", dist: "1.1'", spd: "14", time: "8" },
-    { lat: "45° 18.55'S", long: "166° 59.64'E", wpt: "WP006", name: "Seymour Island", rad: "1.0'", crs: "270°", dist: "2.0'", spd: "16", time: "7" },
-    { lat: "45° 18.55'S", long: "166° 56.86'E", wpt: "WP005", name: "Marcaciones Point", rad: "1.0'", crs: "287°", dist: "1.9'", spd: "16", time: "7" },
-    { lat: "45° 17.98'S", long: "166° 54.22'E", wpt: "WP004", name: "Utah Island", rad: "1.0'", crs: "340°", dist: "1.3'", spd: "16", time: "6" },
-    { lat: "45° 17.32'S", long: "166° 52.61'E", wpt: "WP003", name: "Jamieson Head", rad: "1.0'", crs: "301°", dist: "1.6'", spd: "16", time: "6" },
+    { lat: "45° 08.59'S", long: "166° 57.98'E", wpt: "WP012", name: "Colonial head", rad: "1.0'", crs: "154°", dist: "1.4'", spd: "16", time: "5", pi: ".26 port", wo: "Conspicious Pt 200" },
+    { lat: "45° 09.85'S", long: "166° 58.85'E", wpt: "WP011", name: "Open Cove", rad: "1.0'", crs: "209°", dist: "2.2'", spd: "16", time: "8", pi: ".27 port", wo: "Conspicious Pt 170" },
+    { lat: "45° 11.79'S", long: "166° 57.33'E", wpt: "WP010", name: "Deas Cove", rad: "1.0'", crs: "155°", dist: "3.6'", spd: "16", time: "14", pi: ".22 port", wo: "Conspicious Pt 180" },
+    { lat: "45° 15.07'S", long: "166° 59.52'E", wpt: "WP009", name: "Lieutenant Head", rad: "1.0'", crs: "170°", dist: "1.5'", spd: "16", time: "6", pi: ".3 port", wo: "Conspicious Pt 140" },
+    { lat: "45° 16.54'S", long: "166° 59.87'E", wpt: "WP008", name: "Surgeon Bay", rad: "1.0'", crs: "151°", dist: "1.4'", spd: "14", time: "6", pi: "VRM .1", wo: "Common Hd 185" },
+    { lat: "45° 17.90'S", long: "167° 00.96'E", wpt: "WP007", name: "Common Head", rad: "0.5'", crs: "235°", dist: "1.1'", spd: "14", time: "8", pi: "VRM .1" },
+    { lat: "45° 18.55'S", long: "166° 59.64'E", wpt: "WP006", name: "Seymour Island", rad: "1.0'", crs: "270°", dist: "2.0'", spd: "16", time: "7", pi: ".32 stbd", wo: "Marcaciones Pt 295" },
+    { lat: "45° 18.55'S", long: "166° 56.86'E", wpt: "WP005", name: "Marcaciones Point", rad: "1.0'", crs: "287°", dist: "1.9'", spd: "16", time: "7", pi: ".18 stbd", wo: "E. Indian I. 342" },
+    { lat: "45° 17.98'S", long: "166° 54.22'E", wpt: "WP004", name: "Utah Island", rad: "1.0'", crs: "340°", dist: "1.3'", spd: "16", time: "6", pi: ".2 port" },
+    { lat: "45° 17.32'S", long: "166° 52.61'E", wpt: "WP003", name: "Jamieson Head", rad: "1.0'", crs: "301°", dist: "1.6'", spd: "16", time: "6", pi: ".16 stbd", wo: "Jamieson Hd 325" },
     { lat: "45° 15.83'S", long: "166° 51.89'E", wpt: "WP002", name: "Enter Doubtful", rad: "1.0'", crs: "271°", dist: "3.2'", spd: "16", time: "12" },
     { lat: "45° 15.77'S", long: "166° 47.36'E", wpt: "WP001", name: "Febrero Point", rad: "2.0'", crs: "-", dist: "24nm", spd: "-", time: "1h 34m" },
 ];
@@ -140,6 +140,8 @@ export default function ThompsonDoubtfulPassage() {
                                 <th className="px-6 py-3">Dist (nm)</th>
                                 <th className="px-6 py-3">Speed (kn)</th>
                                 <th className="px-6 py-3">Time (min)</th>
+                                <th className="px-6 py-3 text-brand-teal">P.I. Ref</th>
+                                <th className="px-6 py-3 text-brand-teal">Wheel Over</th>
                             </tr>
                         </thead>
                         <tbody className="divide-y divide-gray-100">
@@ -154,6 +156,12 @@ export default function ThompsonDoubtfulPassage() {
                                     <td className="px-6 py-4 text-gray-600">{row.dist}</td>
                                     <td className="px-6 py-4 text-gray-600">{row.spd}</td>
                                     <td className="px-6 py-4 text-gray-600">{row.time}</td>
+                                    <td className="px-6 py-4 font-mono text-xs text-brand-teal font-medium whitespace-pre-line max-w-[150px]">
+                                        {row.pi || '-'}
+                                    </td>
+                                    <td className="px-6 py-4 text-xs text-gray-600 italic max-w-[200px] leading-tight">
+                                        {row.wo || '-'}
+                                    </td>
                                 </tr>
                             ))}
                         </tbody>
