@@ -238,8 +238,8 @@ function RenderSection({ section, formData, handleInputChange, isRouteReversed, 
                 {section.fields?.map((field: any) => {
                     if (field.type === 'route-selector') {
                         const routes = isRouteReversed
-                            ? ['Dusky to Breaksea', 'Doubtful to Thompson', 'Milford']
-                            : ['Milford', 'Thompson to Doubtful', 'Breaksea to Dusky'];
+                            ? ['Dusky to Breaksea', 'Doubtful to Thompson', 'Milford', 'Bench Island', 'Bluff', 'Timaru', 'Lyttelton']
+                            : ['Milford', 'Thompson to Doubtful', 'Breaksea to Dusky', 'Bench Island', 'Bluff', 'Timaru', 'Lyttelton'];
 
                         const currentValues = formData[section.id]?.[field.id] || [];
 
