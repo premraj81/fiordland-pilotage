@@ -3,37 +3,78 @@ import { useState } from 'react';
 import { FileText, Download, File } from 'lucide-react';
 import { cn } from '../lib/utils';
 
-// CONFIGURATION: Update this list with your actual file names and titles
-// Ensure your files are placed in the 'public/documents' folder.
+// CONFIGURATION: Real files from public/documents
 const MY_DOCUMENTS = [
     {
         id: 'doc1',
-        title: 'Safety Procedures',
-        filename: 'Safety_Procedures.pdf',
-        type: 'pdf' // 'pdf' or 'docx'
+        title: 'Harbourmaster Directions',
+        filename: 'Harbourmaster Directions .pdf',
+        type: 'pdf'
     },
     {
         id: 'doc2',
-        title: 'Operational Operational Manual',
-        filename: 'Operational_Manual.pdf',
+        title: 'Fiordland Response Plan',
+        filename: 'Fiordland Response Plan.pdf',
         type: 'pdf'
     },
     {
         id: 'doc3',
-        title: 'Emergency Response',
-        filename: 'Emergency_Response.pdf',
+        title: 'Fiordland By Sea User Guide 2024',
+        filename: 'fiordland-by-sea-user-guide-2024.pdf',
         type: 'pdf'
     },
     {
         id: 'doc4',
-        title: 'Vessel Specs',
-        filename: 'Vessel_Specs.docx',
-        type: 'docx'
+        title: 'Cruise Ship Deed of Agreement',
+        filename: 'cruise-ship-deed-of-agreement.pdf',
+        type: 'pdf'
     },
     {
         id: 'doc5',
-        title: 'Contact List',
-        filename: 'Contact_List.docx',
+        title: 'Cruise Ship SMS',
+        filename: 'Cruise Ship SMS.pdf',
+        type: 'pdf'
+    },
+    {
+        id: 'doc6',
+        title: 'Fiordland Pilots SOPs (Oct 2023)',
+        filename: "Fiordland Pilots SOP's Final (October 2023).docx",
+        type: 'docx'
+    },
+    {
+        id: 'doc7',
+        title: 'FPS Cruise Ship Risk Assessment 2018',
+        filename: 'FPS Cruise Ship Risk Assessment 2018 Rev 0.1.docx',
+        type: 'docx'
+    },
+    {
+        id: 'doc8',
+        title: 'FPS Training Programme 2025',
+        filename: 'FPS Training Programme and Proficiency Plan - approved by MNZ 14 Nov 2025.pdf',
+        type: 'pdf'
+    },
+    {
+        id: 'doc9',
+        title: 'Attachments to Stewart Is. Training',
+        filename: 'Attachments to Stewart Island Pilot Training Manual.pdf',
+        type: 'pdf'
+    },
+    {
+        id: 'doc10',
+        title: 'Port Otago Stewart Is. Plan',
+        filename: 'Port Otago Stewart Island Training Proficiency Plan Revised May 20.pdf',
+        type: 'pdf'
+    },
+    {
+        id: 'doc11',
+        title: 'Revised Stewart Is. Pilotage Limit',
+        filename: 'Revised Stewart Island Pilotage Limit Cap.pdf',
+        type: 'pdf'
+    },
+    {
+        id: 'doc12',
+        title: 'Pilot Assessment',
+        filename: 'Pilot Assessment.doc',
         type: 'docx'
     }
 ];
@@ -41,7 +82,7 @@ const MY_DOCUMENTS = [
 export default function ImportantDocuments() {
     const [activeDoc, setActiveDoc] = useState(MY_DOCUMENTS[0]);
 
-    const getFileUrl = (filename: string) => `/documents/${filename}`;
+    const getFileUrl = (filename: string) => `/ documents / ${filename} `;
 
     return (
         <div className="max-w-6xl mx-auto space-y-6 pb-20">
@@ -94,7 +135,7 @@ export default function ImportantDocuments() {
                         <div className="flex-1 bg-gray-100 relative">
                             {activeDoc.type === 'pdf' ? (
                                 <object
-                                    data={`${getFileUrl(activeDoc.filename)}#toolbar=0`}
+                                    data={`${getFileUrl(activeDoc.filename)} #toolbar = 0`}
                                     type="application/pdf"
                                     className="w-full h-full"
                                 >
