@@ -161,7 +161,7 @@ export default function BreakseaDuskyPassage() {
 
 function NoteCard({ number, title, children, className = "" }: { number: string, title: string, children: React.ReactNode, className?: string }) {
     return (
-        <div className={`p-3 rounded-lg border border-gray-200 bg-white ${className}`}>
+        <div className={`p-4 rounded-xl border border-gray-200 bg-white ${className}`}>
             <h3 className="font-bold text-gray-900 mb-2 flex items-center gap-2 text-sm">
                 <span className="bg-fiordland-900 text-white w-5 h-5 rounded flex items-center justify-center text-[10px]">{number}</span>
                 {title}

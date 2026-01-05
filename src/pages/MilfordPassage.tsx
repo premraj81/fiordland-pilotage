@@ -4,26 +4,26 @@ import { cn } from '../lib/utils'; // Assuming this utility exists
 
 // Data for "IN"
 const IN_WAYPOINTS = [
-    { lat: "44° 32.65'S", long: "167° 45.27'E", wpt: "WP001", name: "Pilot Boarding Ground", rad: "0.5'", crs: "114°", dist: "1.6'", spd: "12", wo: "St. Anne 136, Dale Pt. Opens" },
-    { lat: "44° 33.31'S", long: "167° 47.38'E", wpt: "WP002", name: "St Anne's Point", rad: "0.5'", crs: "160°", dist: "2.9'", spd: "10", pi: ".2 stbd", wo: "Creek Bed to Stbd, VRM .1" },
-    { lat: "44° 36.01'S", long: "167° 48.80'E", wpt: "WP003", name: "Dale Point", rad: "0.5'", crs: "100°", dist: "0.9'", spd: "10", pi: ".13 stbd", wo: "Copper Pt. @ .9" },
-    { lat: "44° 36.26'S", long: "167° 50.02'E", wpt: "WP004", name: "Stirling Falls", rad: "1.0'", crs: "115°", dist: "0.9'", spd: "8", pi: ".12 stbd", wo: "Copper Pt Abeam" },
-    { lat: "44° 36.62'S", long: "167° 51.11'E", wpt: "WP005", name: "Copper Point", rad: "1.0'", crs: "128°", dist: "1.3'", spd: "8", pi: ".17 stbd" },
-    { lat: "44° 37.42'S", long: "167° 52.55'E", wpt: "WP006", name: "Mitre Peak", rad: "1.0'", crs: "136°", dist: "1.4'", spd: "8" },
-    { lat: "44° 38.39'S", long: "167° 53.88'E", wpt: "WP007", name: "Bridget Point", rad: "1.0'", crs: "158°", dist: "1.1'", spd: "6" },
-    { lat: "44° 39.66'S", long: "167° 54.49'E", wpt: "WP008", name: "Milford Sound", rad: "0.5'", crs: "-", dist: "-", spd: "-" },
+    { wpt: "WP001", name: "Pilot Boarding Ground", rad: "0.5'", crs: "114°", dist: "1.6'", spd: "12", wo: "St. Anne 136, Dale Pt. Opens" },
+    { wpt: "WP002", name: "St Anne's Point", rad: "0.5'", crs: "160°", dist: "2.9'", spd: "10", pi: ".2 stbd", wo: "Creek Bed to Stbd, VRM .1" },
+    { wpt: "WP003", name: "Dale Point", rad: "0.5'", crs: "100°", dist: "0.9'", spd: "10", pi: ".13 stbd", wo: "Copper Pt. @ .9" },
+    { wpt: "WP004", name: "Stirling Falls", rad: "1.0'", crs: "115°", dist: "0.9'", spd: "8", pi: ".12 stbd", wo: "Copper Pt Abeam" },
+    { wpt: "WP005", name: "Copper Point", rad: "1.0'", crs: "128°", dist: "1.3'", spd: "8", pi: ".17 stbd" },
+    { wpt: "WP006", name: "Mitre Peak", rad: "1.0'", crs: "136°", dist: "1.4'", spd: "8" },
+    { wpt: "WP007", name: "Bridget Point", rad: "1.0'", crs: "158°", dist: "1.1'", spd: "6" },
+    { wpt: "WP008", name: "Milford Sound", rad: "0.5'", crs: "-", dist: "-", spd: "-" },
 ];
 
 // Data for "OUT"
 const OUT_WAYPOINTS = [
-    { lat: "44° 39.46'S", long: "167° 54.49'E", wpt: "WP008", name: "Milford Sound", rad: "0.5'", crs: "338°", dist: "1.1'", spd: "6" },
-    { lat: "44° 38.38'S", long: "167° 53.88'E", wpt: "WP007", name: "Bridget point", rad: "1.0'", crs: "316°", dist: "1.4'", spd: "8" },
-    { lat: "44° 37.42'S", long: "167° 52.55'E", wpt: "WP006", name: "Mitre Peak", rad: "1.0'", crs: "308°", dist: "1.3'", spd: "8", pi: ".3 port", wo: "Copper Pt. @ .5" },
-    { lat: "44° 36.62'S", long: "167° 51.11'E", wpt: "WP005", name: "Copper point", rad: "1.0'", crs: "295°", dist: "0.9'", spd: "8", pi: ".12 port" },
-    { lat: "44° 36.26'S", long: "167° 50.02'E", wpt: "WP004", name: "Stirling Falls", rad: "1.0'", crs: "280°", dist: "0.9'", spd: "10", pi: ".13 port", wo: "Dale Pt. @ .8, St A. Pt Opens" },
-    { lat: "44° 36.01'S", long: "167° 48.80'E", wpt: "WP003", name: "Dale Point", rad: "0.5'", crs: "340°", dist: "2.9'", spd: "10", pi: ".2 port" },
-    { lat: "44° 33.31'S", long: "167° 47.38'E", wpt: "WP002", name: "St Anne's Point", rad: "0.5'", crs: "294°", dist: "1.6'", spd: "12" },
-    { lat: "44° 33.15'S", long: "167° 45.27'E", wpt: "WP001", name: "Pilot Boarding Ground", rad: "0.5'", crs: "-", dist: "-", spd: "-" },
+    { wpt: "WP008", name: "Milford Sound", rad: "0.5'", crs: "338°", dist: "1.1'", spd: "6" },
+    { wpt: "WP007", name: "Bridget point", rad: "1.0'", crs: "316°", dist: "1.4'", spd: "8" },
+    { wpt: "WP006", name: "Mitre Peak", rad: "1.0'", crs: "308°", dist: "1.3'", spd: "8", pi: ".3 port", wo: "Copper Pt. @ .5" },
+    { wpt: "WP005", name: "Copper point", rad: "1.0'", crs: "295°", dist: "0.9'", spd: "8", pi: ".12 port" },
+    { wpt: "WP004", name: "Stirling Falls", rad: "1.0'", crs: "280°", dist: "0.9'", spd: "10", pi: ".13 port", wo: "Dale Pt. @ .8, St A. Pt Opens" },
+    { wpt: "WP003", name: "Dale Point", rad: "0.5'", crs: "340°", dist: "2.9'", spd: "10", pi: ".2 port" },
+    { wpt: "WP002", name: "St Anne's Point", rad: "0.5'", crs: "294°", dist: "1.6'", spd: "12" },
+    { wpt: "WP001", name: "Pilot Boarding Ground", rad: "0.5'", crs: "-", dist: "-", spd: "-" },
 ];
 
 export default function MilfordPassage() {
@@ -151,8 +151,6 @@ export default function MilfordPassage() {
                     <table className="w-full text-sm text-left">
                         <thead className="bg-gray-50 text-gray-600 font-semibold border-b border-gray-200">
                             <tr>
-                                <th className="px-6 py-3">Latitude</th>
-                                <th className="px-6 py-3">Longitude</th>
                                 <th className="px-6 py-3">WPT</th>
                                 <th className="px-6 py-3">Name</th>
                                 <th className="px-6 py-3">Radius (nm)</th>
@@ -166,8 +164,6 @@ export default function MilfordPassage() {
                         <tbody className="divide-y divide-gray-100">
                             {waypoints.map((row, i) => (
                                 <tr key={i} className="hover:bg-gray-50/50 transition-colors">
-                                    <td className="px-6 py-4 font-mono text-gray-700">{row.lat}</td>
-                                    <td className="px-6 py-4 font-mono text-gray-700">{row.long}</td>
                                     <td className="px-6 py-4 font-semibold text-brand-teal">{row.wpt}</td>
                                     <td className="px-6 py-4 font-medium text-gray-900">{row.name}</td>
                                     <td className="px-6 py-4 text-gray-600">{row.rad}</td>
@@ -185,7 +181,7 @@ export default function MilfordPassage() {
                         </tbody>
                         <tfoot className="bg-gray-50 border-t border-gray-200">
                             <tr>
-                                <td colSpan={6} className="px-6 py-3 font-bold text-right text-gray-700">Total</td>
+                                <td colSpan={4} className="px-6 py-3 font-bold text-right text-gray-700">Total</td>
                                 <td className="px-6 py-3 font-bold text-fiordland-900">10nm</td>
                                 <td className="px-6 py-3 font-bold text-fiordland-900">~1h 09m</td>
                             </tr>
@@ -199,12 +195,12 @@ export default function MilfordPassage() {
 
 function NoteCard({ number, title, children, className = "" }: { number: string, title: string, children: React.ReactNode, className?: string }) {
     return (
-        <div className={`p-5 rounded-xl border border-gray-200 bg-white ${className}`}>
-            <h3 className="font-bold text-gray-900 mb-3 flex items-center gap-2">
-                <span className="bg-fiordland-900 text-white w-6 h-6 rounded flex items-center justify-center text-xs">{number}</span>
+        <div className={`p-4 rounded-xl border border-gray-200 bg-white ${className}`}>
+            <h3 className="font-bold text-gray-900 mb-2 flex items-center gap-2 text-sm">
+                <span className="bg-fiordland-900 text-white w-5 h-5 rounded flex items-center justify-center text-[10px]">{number}</span>
                 {title}
             </h3>
-            <div className="text-sm text-gray-700 leading-relaxed">
+            <div className="text-xs text-gray-700 leading-relaxed">
                 {children}
             </div>
         </div>

@@ -7,9 +7,7 @@ export const CHECKLISTS = {
                 title: 'Vessel Details',
                 fields: [
                     { id: 'vesselName', label: 'Vessel Name', type: 'text' },
-                    { id: 'plannedRoute', label: 'Planned Route / Embark / Disembark', type: 'route-selector' },
-                    { id: 'previousPort', label: 'Previous Port', type: 'text' },
-                    { id: 'nextPort', label: 'Next Port', type: 'text' },
+                    { id: 'plannedRoute', label: 'Planned Route', type: 'route-selector' },
                 ]
             },
             {
