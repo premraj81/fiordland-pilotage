@@ -11,6 +11,7 @@ import BreakseaDuskyPassage from './pages/BreakseaDuskyPassage';
 import MedicalEvacuation from './pages/MedicalEvacuation';
 import DistanceCalculator from './pages/DistanceCalculator';
 import EmergencyContacts from './pages/EmergencyContacts';
+import Weather from './pages/Weather';
 
 function App() {
   return (
@@ -27,6 +28,7 @@ function App() {
         <Route path="medical-evacuation" element={<MedicalEvacuation />} />
         <Route path="distance-calculator" element={<DistanceCalculator />} />
         <Route path="emergency-contacts" element={<EmergencyContacts />} />
+        <Route path="weather" element={<Weather />} />
       </Route>
     </Routes>
   );

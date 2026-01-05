@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { NavLink, Outlet, useLocation } from 'react-router-dom';
-import { Ship, FileText, Info, Menu, X, Wifi, WifiOff, BellRing, Compass, Phone, ChevronDown } from 'lucide-react';
+import { Ship, FileText, Info, Menu, X, Wifi, WifiOff, BellRing, Compass, Phone, ChevronDown, CloudRain } from 'lucide-react';
 import { cn } from '../lib/utils';
 import { useOnlineStatus } from '../lib/hooks';
 
@@ -51,6 +51,7 @@ export default function Layout() {
                     <NavItem to="/medical-evacuation" icon={<Ship />} label="Medical Evacuation Procedure" onClick={() => setSidebarOpen(false)} />
                     <NavItem to="/distance-calculator" icon={<Compass />} label="Distance Calculator" onClick={() => setSidebarOpen(false)} />
                     <NavItem to="/emergency-contacts" icon={<Phone />} label="Emergency Contacts" onClick={() => setSidebarOpen(false)} />
+                    <NavItem to="/weather" icon={<CloudRain />} label="Weather" onClick={() => setSidebarOpen(false)} />
                 </nav>
 
                 <div className="p-4 border-t border-fiordland-700 mt-auto">
