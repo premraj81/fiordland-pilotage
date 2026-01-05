@@ -4,83 +4,105 @@ import { cn } from '../lib/utils';
 
 const NOTIFICATIONS = [
     {
-        id: 'milford',
-        label: 'Milford Sound',
-        title: 'Milford Sound Notification',
-        transitInfo: 'Transit time at 10 - 12kts = 1hr 50m approx',
-        requirement: 'Require time abeam of St Annes Lt to get exit time at St Annes Lt',
+        id: 'all',
+        label: 'All Stations',
+        title: 'General Notification',
+        transitInfo: 'General broadcast for all vessels',
+        requirement: 'Broadcast to all stations',
         script: [
             "ALL STATIONS x 3",
-            "THIS IS THE CRUISE VESSEL \"[GIVE NAME]\"",
-            "PLEASE BE ADVISED THAT THIS VESSEL WILL BE ABEAM OF ST ANNES POINT LIGHT AT THE ENTRANCE TO MILFORD SOUND AT \"[GIVE TIME]\"",
-            "IT IS OUR INTENTION TO TRANSIT MILFORD SOUND AND TURN THE VESSEL IN THE AREA OF HARRISONS COVE. EXITING MILFORD SOUND AT APPROXIMATELY \"[GIVE TIME]\"",
-            "ALL VESSELS PLEASE BE AWARE OF OUR PASSAGE AND THE VESSELS LIMITATIONS WHEN TURNING AT DALE POINT AND OFF HARRISONS COVE. IT IS OUR INTENTION TO MAINTAIN A TRACK APPROXIMATELY IN THE CENTRE OF THE SOUND, AND IT WOULD BE APPRECIATED IF YOU COULD ADVISE US OF YOUR INTENTIONS.",
-            "THIS IS THE \"[GIVE SHIPS NAME]\" LISTENING OUT ON CHANNEL 16",
+            "ALL VESSELS PLEASE BE AWARE OF OUR PASSAGE AND THE VESSEL'S LIMITATIONS WITH REGARDS TO TURNING AND EXTENDED STOPPING DISTANCES.",
+            "IT IS OUR INTENTION TO MAINTAIN A TRACK APPROXIMATELY IN THE CENTRE OF THE SOUND(S), AND IT WOULD BE APPRECIATED IF YOU COULD ADVISE OF YOUR INTENTIONS.",
             "OVER."
         ]
     },
     {
-        id: 'thompson-doubtful',
-        label: 'Thompson Entrance',
-        title: 'Thompson Sound - Doubtful Sound',
-        transitInfo: 'Transit time at 15-16kts = 1hr 30m approx',
-        requirement: 'Require time abeam of Colonial Head to get exit time at Doubtful Sound',
+        id: 'milford',
+        label: 'Milford Sound',
+        title: 'Milford Sound Notification',
+        transitInfo: 'Transit at ~12 knots',
+        requirement: 'St Anne Point to Head and return',
         script: [
-            "ALL STATIONS x 3",
-            "THIS IS THE CRUISE VESSEL \"[GIVE NAME]\"",
-            "PLEASE BE ADVISED THAT THIS VESSEL WILL BE ABEAM OF COLONIAL HEAD AT THE ENTRANCE TO THOMPSON SOUND AT \"[GIVE TIME]\"",
-            "IT IS OUR INTENTION TO TRANSIT THOMPSON SOUND THROUGH SEYMOURS ISLAND TO DOUBTFUL SOUND, EXITING DOUBTFUL SOUND AT APPROXIMATELY \"[GIVE TIME]\"",
-            "ANY VESSELS ALONG THIS ROUTE PLEASE BE AWARE OF OUR PASSAGE AND IT WOULD BE APPRECIATED IF YOU COULD ADVISE US OF YOUR INTENTIONS.",
-            "THIS IS THE \"[GIVE SHIPS NAME]\" LISTENING OUT ON CHANNEL 16",
-            "OVER."
+            "SECURITE, SECURITE, SECURITE, ALL STATIONS, ALL STATIONS, ALL STATIONS",
+            "THIS IS THE PASSENGER VESSEL \"[NAME]\"",
+            "WE ARE [DIST] NM FROM ST ANNE POINT, PROCEEDING INBOUND TO MILFORD SOUND.",
+            "OUR INTENTION IS TO TRANSIT INBOUND MILFORD SOUND AT APPROXIMATELY 12 KNOTS, TURNING THE VESSEL AT THE HEAD OF THE SOUND (AND PERFORMING PASSENGER TRANSFER VIA TENDER EAST OF SINBAD GULLEY) AND PROCEEDING OUTBOUND (STOPPING BRIEFLY AT STIRLING FALLS FOR VIEWING).",
+            "ETA TO THE ENTRANCE OF MILFORD SOUND [TIME], AT THE HEAD OF MILFORD SOUND [TIME], AND CLEARING MILFORD SOUND FOR SEA AT [TIME].",
+            "THIS IS THE PASSENGER VESSEL \"[NAME]\", LISTENING ON VHF CHANNELS 16, 14, 10, 62 (73). OUT."
         ]
     },
     {
         id: 'doubtful-thompson',
-        label: 'Doubtful Entrance',
-        title: 'Doubtful Sound - Thompson Sound',
-        transitInfo: 'Transit time at 15-16kts = 1hr 30m approx',
-        requirement: 'Require time abeam of Hares Ears Point to get exit time at Thompson Sound',
+        label: 'Doubtful to Thompson',
+        title: 'Doubtful Sound to Thompson Sound',
+        transitInfo: 'Transit at ~16 knots',
+        requirement: 'Febrero Point to Common Head/Exit',
         script: [
-            "ALL STATIONS x 3",
-            "THIS IS THE CRUISE VESSEL \"[GIVE NAME]\"",
-            "PLEASE BE ADVISED THAT THIS VESSEL WILL BE ABEAM OF HARES EARS AT THE ENTRANCE TO DOUBTFUL SOUND AT \"[GIVE TIME]\"",
-            "IT IS OUR INTENTION TO TRANSIT DOUBTFUL SOUND THROUGH TO SEYMOURS ISLAND THEN THROUGH THOMPSON SOUND, EXITING THOMPSON SOUND AT APPROXIMATELY \"[GIVE TIME]\"",
-            "ANY VESSELS ALONG THIS ROUTE PLEASE BE AWARE OF OUR PASSAGE AND IT WOULD BE APPRECIATED IF YOU COULD ADVISE US OF YOUR INTENTIONS.",
-            "THIS IS THE \"[GIVE SHIPS NAME]\" LISTENING OUT ON CHANNEL 16",
-            "OVER."
+            "SECURITE, SECURITE, SECURITE, ALL STATIONS, ALL STATIONS, ALL STATIONS",
+            "THIS IS THE PASSENGER VESSEL \"[NAME]\"",
+            "WE ARE [DIST] NM FROM FEBRERO POINT, PROCEEDING INBOUND TO DOUBTFUL SOUND.",
+            "OUR INTENTION IS TO TRANSIT INBOUND DOUBTFUL SOUND AT APPROXIMATELY 16 KNOTS, ROUNDING JAMIESON HEAD, TRANSITING EAST THRU PATEA (GAOL) PASSAGE, CONTINUING SOUTH OF BAUZA ISLAND, SHAPING UP FOR PENDULO REACH, ROUNDING COMMON HEAD AND PROCEEDING NORTHBOUND THRU THOMPSON SOUND.",
+            "ETA TO THE ENTRANCE OF DOUBTFUL SOUND [TIME], AT COMMON HEAD (10 NM / ½ WAY) [TIME], AND CLEARING THOMPSON SOUND FOR SEA AT APPROXIMATELY [TIME].",
+            "THIS IS THE PASSENGER VESSEL \"[NAME]\", LISTENING ON VHF CHANNELS 16, 10, (73). OUT."
         ]
     },
     {
-        id: 'breaksea-dusky',
-        label: 'Breaksea Entrance',
-        title: 'Breaksea Sound - Dusky Sound',
-        transitInfo: 'Transit time at 15-16kts = 1hr 30m approx',
-        requirement: 'Require time abeam of Breaksea Island to get exit time at Dusky Sound',
+        id: 'thompson-doubtful',
+        label: 'Thompson to Doubtful',
+        title: 'Thompson Sound to Doubtful Sound',
+        transitInfo: 'Transit at ~16 knots',
+        requirement: 'Colonial Head to Exit',
         script: [
-            "ALL STATIONS x 3",
-            "THIS IS THE CRUISE VESSEL \"[GIVE NAME]\"",
-            "PLEASE BE ADVISED THAT THIS VESSEL WILL BE ABEAM OF BREAKSEA ISLAND AT THE ENTRANCE TO BREAKSEA SOUND AT \"[GIVE TIME]\"",
-            "IT IS OUR INTENTION TO TRANSIT BREAKSEA SOUND THROUGH THE ACHERON PASSAGE THEN THE BOWEN CHANNEL NORTH OF LONG ISLAND, EXITING DUSKY SOUND AT APPROXIMATELY \"[GIVE TIME]\"",
-            "ANY VESSELS ALONG THIS ROUTE PLEASE BE AWARE OF OUR PASSAGE AND IT WOULD BE APPRECIATED IF YOU COULD ADVISE US OF YOUR INTENTIONS.",
-            "THIS IS THE \"[GIVE SHIPS NAME]\" LISTENING OUT ON CHANNEL 16",
-            "OVER."
+            "ALL STATIONS, ALL STATIONS, ALL STATIONS",
+            "THIS IS THE PASSENGER VESSEL \"[NAME]\"",
+            "WE ARE CURRENTLY [DIST] NM NW OF COLONIAL HEAD, PROCEEDING INBOUND TO THOMPSON SOUND.",
+            "OUR INTENTION IS TO TRANSIT SOUTHBOUND THOMPSON SOUND AT APPROXIMATELY 16 KNOTS, ROUNDING COMMON HEAD WEST OF SEYMOUR ISLAND, PROCEEDING WESTBOUND THRU DOUBTFUL SOUND SOUTH OF BAUZA ISLAND, NORTHWEST THRU GAOL PASSAGE, AND HENCE TO SEA.",
+            "ETA TO THE ENTRANCE OF THOMPSON SOUND [TIME], AT COMMON HEAD (10 NM / ½ WAY) [TIME], AND CLEARING DOUBTFUL SOUND FOR SEA AT APPROXIMATELY [TIME].",
+            "THIS IS THE PASSENGER VESSEL \"[NAME]\", LISTENING ON VHF CHANNELS 16, 10 (73). OUT."
         ]
     },
     {
         id: 'dusky-breaksea',
-        label: 'Dusky Entrance',
-        title: 'Dusky Sound - Breaksea Sound',
-        transitInfo: 'Transit time at 15-16kts = 1hr 30m approx',
-        requirement: 'Require time abeam of South Point to get exit time at Breaksea Sound',
+        label: 'Dusky to Breaksea',
+        title: 'Dusky Sound to Breaksea Sound',
+        transitInfo: 'Transit at ~16 knots',
+        requirement: 'South Point to Breaksea Exit',
         script: [
-            "ALL STATIONS x 3",
-            "THIS IS THE CRUISE VESSEL \"[GIVE NAME]\"",
-            "PLEASE BE ADVISED THAT THIS VESSEL WILL BE ABEAM OF SOUTH POINT AT THE ENTRANCE TO DUSKY SOUND AT \"[GIVE TIME]\"",
-            "IT IS OUR INTENTION TO TRANSIT DUSKY SOUND NORTH OF LONG ISLAND THROUGH THE BOWEN CHANNEL THEN THE ACHERON PASSAGE, EXITING BREAKSEA SOUND AT APPROXIMATELY \"[GIVE TIME]\"",
-            "ANY VESSELS ALONG THIS ROUTE PLEASE BE AWARE OF OUR PASSAGE AND IT WOULD BE APPRECIATED IF YOU COULD ADVISE US OF YOUR INTENTIONS.",
-            "THIS IS THE \"[GIVE SHIPS NAME]\" LISTENING OUT ON CHANNEL 16",
-            "OVER."
+            "SECURITE, SECURITE, SECURITE, ALL STATIONS, ALL STATIONS, ALL STATIONS",
+            "THIS IS THE PASSENGER VESSEL \"[NAME]\"",
+            "WE ARE [DIST] NM FROM SOUTH POINT. OUR INTENTION IS TO PROCEED INBOUND TO DUSKY SOUND AT APPROXIMATELY 16 KNOTS, TRANSITING NORTH OF INDIAN AND LONG ISLANDS, THRU THE BOWEN CHANNEL, SHAPING UP FOR ACHERON PASSAGE, NORTHBOUND THRU ACHERON PASSAGE INTO BREAKSEA SOUND, PASSING WEST OF ENTRY ISLAND, AND DEPARTING BREAKSEA SOUND BETWEEN BREAKSEA ISLAND AND ROCKY POINT.",
+            "ETA TO THE ENTRANCE OF DUSKY SOUND [TIME], ENTERING ACHERON PASSAGE (16 NM / 1 HR) [TIME], AND CLEARING BREAKSEA SOUND FOR SEA AT APPROXIMATELY [TIME].",
+            "THIS IS THE PASSENGER VESSEL \"[NAME]\", LISTENING ON VHF CHANNELS 16, 10 (73). OUT."
+        ]
+    },
+    {
+        id: 'breaksea-dusky',
+        label: 'Breaksea to Dusky',
+        title: 'Breaksea Sound to Dusky Sound',
+        transitInfo: 'Transit at ~15 knots',
+        requirement: 'Rocky Point to Dusky Exit',
+        script: [
+            "ALL STATIONS, ALL STATIONS, ALL STATIONS",
+            "THIS IS THE PASSENGER VESSEL \"[NAME]\"",
+            "WE ARE CURRENTLY [DIST] NM NW OF ROCKY POINT, PROCEEDING INBOUND TO BREAKSEA SOUND.",
+            "OUR INTENTION IS TO TRANSIT SOUTHBOUND BREAKSEA SOUND AT 15 KNOTS, TRANSITING WEST OF ENTRY ISLAND, SOUTH THRU ACHERON PASSAGE, WEST THRU THE BOWEN CHANNEL, SOUTH OF THRUM CAP AND NORMAN’S ISLAND, AND HENCE TO SEA.",
+            "ETA TO THE ENTRANCE OF BREAKSEA SOUND [TIME], ABEAM OF PORPOISE PT (14 NM) [TIME], AND CLEARING DUSKY SOUND FOR SEA AT APPROXIMATELY [TIME].",
+            "THIS IS THE PASSENGER VESSEL \"[NAME]\", LISTENING ON VHF CHANNELS 16, 10 (73). OUT."
+        ]
+    },
+    {
+        id: 'stewart-island',
+        label: 'Stewart Island',
+        title: 'Stewart Island Notification',
+        transitInfo: 'Inbound through Abbott Passage',
+        requirement: 'Bench Island to Anchorage',
+        script: [
+            "SECURITE, SECURITE, SECURITE, ALL STATIONS, ALL STATIONS, ALL STATIONS",
+            "THIS IS THE PASSENGER VESSEL \"[NAME]\"",
+            "WE ARE [DIST] NM FROM BENCH ISLAND. OUR INTENTION IS TO PROCEED INBOUND THROUGH ABBOTT PASSAGE TO HALF MOON BAY / PATTERSON INLET",
+            "A) ANCHORING AT THE MOUTH OF HALF MOON BAY NORTHWEST OF ACKERS POINT",
+            "B) ANCHORING NORTH OF ULVA ISLAND AND CONDUCTING PASSENGER TRANSIT OPERATIONS BY TENDER UNTIL APPROXIMATELY [TIME].",
+            "THIS IS THE PASSENGER VESSEL \"[NAME]\", LISTENING ON VHF CHANNELS 16, 65, (71) OUT."
         ]
     }
 ];
