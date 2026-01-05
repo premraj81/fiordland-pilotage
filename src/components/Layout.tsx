@@ -26,7 +26,7 @@ export default function Layout() {
                 <div className="p-6 border-b border-fiordland-700 flex items-center justify-between">
                     <div className="flex items-center gap-3">
                         <Ship className="w-8 h-8 text-brand-teal" />
-                        <h1 className="text-xl font-bold tracking-tight">Fiordland<br /><span className="text-brand-gold">Pilotage</span></h1>
+                        <h1 className="text-xl font-bold tracking-tight">Fiordland/Steward Is.<br /><span className="text-brand-gold">Pilotage</span></h1>
                     </div>
                     <button className="lg:hidden" onClick={() => setSidebarOpen(false)}><X /></button>
                 </div>

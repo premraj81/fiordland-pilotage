@@ -159,13 +159,20 @@ export default function Home() {
             </div>
 
             {/* Action Card - Only visible in Active tab? Or always? Always is fine. */}
-            <div className="grid md:grid-cols-1 gap-6">
+            <div className="grid md:grid-cols-2 gap-6">
                 <ActionCard
-                    title="Passage Plan Checklist - EMPX"
-                    desc="Complete the full passage plan and pre-entry verification."
+                    title="EMPX - Fiordland"
+                    desc="Passage Plan Checklist for Fiordland region."
                     onClick={() => navigate('/checklist/combined')}
                     icon={<FileText className="w-8 h-8 text-white" />}
                     color="bg-fiordland-900"
+                />
+                <ActionCard
+                    title="EMPX - Stewart Island"
+                    desc="Passage Plan Checklist for Stewart Island region."
+                    onClick={() => navigate('/checklist/stewart-island')}
+                    icon={<FileText className="w-8 h-8 text-white" />}
+                    color="bg-brand-teal"
                 />
             </div>
 
