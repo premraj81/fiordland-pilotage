@@ -52,6 +52,7 @@ export default function Layout() {
                     <NavItem to="/distance-calculator" icon={<Compass />} label="Distance Calculator" onClick={() => setSidebarOpen(false)} />
                     <NavItem to="/emergency-contacts" icon={<Phone />} label="Emergency Contacts" onClick={() => setSidebarOpen(false)} />
                     <NavItem to="/weather" icon={<CloudRain />} label="Weather" onClick={() => setSidebarOpen(false)} />
+                    <NavItem to="/documents" icon={<FileText />} label="Important Documents" onClick={() => setSidebarOpen(false)} />
                 </nav>
 
                 <div className="p-4 border-t border-fiordland-700 mt-auto">

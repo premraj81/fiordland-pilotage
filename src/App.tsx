@@ -1,4 +1,4 @@
-import { Routes, Route } from 'react-router-dom';
+import { Routes, Route, Navigate } from 'react-router-dom';
 import Layout from './components/Layout';
 import Home from './pages/Home';
 import ChecklistForm from './pages/ChecklistForm';
@@ -12,6 +12,7 @@ import MedicalEvacuation from './pages/MedicalEvacuation';
 import DistanceCalculator from './pages/DistanceCalculator';
 import EmergencyContacts from './pages/EmergencyContacts';
 import Weather from './pages/Weather';
+import ImportantDocuments from './pages/ImportantDocuments';
 
 function App() {
   return (
@@ -29,6 +30,8 @@ function App() {
         <Route path="distance-calculator" element={<DistanceCalculator />} />
         <Route path="emergency-contacts" element={<EmergencyContacts />} />
         <Route path="weather" element={<Weather />} />
+        <Route path="documents" element={<ImportantDocuments />} />
+        <Route path="*" element={<Navigate to="/" replace />} />
       </Route>
     </Routes>
   );
