@@ -105,7 +105,7 @@ export default function ImportantDocuments() {
         setLoading(true);
     }, [activeDoc]);
 
-    const getFileUrl = (filename: string) => `/ documents / ${filename} `;
+    const getFileUrl = (filename: string) => `/documents/${filename}`;
 
     function onDocumentLoadSuccess({ numPages }: { numPages: number }) {
         setNumPages(numPages);
