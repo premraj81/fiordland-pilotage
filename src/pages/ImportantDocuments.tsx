@@ -1,9 +1,9 @@
 
 import { useState } from 'react';
-import { FileText, Download, File } from 'lucide-react';
+import { FileText, Download, File, Maximize2, X } from 'lucide-react';
 import { cn } from '../lib/utils';
 
-// CONFIGURATION: Real files from public/documents
+// CONFIGURATION: Real files from public/documents - ALL PDFs now
 const MY_DOCUMENTS = [
     {
         id: 'doc1',
@@ -38,14 +38,14 @@ const MY_DOCUMENTS = [
     {
         id: 'doc6',
         title: 'Fiordland Pilots SOPs (Oct 2023)',
-        filename: "fiordland-pilots-sops-oct-2023.docx",
-        type: 'docx'
+        filename: "fiordland-pilots-sops-oct-2023.pdf",
+        type: 'pdf'
     },
     {
         id: 'doc7',
         title: 'FPS Cruise Ship Risk Assessment 2018',
-        filename: 'fps-cruise-ship-risk-assessment-2018.docx',
-        type: 'docx'
+        filename: 'fps-cruise-ship-risk-assessment-2018.pdf',
+        type: 'pdf'
     },
     {
         id: 'doc8',
@@ -74,103 +74,95 @@ const MY_DOCUMENTS = [
     {
         id: 'doc12',
         title: 'Pilot Assessment',
-        filename: 'pilot-assessment.doc',
-        type: 'docx'
+        filename: 'pilot-assessment.pdf',
+        type: 'pdf'
     }
 ];
 
+
+
 export default function ImportantDocuments() {
     const [activeDoc, setActiveDoc] = useState(MY_DOCUMENTS[0]);
+    const [isFullscreen, setIsFullscreen] = useState(false);
 
+    // Using iframe for better mobile PDF support than object tag
     const getFileUrl = (filename: string) => `/ documents / ${filename} `;
 
     return (
-        <div className="max-w-6xl mx-auto space-y-6 pb-20">
-            <h1 className="text-3xl font-bold text-fiordland-900">Important Documents</h1>
-
-            <div className="grid lg:grid-cols-12 gap-6 items-start">
-                {/* Sidebar Navigation */}
-                <div className="lg:col-span-3 space-y-2">
-                    <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-2">
-                        {MY_DOCUMENTS.map((doc) => (
-                            <button
-                                key={doc.id}
-                                onClick={() => setActiveDoc(doc)}
-                                className={cn(
-                                    "w-full text-left px-4 py-3 rounded-lg font-medium transition-all mb-1 last:mb-0 flex items-center gap-3",
-                                    activeDoc.id === doc.id
-                                        ? "bg-brand-teal text-white shadow-md"
-                                        : "hover:bg-gray-50 text-gray-700"
-                                )}
-                            >
-                                <FileText className={cn("w-4 h-4", activeDoc.id === doc.id ? "text-teal-100" : "text-gray-400")} />
-                                <span className="truncate">{doc.title}</span>
-                            </button>
-                        ))}
+        <div className={cn("transition-all duration-300", isFullscreen ? "fixed inset-0 z-50 bg-white" : "max-w-6xl mx-auto space-y-6 pb-20")}>
+            <div className={cn("grid lg:grid-cols-12 gap-6 items-start h-full", isFullscreen ? "block" : "")}>
+                {/* Sidebar Navigation - Hidden in Fullscreen */}
+                {!isFullscreen && (
+                    <div className="lg:col-span-3 space-y-4">
+                        <h1 className="text-3xl font-bold text-fiordland-900 px-1">Documents</h1>
+                        <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-2 overflow-y-auto max-h-[800px]">
+                            {MY_DOCUMENTS.map((doc) => (
+                                <button
+                                    key={doc.id}
+                                    onClick={() => setActiveDoc(doc)}
+                                    className={cn(
+                                        "w-full text-left px-4 py-3 rounded-lg font-medium transition-all mb-1 last:mb-0 flex items-center gap-3",
+                                        activeDoc.id === doc.id
+                                            ? "bg-brand-teal text-white shadow-md"
+                                            : "hover:bg-gray-50 text-gray-700"
+                                    )}
+                                >
+                                    <FileText className={cn("w-4 h-4 shrink-0", activeDoc.id === doc.id ? "text-teal-100" : "text-gray-400")} />
+                                    <span className="truncate text-sm">{doc.title}</span>
+                                </button>
+                            ))}
+                        </div>
+                        <div className="bg-blue-50 border border-blue-100 rounded-xl p-4 text-xs text-blue-800">
+                            <p className="font-semibold mb-1">Viewing Tips:</p>
+                            <p>Tap the fullscreen icon <Maximize2 className="w-3 h-3 inline" /> to view documents in full page mode.</p>
+                        </div>
                     </div>
-
-                    <div className="bg-blue-50 border border-blue-100 rounded-xl p-4 text-xs text-blue-800">
-                        <p className="font-semibold mb-1">How to add files:</p>
-                        <p>Place your PDF or Word files in the <code>public/documents</code> folder and update the filename in the code.</p>
-                    </div>
-                </div>
+                )}
 
                 {/* Content Viewer */}
-                <div className="lg:col-span-9">
-                    <div className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden h-[800px] flex flex-col">
-                        <div className="p-4 border-b border-gray-100 flex justify-between items-center bg-gray-50">
-                            <h2 className="font-bold text-fiordland-900 flex items-center gap-2">
-                                <File className="w-5 h-5 text-brand-gold" />
-                                {activeDoc.title}
-                            </h2>
-                            <a
-                                href={getFileUrl(activeDoc.filename)}
-                                download
-                                className="flex items-center gap-2 text-sm font-medium text-brand-teal hover:text-teal-700 bg-white px-3 py-1.5 rounded-lg border border-gray-200 shadow-sm"
+                <div className={cn("bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden flex flex-col", isFullscreen ? "h-full rounded-none border-0" : "lg:col-span-9 h-[85vh]")}>
+                    <div className="p-4 border-b border-gray-100 flex justify-between items-center bg-gray-50 shrink-0">
+                        <h2 className="font-bold text-fiordland-900 flex items-center gap-2 truncate pr-4">
+                            <File className="w-5 h-5 text-brand-gold shrink-0" />
+                            <span className="truncate">{activeDoc.title}</span>
+                        </h2>
+                        <div className="flex items-center gap-2 shrink-0">
+                            <button
+                                onClick={() => setIsFullscreen(!isFullscreen)}
+                                className="flex items-center gap-2 text-sm font-medium text-gray-600 hover:text-fiordland-900 bg-white px-3 py-1.5 rounded-lg border border-gray-200 shadow-sm transition-colors"
                             >
-                                <Download className="w-4 h-4" /> Download
-                            </a>
-                        </div>
-
-                        <div className="flex-1 bg-gray-100 relative">
-                            {activeDoc.type === 'pdf' ? (
-                                <object
-                                    data={`${getFileUrl(activeDoc.filename)} #toolbar = 0`}
-                                    type="application/pdf"
-                                    className="w-full h-full"
+                                {isFullscreen ? (
+                                    <>
+                                        <X className="w-4 h-4" /> Exit Fullscreen
+                                    </>
+                                ) : (
+                                    <>
+                                        <Maximize2 className="w-4 h-4" /> Fullscreen
+                                    </>
+                                )}
+                            </button>
+                            {!isFullscreen && (
+                                <a
+                                    href={getFileUrl(activeDoc.filename)}
+                                    download
+                                    className="flex items-center gap-2 text-sm font-medium text-brand-teal hover:text-teal-700 bg-white px-3 py-1.5 rounded-lg border border-gray-200 shadow-sm"
                                 >
-                                    <div className="flex flex-col items-center justify-center h-full text-gray-500 gap-4">
-                                        <p>Unable to display PDF directly.</p>
-                                        <a
-                                            href={getFileUrl(activeDoc.filename)}
-                                            className="text-brand-teal hover:underline font-medium"
-                                        >
-                                            Click here to download
-                                        </a>
-                                    </div>
-                                </object>
-                            ) : (
-                                <div className="flex flex-col items-center justify-center h-full text-gray-500 gap-6 p-12 text-center">
-                                    <div className="w-20 h-20 bg-gray-200 rounded-2xl flex items-center justify-center">
-                                        <FileText className="w-10 h-10 text-gray-400" />
-                                    </div>
-                                    <div className="max-w-md">
-                                        <h3 className="text-lg font-semibold text-gray-900 mb-2">Word Document Preview Unavailable</h3>
-                                        <p className="text-sm">Word documents ({activeDoc.filename}) cannot be displayed directly in the browser. Please download the file to view it.</p>
-                                    </div>
-                                    <a
-                                        href={getFileUrl(activeDoc.filename)}
-                                        download
-                                        className="bg-brand-teal text-white px-6 py-3 rounded-xl font-bold shadow-lg shadow-teal-500/20 hover:bg-teal-600 transition-all flex items-center gap-2"
-                                    >
-                                        <Download className="w-5 h-5" /> Download Document
-                                    </a>
-                                </div>
+                                    <Download className="w-4 h-4" /> <span className="hidden sm:inline">Download</span>
+                                </a>
                             )}
                         </div>
+                    </div>
+
+                    <div className="flex-1 bg-gray-100 relative w-full h-full">
+                        <iframe
+                            src={getFileUrl(activeDoc.filename)}
+                            className="w-full h-full border-0"
+                            title={activeDoc.title}
+                        />
                     </div>
                 </div>
             </div>
         </div>
     );
 }
+
