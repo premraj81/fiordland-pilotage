@@ -8,13 +8,13 @@ const MY_DOCUMENTS = [
     {
         id: 'doc1',
         title: 'Harbourmaster Directions',
-        filename: 'Harbourmaster Directions .pdf',
+        filename: 'harbourmaster-directions.pdf',
         type: 'pdf'
     },
     {
         id: 'doc2',
         title: 'Fiordland Response Plan',
-        filename: 'Fiordland Response Plan.pdf',
+        filename: 'fiordland-response-plan.pdf',
         type: 'pdf'
     },
     {
@@ -32,49 +32,49 @@ const MY_DOCUMENTS = [
     {
         id: 'doc5',
         title: 'Cruise Ship SMS',
-        filename: 'Cruise Ship SMS.pdf',
+        filename: 'cruise-ship-sms.pdf',
         type: 'pdf'
     },
     {
         id: 'doc6',
         title: 'Fiordland Pilots SOPs (Oct 2023)',
-        filename: "Fiordland Pilots SOP's Final (October 2023).docx",
+        filename: "fiordland-pilots-sops-oct-2023.docx",
         type: 'docx'
     },
     {
         id: 'doc7',
         title: 'FPS Cruise Ship Risk Assessment 2018',
-        filename: 'FPS Cruise Ship Risk Assessment 2018 Rev 0.1.docx',
+        filename: 'fps-cruise-ship-risk-assessment-2018.docx',
         type: 'docx'
     },
     {
         id: 'doc8',
         title: 'FPS Training Programme 2025',
-        filename: 'FPS Training Programme and Proficiency Plan - approved by MNZ 14 Nov 2025.pdf',
+        filename: 'fps-training-programme-2025.pdf',
         type: 'pdf'
     },
     {
         id: 'doc9',
         title: 'Attachments to Stewart Is. Training',
-        filename: 'Attachments to Stewart Island Pilot Training Manual.pdf',
+        filename: 'attachments-stewart-island-training.pdf',
         type: 'pdf'
     },
     {
         id: 'doc10',
         title: 'Port Otago Stewart Is. Plan',
-        filename: 'Port Otago Stewart Island Training Proficiency Plan Revised May 20.pdf',
+        filename: 'port-otago-stewart-island-plan.pdf',
         type: 'pdf'
     },
     {
         id: 'doc11',
         title: 'Revised Stewart Is. Pilotage Limit',
-        filename: 'Revised Stewart Island Pilotage Limit Cap.pdf',
+        filename: 'revised-stewart-island-pilotage-limit.pdf',
         type: 'pdf'
     },
     {
         id: 'doc12',
         title: 'Pilot Assessment',
-        filename: 'Pilot Assessment.doc',
+        filename: 'pilot-assessment.doc',
         type: 'docx'
     }
 ];
