@@ -96,8 +96,8 @@ export default function Layout() {
 
                     {/* Centered Title */}
                     <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 text-center pointer-events-none w-full md:w-auto px-12 md:px-0">
-                        <h1 className="text-lg md:text-xl font-bold text-fiordland-900 truncate">
-                            Fiordland / Stewart Island <span className="text-brand-gold">Pilotage</span>
+                        <h1 className="text-xl md:text-2xl font-bold text-emerald-700 truncate">
+                            Fiordland / Stewart Island Pilotage
                         </h1>
                     </div>
 
