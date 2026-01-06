@@ -47,7 +47,11 @@ export default function Layout() {
                 <div className="p-6 border-b border-fiordland-700 flex items-center justify-between">
                     <div className="flex items-center gap-3">
                         <Ship className="w-8 h-8 text-brand-teal" />
-                        <h1 className="text-xl font-bold tracking-tight">Fiordland/Steward Is.<br /><span className="text-brand-gold">Pilotage</span></h1>
+                        <h1 className="text-2xl font-bold tracking-widest flex gap-0.5">
+                            <span className="text-emerald-400">F</span>
+                            <span className="text-white">P</span>
+                            <span className="text-emerald-400">S</span>
+                        </h1>
                     </div>
                     <button className="lg:hidden" onClick={() => setSidebarOpen(false)}><X /></button>
                 </div>
@@ -83,22 +87,28 @@ export default function Layout() {
 
             {/* Main Content */}
             <main className="flex-1 flex flex-col h-full overflow-hidden relative">
-                <header className="h-16 bg-white border-b border-gray-200 flex items-center justify-between px-4 lg:px-8 z-10 shrink-0">
+                <header className="h-16 bg-white border-b border-gray-200 flex items-center justify-between px-4 lg:px-8 z-10 shrink-0 relative">
                     <div className="flex items-center gap-3">
                         <button onClick={() => setSidebarOpen(true)} className="p-2 text-fiordland-700 lg:hidden">
                             <Menu />
                         </button>
-                        <span className="font-semibold text-fiordland-800 lg:hidden">Fiordland Pilotage</span>
                     </div>
 
-                    <div className="flex items-center gap-3">
+                    {/* Centered Title */}
+                    <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 text-center pointer-events-none w-full md:w-auto px-12 md:px-0">
+                        <h1 className="text-lg md:text-xl font-bold text-fiordland-900 truncate">
+                            Fiordland / Stewart Island <span className="text-brand-gold">Pilotage</span>
+                        </h1>
+                    </div>
+
+                    <div className="flex items-center gap-3 relative z-10">
                         {installPrompt && (
                             <button
                                 onClick={handleInstallClick}
                                 className="flex items-center gap-2 bg-brand-teal text-white px-3 py-1.5 rounded-lg font-medium hover:bg-teal-700 transition-colors shadow-sm text-sm"
                             >
                                 <Download className="w-4 h-4" />
-                                <span className="hidden sm:inline">Install App</span>
+                                <span className="hidden sm:inline">Install</span>
                             </button>
                         )}
 
@@ -111,7 +121,7 @@ export default function Layout() {
                             ) : (
                                 <>
                                     <WifiOff className="w-5 h-5 text-red-500" />
-                                    <span className="text-sm font-medium text-red-600 hidden sm:inline">Offline Mode</span>
+                                    <span className="text-sm font-medium text-red-600 hidden sm:inline">Offline</span>
                                 </>
                             )}
                         </div>
