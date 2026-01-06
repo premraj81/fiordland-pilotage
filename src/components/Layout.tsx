@@ -87,16 +87,16 @@ export default function Layout() {
 
             {/* Main Content */}
             <main className="flex-1 flex flex-col h-full overflow-hidden relative">
-                <header className="h-16 bg-white border-b border-gray-200 flex items-center justify-between px-4 lg:px-8 z-10 shrink-0 relative">
+                <header className="h-16 bg-fiordland-900 border-b border-fiordland-800 flex items-center justify-between px-4 lg:px-8 z-10 shrink-0 relative">
                     <div className="flex items-center gap-3">
-                        <button onClick={() => setSidebarOpen(true)} className="p-2 text-fiordland-700 lg:hidden">
+                        <button onClick={() => setSidebarOpen(true)} className="p-2 text-white lg:hidden">
                             <Menu />
                         </button>
                     </div>
 
                     {/* Centered Title */}
                     <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 text-center pointer-events-none w-full md:w-auto px-12 md:px-0">
-                        <h1 className="text-xl md:text-2xl font-bold text-emerald-700 truncate">
+                        <h1 className="text-xl md:text-2xl font-bold text-emerald-400 truncate">
                             Fiordland / Stewart Island Pilotage
                         </h1>
                     </div>
