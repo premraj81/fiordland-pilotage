@@ -11,7 +11,7 @@ export default defineConfig({
       includeAssets: ['favicon.ico', 'apple-touch-icon.png', 'masked-icon.svg'],
       workbox: {
         globPatterns: ['**/*.{js,css,html,ico,png,svg,pdf}'],
-        maximumFileSizeToCacheInBytes: 100 * 1024 * 1024,
+        maximumFileSizeToCacheInBytes: 500 * 1024 * 1024,
         navigateFallback: '/index.html',
       },
       manifest: {
