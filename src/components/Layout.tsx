@@ -1,12 +1,33 @@
 import { useState, useEffect } from 'react';
 import { NavLink, Outlet, useLocation } from 'react-router-dom';
-import { Ship, FileText, Info, Menu, X, Wifi, WifiOff, BellRing, Compass, Phone, ChevronDown, CloudRain } from 'lucide-react';
+import { Ship, FileText, Info, Menu, X, Wifi, WifiOff, BellRing, Compass, Phone, ChevronDown, CloudRain, Download } from 'lucide-react';
 import { cn } from '../lib/utils';
 import { useOnlineStatus } from '../lib/hooks';
 
 export default function Layout() {
     const [isSidebarOpen, setSidebarOpen] = useState(false);
     const isOnline = useOnlineStatus();
+
+
+    const [installPrompt, setInstallPrompt] = useState<any>(null);
+
+    useEffect(() => {
+        const handler = (e: any) => {
+            e.preventDefault();
+            setInstallPrompt(e);
+        };
+        window.addEventListener('beforeinstallprompt', handler);
+        return () => window.removeEventListener('beforeinstallprompt', handler);
+    }, []);
+
+    const handleInstallClick = async () => {
+        if (!installPrompt) return;
+        installPrompt.prompt();
+        const result = await installPrompt.userChoice;
+        if (result.outcome === 'accepted') {
+            setInstallPrompt(null);
+        }
+    };
 
     return (
         <div className="flex h-screen bg-fiordland-50 overflow-hidden">
@@ -70,18 +91,30 @@ export default function Layout() {
                         <span className="font-semibold text-fiordland-800 lg:hidden">Fiordland Pilotage</span>
                     </div>
 
-                    <div className="flex items-center gap-3 bg-gray-50 px-4 py-2 rounded-full border border-gray-100">
-                        {isOnline ? (
-                            <>
-                                <Wifi className="w-5 h-5 text-green-500" />
-                                <span className="text-sm font-medium text-fiordland-700 hidden sm:inline">Online</span>
-                            </>
-                        ) : (
-                            <>
-                                <WifiOff className="w-5 h-5 text-red-500" />
-                                <span className="text-sm font-medium text-red-600 hidden sm:inline">Offline Mode</span>
-                            </>
+                    <div className="flex items-center gap-3">
+                        {installPrompt && (
+                            <button
+                                onClick={handleInstallClick}
+                                className="flex items-center gap-2 bg-brand-teal text-white px-3 py-1.5 rounded-lg font-medium hover:bg-teal-700 transition-colors shadow-sm text-sm"
+                            >
+                                <Download className="w-4 h-4" />
+                                <span className="hidden sm:inline">Install App</span>
+                            </button>
                         )}
+
+                        <div className="flex items-center gap-3 bg-gray-50 px-4 py-2 rounded-full border border-gray-100">
+                            {isOnline ? (
+                                <>
+                                    <Wifi className="w-5 h-5 text-green-500" />
+                                    <span className="text-sm font-medium text-fiordland-700 hidden sm:inline">Online</span>
+                                </>
+                            ) : (
+                                <>
+                                    <WifiOff className="w-5 h-5 text-red-500" />
+                                    <span className="text-sm font-medium text-red-600 hidden sm:inline">Offline Mode</span>
+                                </>
+                            )}
+                        </div>
                     </div>
                 </header>
                 <div className="flex-1 overflow-y-auto p-4 lg:p-8 bg-slate-50">
