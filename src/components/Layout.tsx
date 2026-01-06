@@ -46,8 +46,8 @@ export default function Layout() {
             )}>
                 <div className="p-6 border-b border-fiordland-700 flex items-center justify-between">
                     <div className="flex items-center gap-3">
-                        <Ship className="w-8 h-8 text-brand-teal" />
-                        <h1 className="text-2xl font-bold tracking-widest flex gap-0.5">
+                        <Ship className="w-10 h-10 text-brand-teal" />
+                        <h1 className="text-4xl font-bold tracking-tighter flex gap-0 transform rotate-6 origin-center">
                             <span className="text-emerald-400">F</span>
                             <span className="text-white">P</span>
                             <span className="text-emerald-400">S</span>
