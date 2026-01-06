@@ -185,6 +185,106 @@ export default function MedicalEvacuation() {
                     </p>
                 </div>
             </div>
+
+            {/* Milford Sound Berths Map */}
+            <div className="bg-white p-6 rounded-2xl shadow-sm border border-gray-100">
+                <div className="flex items-center justify-between mb-6">
+                    <h3 className="text-xl font-bold text-fiordland-900">Milford Sound Berths Layout</h3>
+                    <span className="bg-green-100 text-green-800 text-xs font-bold px-2 py-1 rounded border border-green-200">
+                        Berth 5: Medical Evacuation
+                    </span>
+                </div>
+
+                <MilfordBerthMap />
+
+                <p className="text-center text-sm text-gray-500 mt-4 italic">
+                    Berth 5 is the designated transfer point for medical evacuations.
+                </p>
+            </div>
+        </div>
+    );
+}
+
+function MilfordBerthMap() {
+    return (
+        <div className="w-full overflow-hidden bg-blue-50/50 rounded-xl border border-blue-100 p-4">
+            <svg viewBox="0 0 800 450" className="w-full h-auto" style={{ maxHeight: '500px' }}>
+                {/* Shoreline */}
+                <rect x="0" y="0" width="800" height="40" fill="#718096" />
+                <text x="400" y="25" fill="white" textAnchor="middle" fontSize="14" fontWeight="bold" letterSpacing="2">WHARF / SHORELINE</text>
+
+                {/* Finger 6 (Far Left) - 13 / 17a */}
+                <g transform="translate(100, 40)">
+                    {/* Pontoon */}
+                    <rect x="0" y="0" width="30" height="300" rx="4" fill="#4A5568" />
+                    {/* Berth 13 (Left side) */}
+                    <text x="-15" y="60" textAnchor="middle" fill="#4A5568" fontWeight="bold">13</text>
+                    {/* Berth 17a (Tip) */}
+                    <text x="15" y="280" textAnchor="middle" fill="white" fontSize="12" fontWeight="bold">17a</text>
+                </g>
+
+                {/* Finger 5 - 11 / 12 */}
+                <g transform="translate(200, 40)">
+                    <rect x="0" y="0" width="30" height="280" rx="4" fill="#4A5568" />
+                    <text x="-15" y="60" textAnchor="middle" fill="#4A5568" fontWeight="bold">12</text>
+                    <text x="45" y="60" textAnchor="middle" fill="#4A5568" fontWeight="bold">11</text>
+                </g>
+
+                {/* Finger 4 - 9 / 10 */}
+                <g transform="translate(300, 40)">
+                    <rect x="0" y="0" width="30" height="280" rx="4" fill="#4A5568" />
+                    <text x="-15" y="60" textAnchor="middle" fill="#4A5568" fontWeight="bold">10</text>
+                    <text x="45" y="60" textAnchor="middle" fill="#4A5568" fontWeight="bold">9</text>
+                </g>
+
+                {/* Finger 3 - 7 / 8 */}
+                <g transform="translate(400, 40)">
+                    <rect x="0" y="0" width="30" height="280" rx="4" fill="#4A5568" />
+                    <text x="-15" y="60" textAnchor="middle" fill="#4A5568" fontWeight="bold">8</text>
+                    <text x="45" y="60" textAnchor="middle" fill="#4A5568" fontWeight="bold">7</text>
+                </g>
+
+                {/* Finger 2 - 5 / 6 (Medical) */}
+                <g transform="translate(500, 40)">
+                    {/* Pontoon */}
+                    <rect x="0" y="0" width="30" height="280" rx="4" fill="#4A5568" />
+
+                    {/* Berth 6 */}
+                    <text x="-15" y="60" textAnchor="middle" fill="#4A5568" fontWeight="bold">6</text>
+
+                    {/* Berth 5 HIGHLIGHT */}
+                    <g className="animate-pulse">
+                        <rect x="35" y="20" width="60" height="200" fill="rgba(34, 197, 94, 0.2)" rx="4" stroke="#22c55e" strokeWidth="2" strokeDasharray="4 4" />
+                        <rect x="35" y="20" width="60" height="200" fill="transparent" stroke="#22c55e" strokeWidth="2" />
+                    </g>
+                    <text x="65" y="60" textAnchor="middle" fill="#22c55e" fontWeight="bold" fontSize="24">5</text>
+                    <text x="65" y="120" textAnchor="middle" fill="#15803d" fontSize="10" fontWeight="bold">MEDIVAC</text>
+                </g>
+
+                {/* Finger 1 (Far Right) - 1, 2, 3, 4 */}
+                <g transform="translate(620, 40)">
+                    {/* Pontoon Segment 1 */}
+                    <rect x="0" y="0" width="40" height="120" rx="4" fill="#4A5568" />
+                    <text x="-15" y="60" textAnchor="middle" fill="#4A5568" fontWeight="bold">4</text>
+                    <text x="55" y="60" textAnchor="middle" fill="#4A5568" fontWeight="bold">1</text>
+
+                    {/* Link */}
+                    <rect x="10" y="120" width="20" height="20" fill="#718096" />
+
+                    {/* Pontoon Segment 2 */}
+                    <rect x="0" y="140" width="40" height="120" rx="4" fill="#4A5568" />
+                    <text x="-15" y="200" textAnchor="middle" fill="#4A5568" fontWeight="bold">3</text>
+                    <text x="55" y="200" textAnchor="middle" fill="#4A5568" fontWeight="bold">2</text>
+                </g>
+
+                {/* Compass / Orientation */}
+                <g transform="translate(700, 400)">
+                    <circle cx="0" cy="0" r="20" fill="none" stroke="#CBD5E0" strokeWidth="2" />
+                    <path d="M0,-15 L5,5 L0,0 L-5,5 Z" fill="#4A5568" />
+                    <text x="0" y="-18" textAnchor="middle" fontSize="10" fontWeight="bold" fill="#4A5568">N</text>
+                </g>
+
+            </svg>
         </div>
     );
 }
