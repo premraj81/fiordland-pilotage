@@ -10,6 +10,8 @@ export default function Layout() {
 
 
     const [installPrompt, setInstallPrompt] = useState<any>(null);
+    const [isIOS, setIsIOS] = useState(false);
+    const [isStandalone, setIsStandalone] = useState(false);
 
     useEffect(() => {
         const handler = (e: any) => {
@@ -17,15 +19,22 @@ export default function Layout() {
             setInstallPrompt(e);
         };
         window.addEventListener('beforeinstallprompt', handler);
+
+        setIsIOS(/iPad|iPhone|iPod/.test(navigator.userAgent));
+        setIsStandalone(window.matchMedia('(display-mode: standalone)').matches);
+
         return () => window.removeEventListener('beforeinstallprompt', handler);
     }, []);
 
     const handleInstallClick = async () => {
-        if (!installPrompt) return;
-        installPrompt.prompt();
-        const result = await installPrompt.userChoice;
-        if (result.outcome === 'accepted') {
-            setInstallPrompt(null);
+        if (installPrompt) {
+            installPrompt.prompt();
+            const result = await installPrompt.userChoice;
+            if (result.outcome === 'accepted') {
+                setInstallPrompt(null);
+            }
+        } else if (isIOS) {
+            alert("To install this app on your iPad/iPhone:\n\n1. Tap the Share button (square with arrow) in your browser toolbar.\n2. Scroll down and select 'Add to Home Screen'.");
         }
     };
 
@@ -107,7 +116,7 @@ export default function Layout() {
                     </div>
 
                     <div className="flex items-center gap-3 relative z-10">
-                        {installPrompt && (
+                        {(installPrompt || (isIOS && !isStandalone)) && (
                             <button
                                 onClick={handleInstallClick}
                                 className="flex items-center gap-2 bg-brand-teal text-white px-3 py-1.5 rounded-lg font-medium hover:bg-teal-700 transition-colors shadow-sm text-sm"
