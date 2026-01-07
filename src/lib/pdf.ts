@@ -21,7 +21,7 @@ export const generatePDF = (checklistData: any, schema: any, outputType: 'save' 
 
     // Header
     try {
-        doc.addImage(LOGO_BASE64, 'JPEG', 15, 10, 30, 25); // Adjusted logo size/ratio for Env Southland (tall)
+        doc.addImage(LOGO_BASE64, 'JPEG', 15, 10, 32, 30); // Larger and vertically stretched
     } catch (e) {
         console.warn("Could not add logo", e);
     }
@@ -156,7 +156,7 @@ export const generatePDF = (checklistData: any, schema: any, outputType: 'save' 
     doc.addPage();
 
     try {
-        doc.addImage(LOGO_BASE64, 'JPEG', 15, 10, 35, 20);
+        doc.addImage(LOGO_BASE64, 'JPEG', 15, 10, 32, 30);
     } catch (e) { }
 
     doc.setFont("helvetica", "bold");
