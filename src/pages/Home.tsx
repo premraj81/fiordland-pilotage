@@ -1,16 +1,18 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Clock, CheckCircle, FileText, Send, Archive, Eye } from 'lucide-react';
+import { Clock, CheckCircle, FileText, Send, Archive, Eye, CloudRain } from 'lucide-react';
 import { getChecklists, updateChecklist, deleteChecklist } from '../lib/db';
 import { CHECKLISTS } from '../lib/data';
 import { generatePDF } from '../lib/pdf';
 import { cn } from '../lib/utils';
 import { format, differenceInMonths } from 'date-fns';
+import { useOnlineStatus } from '../lib/hooks';
 
 export default function Home() {
     const navigate = useNavigate();
     const [history, setHistory] = useState<any[]>([]);
     const [activeTab, setActiveTab] = useState<'active' | 'archived'>('active');
+    const isOnline = useOnlineStatus();
 
     useEffect(() => {
         loadData();
@@ -160,28 +162,54 @@ export default function Home() {
 
             {/* Action Card - Only visible in Active tab? Or always? Always is fine. */}
             {/* Action Card - Only visible in Active tab? Or always? Always is fine. */}
-            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-                <ActionCard
-                    title="EMPX - Fiordland"
-                    desc="Passage Plan Checklist for Fiordland region."
-                    onClick={() => navigate('/checklist/combined')}
-                    icon={<FileText className="w-8 h-8 text-white" />}
-                    color="bg-fiordland-900"
-                />
-                <ActionCard
-                    title="EMPX - Stewart Island"
-                    desc="Passage Plan Checklist for Stewart Island region."
-                    onClick={() => navigate('/checklist/stewart-island')}
-                    icon={<FileText className="w-8 h-8 text-white" />}
-                    color="bg-brand-teal"
-                />
-                <ActionCard
-                    title="EMPX (Optional)"
-                    desc="More precise Checklist."
-                    onClick={() => navigate('/checklist/more-precise')}
-                    icon={<CheckCircle className="w-8 h-8 text-white" />}
-                    color="bg-slate-700"
-                />
+            {/* Dashboard Grid: Cards Left, Weather Right */}
+            <div className="grid lg:grid-cols-3 gap-6">
+                {/* Action Cards Column */}
+                <div className="lg:col-span-2 grid sm:grid-cols-2 gap-6">
+                    <ActionCard
+                        title="EMPX - Fiordland"
+                        desc="Passage Plan Checklist for Fiordland region."
+                        onClick={() => navigate('/checklist/combined')}
+                        icon={<FileText className="w-8 h-8 text-white" />}
+                        color="bg-fiordland-900"
+                    />
+                    <ActionCard
+                        title="EMPX - Stewart Island"
+                        desc="Passage Plan Checklist for Stewart Island region."
+                        onClick={() => navigate('/checklist/stewart-island')}
+                        icon={<FileText className="w-8 h-8 text-white" />}
+                        color="bg-brand-teal"
+                    />
+                    <div className="sm:col-span-2">
+                        <ActionCard
+                            title="EMPX (Optional)"
+                            desc="More precise Checklist."
+                            onClick={() => navigate('/checklist/more-precise')}
+                            icon={<CheckCircle className="w-8 h-8 text-white" />}
+                            color="bg-slate-700"
+                        />
+                    </div>
+                </div>
+
+                {/* Weather Widget Column */}
+                <div className="lg:col-span-1 bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden min-h-[300px] h-full relative">
+                    {isOnline ? (
+                        <iframe
+                            width="100%"
+                            height="100%"
+                            className="w-full h-full min-h-[300px]"
+                            src="https://embed.windy.com/embed2.html?lat=-45.030&lon=167.140&detailLat=-44.668&detailLon=167.919&width=650&height=450&zoom=7&level=surface&overlay=wind&product=ecmwf&menu=&message=&marker=&calendar=now&pressure=&type=map&location=coordinates&detail=true&metricWind=kt&metricTemp=%C2%B0C&radarRange=-1"
+                            frameBorder="0"
+                            title="Windy.com Weather"
+                        ></iframe>
+                    ) : (
+                        <div className="absolute inset-0 flex flex-col items-center justify-center text-center p-6 bg-gray-50">
+                            <CloudRain className="w-12 h-12 text-gray-300 mb-2" />
+                            <p className="text-gray-500 font-medium">Weather Unavailable Offline</p>
+                            <p className="text-xs text-gray-400 mt-1">Connect to internet to view forecast</p>
+                        </div>
+                    )}
+                </div>
             </div>
 
             <div className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
