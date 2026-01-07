@@ -41,6 +41,11 @@ export default function Home() {
     }
 
     const handleShare = async (item: any) => {
+        if (!isOnline) {
+            alert("No internet connection available. You can only send the PDF while online.");
+            return;
+        }
+
         try {
             // @ts-ignore
             const schema = CHECKLISTS['combined'] || CHECKLISTS['passage-plan'];
