@@ -40,7 +40,7 @@ export default function ChecklistForm() {
         try {
             await saveChecklist({
                 type: type as any,
-                createdAt: new Date(date),
+                createdAt: new Date(), // Use current timestamp for sorting
                 data: { ...formData, signatures, names, date, showTrainee },
             });
 
