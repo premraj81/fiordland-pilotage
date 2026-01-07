@@ -93,14 +93,20 @@ export const generatePDF = (checklistData: any, schema: any, outputType: 'save' 
         currentY += 10;
 
         doc.setFont("helvetica", "normal");
-        let startX = 30;
+        // Defined positions to handle longer names and spacing
+        const positions = [25, 70, 125, 175];
+
         briefingsSection.items.forEach((item: string, idx: number) => {
             const isChecked = checklistData.data['briefings']?.[`item-${idx}`];
+            const x = positions[idx] || (30 + (idx * 45));
+
             // Box
-            drawCheckbox(startX, currentY, !!isChecked);
-            // Let's put text below the box.
-            doc.text(item, startX - 2, currentY + 10);
-            startX += 45;
+            drawCheckbox(x, currentY, !!isChecked);
+
+            // Text wrapped to 40mm to prevent overlap
+            doc.setFontSize(10);
+            const splitText = doc.splitTextToSize(item, 42);
+            doc.text(splitText, x, currentY + 10);
         });
         currentY += 25; // Space for the next part
     }
