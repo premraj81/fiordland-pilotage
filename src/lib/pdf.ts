@@ -1,6 +1,6 @@
 import jsPDF from 'jspdf';
 import { format } from 'date-fns';
-import { LOGO_BASE64 } from './logo';
+import { LOGO_BASE64, SIG_CLEAVER_BASE64 } from './pdf_assets';
 
 export const generatePDF = (checklistData: any, schema: any, outputType: 'save' | 'blob' | 'datauristring' = 'save') => {
     const doc = new jsPDF();
@@ -21,7 +21,7 @@ export const generatePDF = (checklistData: any, schema: any, outputType: 'save' 
 
     // Header
     try {
-        doc.addImage(LOGO_BASE64, 'JPEG', 15, 10, 35, 20); // Logo top left
+        doc.addImage(LOGO_BASE64, 'JPEG', 15, 10, 30, 25); // Adjusted logo size/ratio for Env Southland (tall)
     } catch (e) {
         console.warn("Could not add logo", e);
     }
@@ -199,16 +199,10 @@ export const generatePDF = (checklistData: any, schema: any, outputType: 'save' 
     }
 
     // Static Bottom Signature (Lyndon Cleaver)
-    const bottomY = pageHeight - 30; // Closer to bottom
-    doc.setFont("helvetica", "bold");
-    doc.setFont("script", "italic");
-    doc.setFontSize(14);
-    doc.text("L.J. Cleaver", 20, bottomY);
-
-    doc.setFont("helvetica", "normal");
-    doc.setFontSize(10);
-    doc.text("Lyndon Cleaver", 15, bottomY + 5);
-    doc.text("Regional Harbourmaster/Maritime Manager", 15, bottomY + 10);
+    const bottomY = pageHeight - 35;
+    try {
+        doc.addImage(SIG_CLEAVER_BASE64, 'JPEG', 15, bottomY, 70, 25);
+    } catch (e) { }
 
 
     // Output
