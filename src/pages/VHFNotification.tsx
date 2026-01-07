@@ -164,6 +164,9 @@ export default function VHFNotification() {
                     </div>
 
                     {/* Script Card */}
+                    <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-2 rounded-lg text-sm font-bold text-center">
+                        VHF Radio Transcript for reference purpose only.
+                    </div>
                     <div className="bg-fiordland-900 rounded-2xl p-8 shadow-lg text-white relative overflow-hidden">
                         <div className="absolute top-0 right-0 p-4 opacity-10">
                             <Mic className="w-32 h-32" />

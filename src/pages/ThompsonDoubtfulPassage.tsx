@@ -117,6 +117,9 @@ export default function ThompsonDoubtfulPassage() {
             </div>
 
             {/* Waypoints Table */}
+            <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-2 rounded-lg text-sm font-bold text-center mb-2">
+                Wheel Over and PI for reference purpose only, not official.
+            </div>
             <div className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden animate-in slide-in-from-bottom-4 fade-in duration-500" key={`table-${direction}`}>
                 <div className="bg-fiordland-900 px-6 py-4 border-b border-fiordland-800 flex items-center justify-between">
                     <div className="flex items-center gap-3">
