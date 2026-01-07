@@ -52,6 +52,11 @@ export default function Layout() {
                             <span className="text-white">P</span>
                             <span className="text-emerald-400">S</span>
                         </h1>
+                        <svg width="32" height="24" viewBox="0 0 32 24" fill="none" className="text-brand-teal ml-1 opacity-80" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M2 12C4.5 9 7.5 9 10 12C12.5 15 15.5 15 18 12C20.5 9 23.5 9 26 12" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
+                            <path d="M6 6C8.5 3 11.5 3 14 6C16.5 9 19.5 9 22 6C24.5 3 27.5 3 30 6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" opacity="0.6" />
+                            <path d="M2 18C4.5 15 7.5 15 10 18C12.5 21 15.5 21 18 18C20.5 15 23.5 15 26 18" stroke="currentColor" strokeWidth="2" strokeLinecap="round" opacity="0.4" />
+                        </svg>
                     </div>
                     <button className="lg:hidden" onClick={() => setSidebarOpen(false)}><X /></button>
                 </div>
