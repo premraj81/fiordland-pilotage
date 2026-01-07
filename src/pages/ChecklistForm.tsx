@@ -267,7 +267,7 @@ function RenderSection({ section, formData, handleInputChange, isRouteReversed, 
                                                         : currentValues.filter((v: string) => v !== route);
                                                     handleInputChange(section.id, field.id, newValues);
                                                 }}
-                                                className="w-5 h-5 rounded text-brand-teal focus:ring-brand-teal border-gray-300"
+                                                className="w-7 h-7 rounded text-brand-teal focus:ring-brand-teal border-gray-300"
                                             />
                                             <span className="text-gray-900 font-medium">{route}</span>
                                         </label>
@@ -301,7 +301,7 @@ function RenderSection({ section, formData, handleInputChange, isRouteReversed, 
                     <label key={idx} className="flex items-start gap-3 p-3 rounded-lg hover:bg-gray-50 transition-colors cursor-pointer group">
                         <input
                             type="checkbox"
-                            className="mt-1 w-5 h-5 rounded text-brand-teal focus:ring-brand-teal border-gray-300"
+                            className="mt-0.5 w-7 h-7 rounded text-brand-teal focus:ring-brand-teal border-gray-300"
                             onChange={(e) => handleInputChange(section.id, `item-${idx}`, e.target.checked)}
                         />
                         <span className="text-gray-700 group-hover:text-gray-900">{item}</span>
