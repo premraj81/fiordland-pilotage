@@ -21,7 +21,7 @@ export const generatePDF = (checklistData: any, schema: any, outputType: 'save' 
 
     // Header
     try {
-        doc.addImage(LOGO_BASE64, 'JPEG', 15, 10, 32, 30); // Larger and vertically stretched
+        doc.addImage(LOGO_BASE64, 'JPEG', 15, 10, 35, 35); // 35x35mm
     } catch (e) {
         console.warn("Could not add logo", e);
     }
@@ -31,7 +31,7 @@ export const generatePDF = (checklistData: any, schema: any, outputType: 'save' 
     doc.text("Fiordland Passage Plan Checklist", 100, 20, { align: 'center' });
 
     doc.setFont("helvetica", "normal");
-    doc.setFontSize(11);
+    doc.setFontSize(10); // Reduced to 10pt (Arial Regular equiv)
     doc.text("Date:", 100, 35);
     const dateStr = checklistData.date ? format(new Date(checklistData.date), 'dd/MM/yyyy') : '';
     doc.text(dateStr, 120, 35);
@@ -41,7 +41,7 @@ export const generatePDF = (checklistData: any, schema: any, outputType: 'save' 
     let currentY = 50;
 
     // Vessel Details
-    doc.setFontSize(11);
+    doc.setFontSize(10); // Reduced to 10pt
     doc.text("Vessel name:", 15, currentY);
     doc.text(checklistData.data.header?.vesselName || '', 50, currentY);
     doc.line(48, currentY + 1, 140, currentY + 1); // Line underneath
@@ -156,7 +156,7 @@ export const generatePDF = (checklistData: any, schema: any, outputType: 'save' 
     doc.addPage();
 
     try {
-        doc.addImage(LOGO_BASE64, 'JPEG', 15, 10, 32, 30);
+        doc.addImage(LOGO_BASE64, 'JPEG', 15, 10, 35, 35); // 35x35mm
     } catch (e) { }
 
     doc.setFont("helvetica", "bold");
