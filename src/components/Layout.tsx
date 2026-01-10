@@ -110,13 +110,10 @@ export default function Layout() {
                     </div>
 
                     {/* Centered Title */}
-                    <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 pointer-events-none w-full md:w-auto px-12 md:px-0 flex items-center justify-center">
+                    <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 pointer-events-none w-full md:w-auto px-12 md:px-0 flex items-center justify-center z-10">
                         <h1 className="text-xl md:text-2xl font-bold text-emerald-400 truncate">
                             Fiordland / Stewart Island Pilotage
                         </h1>
-                        <div className="hidden md:block">
-                            <ShipAnimation />
-                        </div>
                     </div>
 
                     <div className="flex items-center gap-3 relative z-10">
@@ -145,10 +142,10 @@ export default function Layout() {
                         </div>
                     </div>
 
-                    {/* Bottom Header Waves */}
-                    <div className="absolute bottom-0 left-0 right-0 h-4 overflow-hidden pointer-events-none">
+                    {/* Background Elements (Waves & Ship) */}
+                    <div className="absolute inset-0 overflow-hidden pointer-events-none">
                         {/* Back Wave */}
-                        <div className="absolute bottom-0 left-0 w-[200%] h-full flex animate-wave opacity-20" style={{ animationDuration: '20s', animationDirection: 'reverse' }}>
+                        <div className="absolute bottom-0 left-0 w-[200%] h-4 flex animate-wave opacity-20" style={{ animationDuration: '20s', animationDirection: 'reverse' }}>
                             <svg viewBox="0 0 100 20" className="w-1/2 h-full text-teal-300 fill-current" preserveAspectRatio="none">
                                 <path d="M0 10 Q 25 0 50 10 T 100 10 V 20 H 0 Z" />
                             </svg>
@@ -156,8 +153,12 @@ export default function Layout() {
                                 <path d="M0 10 Q 25 0 50 10 T 100 10 V 20 H 0 Z" />
                             </svg>
                         </div>
+
+                        {/* Ship Voyager (Sailing between waves) */}
+                        <ShipAnimation className="absolute inset-0 w-full h-full" />
+
                         {/* Front Wave */}
-                        <div className="absolute bottom-0 left-0 w-[200%] h-full flex animate-wave opacity-40">
+                        <div className="absolute bottom-0 left-0 w-[200%] h-4 flex animate-wave opacity-40">
                             <svg viewBox="0 0 100 20" className="w-1/2 h-full text-emerald-400 fill-current" preserveAspectRatio="none">
                                 <path d="M0 10 Q 25 20 50 10 T 100 10 V 20 H 0 Z" />
                             </svg>
