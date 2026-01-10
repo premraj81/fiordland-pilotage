@@ -16,7 +16,7 @@ export default function ShipAnimation({ className }: { className?: string }) {
                     100% { left: -150px; transform: scaleX(1); }
                 }
                 .ship-body { animation: sail 4s ease-in-out infinite; }
-                .ship-container { animation: voyage 60s linear infinite; }
+                .ship-container { animation: voyage 190s linear infinite; }
             `}</style>
 
             {/* Cruise Ship Container moving across screen */}

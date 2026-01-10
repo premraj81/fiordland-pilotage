@@ -145,27 +145,29 @@ export default function Layout() {
                     {/* Background Elements (Waves & Ship) */}
                     <div className="absolute inset-0 overflow-hidden pointer-events-none">
                         {/* Back Wave */}
-                        <div className="absolute bottom-0 left-0 w-[200%] h-4 flex animate-wave opacity-20" style={{ animationDuration: '20s', animationDirection: 'reverse' }}>
-                            <svg viewBox="0 0 100 20" className="w-1/2 h-full text-teal-300 fill-current" preserveAspectRatio="none">
-                                <path d="M0 10 Q 25 0 50 10 T 100 10 V 20 H 0 Z" />
-                            </svg>
-                            <svg viewBox="0 0 100 20" className="w-1/2 h-full text-teal-300 fill-current" preserveAspectRatio="none">
-                                <path d="M0 10 Q 25 0 50 10 T 100 10 V 20 H 0 Z" />
-                            </svg>
-                        </div>
+                        <div
+                            className="absolute bottom-0 left-0 w-[200%] h-4 animate-wave opacity-30"
+                            style={{
+                                animationDuration: '20s',
+                                animationDirection: 'reverse',
+                                backgroundImage: `url("data:image/svg+xml,%3Csvg width='100' height='20' viewBox='0 0 100 20' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M0 10 Q 25 0 50 10 T 100 10 V 20 H 0 Z' fill='%235eead4' /%3E%3C/svg%3E")`,
+                                backgroundRepeat: 'repeat-x',
+                                backgroundSize: '100px 100%'
+                            }}
+                        />
 
                         {/* Ship Voyager (Sailing between waves) */}
                         <ShipAnimation className="absolute inset-0 w-full h-full" />
 
                         {/* Front Wave */}
-                        <div className="absolute bottom-0 left-0 w-[200%] h-4 flex animate-wave opacity-40">
-                            <svg viewBox="0 0 100 20" className="w-1/2 h-full text-emerald-400 fill-current" preserveAspectRatio="none">
-                                <path d="M0 10 Q 25 20 50 10 T 100 10 V 20 H 0 Z" />
-                            </svg>
-                            <svg viewBox="0 0 100 20" className="w-1/2 h-full text-emerald-400 fill-current" preserveAspectRatio="none">
-                                <path d="M0 10 Q 25 20 50 10 T 100 10 V 20 H 0 Z" />
-                            </svg>
-                        </div>
+                        <div
+                            className="absolute bottom-0 left-0 w-[200%] h-4 animate-wave opacity-50"
+                            style={{
+                                backgroundImage: `url("data:image/svg+xml,%3Csvg width='100' height='20' viewBox='0 0 100 20' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M0 10 Q 25 20 50 10 T 100 10 V 20 H 0 Z' fill='%2334d399' /%3E%3C/svg%3E")`,
+                                backgroundRepeat: 'repeat-x',
+                                backgroundSize: '100px 100%'
+                            }}
+                        />
                     </div>
                 </header>
                 <div className="flex-1 overflow-y-auto p-4 lg:p-8 bg-slate-50">
