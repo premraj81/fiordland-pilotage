@@ -3,6 +3,7 @@ import { NavLink, Outlet, useLocation } from 'react-router-dom';
 import { Ship, FileText, Info, Menu, X, Wifi, WifiOff, BellRing, Compass, Phone, ChevronDown, CloudRain, Download } from 'lucide-react';
 import { cn } from '../lib/utils';
 import { useOnlineStatus } from '../lib/hooks';
+import ShipAnimation from './ShipAnimation';
 
 export default function Layout() {
     const [isSidebarOpen, setSidebarOpen] = useState(false);
@@ -109,10 +110,13 @@ export default function Layout() {
                     </div>
 
                     {/* Centered Title */}
-                    <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 text-center pointer-events-none w-full md:w-auto px-12 md:px-0">
+                    <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 pointer-events-none w-full md:w-auto px-12 md:px-0 flex items-center justify-center">
                         <h1 className="text-xl md:text-2xl font-bold text-emerald-400 truncate">
                             Fiordland / Stewart Island Pilotage
                         </h1>
+                        <div className="hidden md:block">
+                            <ShipAnimation />
+                        </div>
                     </div>
 
                     <div className="flex items-center gap-3 relative z-10">
