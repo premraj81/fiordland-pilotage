@@ -7,6 +7,7 @@ import { generatePDF } from '../lib/pdf';
 import { cn } from '../lib/utils';
 import { format, differenceInMonths } from 'date-fns';
 import { useOnlineStatus } from '../lib/hooks';
+import CruiseSchedule from '../components/CruiseSchedule';
 
 export default function Home() {
     const navigate = useNavigate();
@@ -193,6 +194,9 @@ export default function Home() {
                             icon={<CheckCircle className="w-8 h-8 text-white" />}
                             color="bg-slate-700"
                         />
+                    </div>
+                    <div className="sm:col-span-2">
+                        <CruiseSchedule />
                     </div>
                 </div>
 
