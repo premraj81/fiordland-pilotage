@@ -8,19 +8,15 @@ export default function ShipAnimation({ className }: { className?: string }) {
                     75% { transform: translateY(2px) rotate(-0.5deg); }
                 }
                 @keyframes voyage {
-                    0% { left: -150px; transform: scaleX(1); }
-                    45% { left: 100%; transform: scaleX(1); }
-                    46% { left: 100%; transform: scaleX(-1); } /* Turn */
-                    95% { left: -150px; transform: scaleX(-1); }
-                    96% { left: -150px; transform: scaleX(1); } /* Turn back */
-                    100% { left: -150px; transform: scaleX(1); }
+                    0% { left: 100%; transform: scaleX(-1); }
+                    100% { left: -150px; transform: scaleX(-1); }
                 }
                 .ship-body { animation: sail 4s ease-in-out infinite; }
                 .ship-container { animation: voyage 190s linear infinite; }
             `}</style>
 
             {/* Cruise Ship Container moving across screen */}
-            <div className="ship-container absolute bottom-4 z-0">
+            <div className="ship-container absolute bottom-[2px] z-0">
                 {/* Inner bobbing animation */}
                 <div className="ship-body">
                     <svg width="100" height="60" viewBox="0 0 100 60" fill="none" xmlns="http://www.w3.org/2000/svg">

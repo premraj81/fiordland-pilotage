@@ -148,7 +148,7 @@ export default function Layout() {
                         <div
                             className="absolute bottom-0 left-0 w-[200%] h-4 animate-wave opacity-30"
                             style={{
-                                animationDuration: '20s',
+                                animationDuration: '60s',
                                 animationDirection: 'reverse',
                                 backgroundImage: `url("data:image/svg+xml,%3Csvg width='100' height='20' viewBox='0 0 100 20' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M0 10 Q 25 0 50 10 T 100 10 V 20 H 0 Z' fill='%235eead4' /%3E%3C/svg%3E")`,
                                 backgroundRepeat: 'repeat-x',
@@ -163,6 +163,7 @@ export default function Layout() {
                         <div
                             className="absolute bottom-0 left-0 w-[200%] h-4 animate-wave opacity-50"
                             style={{
+                                animationDuration: '45s',
                                 backgroundImage: `url("data:image/svg+xml,%3Csvg width='100' height='20' viewBox='0 0 100 20' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M0 10 Q 25 20 50 10 T 100 10 V 20 H 0 Z' fill='%2334d399' /%3E%3C/svg%3E")`,
                                 backgroundRepeat: 'repeat-x',
                                 backgroundSize: '100px 100%'
