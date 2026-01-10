@@ -6,7 +6,7 @@ export default function CruiseSchedule() {
             href="https://newzealandcruiseassociation.com/schedules/"
             target="_blank"
             rel="noreferrer"
-            className="flex items-center justify-between p-4 bg-white rounded-xl shadow-sm border border-gray-100 hover:bg-gray-50 transition-colors group"
+            className="flex items-center justify-between p-4 bg-sky-50 rounded-xl shadow-sm border border-sky-100 hover:bg-sky-100 transition-colors group"
         >
             <div className="flex items-center gap-3">
                 <div className="bg-teal-50 p-2 rounded-lg text-brand-teal group-hover:bg-brand-teal group-hover:text-white transition-colors">
