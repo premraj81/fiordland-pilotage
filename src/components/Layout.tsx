@@ -144,12 +144,13 @@ export default function Layout() {
 
                     {/* Background Elements (Waves & Ship) */}
                     <div className="absolute inset-0 overflow-hidden pointer-events-none">
-                        {/* Back Wave */}
+                        {/* Back Wave (5 mins) */}
                         <div
                             className="absolute bottom-0 left-0 w-[200%] h-4 animate-wave opacity-30"
                             style={{
-                                animationDuration: '240s',
+                                animationDuration: '300s',
                                 animationDirection: 'reverse',
+                                backgroundPosition: '0px 0',
                                 backgroundImage: `url("data:image/svg+xml,%3Csvg width='100' height='20' viewBox='0 0 100 20' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M0 10 Q 25 0 50 10 T 100 10 V 20 H 0 Z' fill='%235eead4' /%3E%3C/svg%3E")`,
                                 backgroundRepeat: 'repeat-x',
                                 backgroundSize: '100px 100%'
@@ -159,24 +160,26 @@ export default function Layout() {
                         {/* Ship Voyager (Sailing between waves) */}
                         <ShipAnimation className="absolute inset-0 w-full h-full" />
 
-                        {/* Middle Wave */}
+                        {/* Middle Wave (3.5 mins) */}
                         <div
                             className="absolute bottom-0 left-0 w-[200%] h-4 animate-wave opacity-40"
                             style={{
                                 animationDuration: '210s',
                                 animationDirection: 'reverse',
+                                backgroundPosition: '50px 0',
                                 backgroundImage: `url("data:image/svg+xml,%3Csvg width='100' height='20' viewBox='0 0 100 20' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M0 10 Q 25 10 50 10 T 100 10 V 20 H 0 Z' fill='%232dd4bf' /%3E%3C/svg%3E")`,
                                 backgroundRepeat: 'repeat-x',
                                 backgroundSize: '100px 100%'
                             }}
                         />
 
-                        {/* Front Wave */}
+                        {/* Front Wave (2.5 mins) */}
                         <div
                             className="absolute bottom-0 left-0 w-[200%] h-4 animate-wave opacity-50"
                             style={{
-                                animationDuration: '180s',
+                                animationDuration: '150s',
                                 animationDirection: 'reverse',
+                                backgroundPosition: '25px 0',
                                 backgroundImage: `url("data:image/svg+xml,%3Csvg width='100' height='20' viewBox='0 0 100 20' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M0 10 Q 25 20 50 10 T 100 10 V 20 H 0 Z' fill='%2334d399' /%3E%3C/svg%3E")`,
                                 backgroundRepeat: 'repeat-x',
                                 backgroundSize: '100px 100%'
