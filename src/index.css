@@ -26,3 +26,12 @@
 body {
   @apply bg-fiordland-50 text-fiordland-900 antialiased;
 }
+
+@keyframes wave {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+
+.animate-wave {
+  animation: wave 15s linear infinite;
+}

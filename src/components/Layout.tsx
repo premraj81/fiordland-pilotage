@@ -144,6 +144,28 @@ export default function Layout() {
                             )}
                         </div>
                     </div>
+
+                    {/* Bottom Header Waves */}
+                    <div className="absolute bottom-0 left-0 right-0 h-4 overflow-hidden pointer-events-none">
+                        {/* Back Wave */}
+                        <div className="absolute bottom-0 left-0 w-[200%] h-full flex animate-wave opacity-20" style={{ animationDuration: '20s', animationDirection: 'reverse' }}>
+                            <svg viewBox="0 0 100 20" className="w-1/2 h-full text-teal-300 fill-current" preserveAspectRatio="none">
+                                <path d="M0 10 Q 25 0 50 10 T 100 10 V 20 H 0 Z" />
+                            </svg>
+                            <svg viewBox="0 0 100 20" className="w-1/2 h-full text-teal-300 fill-current" preserveAspectRatio="none">
+                                <path d="M0 10 Q 25 0 50 10 T 100 10 V 20 H 0 Z" />
+                            </svg>
+                        </div>
+                        {/* Front Wave */}
+                        <div className="absolute bottom-0 left-0 w-[200%] h-full flex animate-wave opacity-40">
+                            <svg viewBox="0 0 100 20" className="w-1/2 h-full text-emerald-400 fill-current" preserveAspectRatio="none">
+                                <path d="M0 10 Q 25 20 50 10 T 100 10 V 20 H 0 Z" />
+                            </svg>
+                            <svg viewBox="0 0 100 20" className="w-1/2 h-full text-emerald-400 fill-current" preserveAspectRatio="none">
+                                <path d="M0 10 Q 25 20 50 10 T 100 10 V 20 H 0 Z" />
+                            </svg>
+                        </div>
+                    </div>
                 </header>
                 <div className="flex-1 overflow-y-auto p-4 lg:p-8 bg-slate-50">
                     <Outlet />
