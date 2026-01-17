@@ -14,6 +14,12 @@ export default function Layout() {
     const [isIOS, setIsIOS] = useState(false);
     const [isStandalone, setIsStandalone] = useState(false);
 
+    const handleLogout = async () => {
+        if (confirm("Are you sure you want to log out?")) {
+            await signOut();
+        }
+    };
+
     useEffect(() => {
         const handler = (e: any) => {
             e.preventDefault();
@@ -159,6 +165,16 @@ export default function Layout() {
                                 </>
                             )}
                         </div>
+                        {user && (
+                            <button
+                                onClick={handleLogout}
+                                className="flex items-center gap-2 bg-white/10 backdrop-blur-md text-white px-3 py-2 rounded-full border border-white/20 hover:bg-white/20 hover:text-red-200 transition-all shadow-sm ml-2"
+                                title="Log Out"
+                            >
+                                <LogOut className="w-4 h-4" />
+                                <span className="hidden sm:inline text-sm font-medium">Log Out</span>
+                            </button>
+                        )}
                     </div>
 
                     {/* Background Elements (Waves & Ship) */}

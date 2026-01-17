@@ -12,7 +12,9 @@ interface AuthContextType {
     user: User | null;
     loading: boolean;
     signInWithGoogle: () => Promise<void>;
-    signInWithEmail: (email: string) => Promise<void>; // Magic Link or Mock
+    signInWithEmail: (email: string) => Promise<void>; // Sends OTP
+    verifyOtp: (email: string, token: string) => Promise<void>; // Verifies OTP
+    updatePassword: (password: string) => Promise<void>; // Sets new password
     signOut: () => Promise<void>;
 }
 
@@ -21,6 +23,8 @@ const AuthContext = createContext<AuthContextType>({
     loading: true,
     signInWithGoogle: async () => { },
     signInWithEmail: async () => { },
+    verifyOtp: async () => { },
+    updatePassword: async () => { },
     signOut: async () => { },
 });
 
@@ -83,12 +87,11 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
             });
             if (error) throw error;
         } else {
-            alert("Supabase not configured. Cannot use Google Login. Using Mock Login instead.");
-            // Mock Login for demo
+            // Mock Google Login
             const mockUser = {
-                id: 'mock-user-1',
+                id: 'mock-google-user',
                 email: 'pilot@fiordland.co.nz',
-                full_name: 'Mock Pilot'
+                full_name: 'Google Pilot'
             };
             localStorage.setItem('mock_user', JSON.stringify(mockUser));
             setUser(mockUser);
@@ -98,19 +101,44 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
 
     const signInWithEmail = async (email: string) => {
         if (isSupabaseConfigured && supabase) {
+            // Send OTP
             const { error } = await supabase.auth.signInWithOtp({ email });
             if (error) throw error;
-            alert('Check your email for the login link!');
         } else {
-            // Mock Login
-            const mockUser = {
-                id: `mock-${email}`,
-                email: email,
-                full_name: email.split('@')[0]
-            };
-            localStorage.setItem('mock_user', JSON.stringify(mockUser));
-            setUser(mockUser);
-            // Force refresh to update DB context if needed, or just state
+            // Mock Mode: Simulate sending OTP
+            console.log(`Mock OTP sent to ${email}`);
+            // We don't log in yet. We wait for verifyOtp.
+        }
+    };
+
+    const verifyOtp = async (email: string, token: string) => {
+        if (isSupabaseConfigured && supabase) {
+            const { error } = await supabase.auth.verifyOtp({ email, token, type: 'email' });
+            if (error) throw error;
+        } else {
+            // Mock Mode: Verify OTP
+            // Accept any token for demo purposes, or '123456'
+            if (token === '123456' || token.length > 0) {
+                const mockUser = {
+                    id: `mock-${email}`,
+                    email: email,
+                    full_name: email.split('@')[0]
+                };
+                localStorage.setItem('mock_user', JSON.stringify(mockUser));
+                setUser(mockUser);
+            } else {
+                throw new Error("Invalid code");
+            }
+        }
+    };
+
+    const updatePassword = async (password: string) => {
+        if (isSupabaseConfigured && supabase) {
+            const { error } = await supabase.auth.updateUser({ password });
+            if (error) throw error;
+        } else {
+            // Mock Mode: Do nothing
+            console.log("Password updated (mock)");
         }
     };
 
@@ -123,7 +151,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     };
 
     return (
-        <AuthContext.Provider value={{ user, loading, signInWithGoogle, signInWithEmail, signOut }}>
+        <AuthContext.Provider value={{ user, loading, signInWithGoogle, signInWithEmail, verifyOtp, updatePassword, signOut }}>
             {!loading && children}
         </AuthContext.Provider>
     );
