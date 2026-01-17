@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Clock, CheckCircle, FileText, Send, Archive, Eye, CloudRain } from 'lucide-react';
+import { Clock, CheckCircle, FileText, Send, Archive, Eye, CloudRain, Users, Trash2 } from 'lucide-react';
 import { getChecklists, updateChecklist, deleteChecklist } from '../lib/db';
 import { CHECKLISTS } from '../lib/data';
 import { generatePDF } from '../lib/pdf';
@@ -148,6 +148,13 @@ export default function Home() {
         }
     };
 
+    const handleDeleteItem = async (id: number) => {
+        if (confirm("Are you sure you want to delete this checklist? This cannot be undone.")) {
+            await deleteChecklist(id);
+            loadData();
+        }
+    };
+
     // Filter items based on tab
     const filteredItems = history.filter(item => {
         if (activeTab === 'active') {
@@ -186,15 +193,20 @@ export default function Home() {
                         icon={<FileText className="w-8 h-8 text-white" />}
                         color="bg-brand-teal"
                     />
-                    <div className="sm:col-span-2">
-                        <ActionCard
-                            title="EMPX (Optional)"
-                            desc="More precise Checklist."
-                            onClick={() => navigate('/checklist/more-precise')}
-                            icon={<CheckCircle className="w-8 h-8 text-white" />}
-                            color="bg-slate-700"
-                        />
-                    </div>
+                    <ActionCard
+                        title="EMPX (Optional)"
+                        desc="More precise Checklist."
+                        onClick={() => navigate('/checklist/more-precise')}
+                        icon={<CheckCircle className="w-8 h-8 text-white" />}
+                        color="bg-slate-700"
+                    />
+                    <ActionCard
+                        title="Peer Review"
+                        desc="Pilot Assessment Peer Review."
+                        onClick={() => navigate('/checklist/peer-review')}
+                        icon={<Users className="w-8 h-8 text-white" />}
+                        color="bg-indigo-600"
+                    />
                     <div className="sm:col-span-2">
                         <CruiseSchedule />
                     </div>
@@ -290,6 +302,13 @@ export default function Home() {
                                     </div>
                                 </div>
                                 <div className="flex items-center gap-3">
+                                    <button
+                                        onClick={() => handleDeleteItem(item.id)}
+                                        className="p-2 text-gray-400 hover:text-red-500 hover:bg-red-50 rounded-lg transition-colors"
+                                        title="Delete Checklist"
+                                    >
+                                        <Trash2 className="w-5 h-5" />
+                                    </button>
                                     <button
                                         onClick={() => handleReview(item)}
                                         className="flex items-center gap-2 px-4 py-2 rounded-lg font-medium text-gray-700 bg-gray-100 hover:bg-gray-200 transition-colors"

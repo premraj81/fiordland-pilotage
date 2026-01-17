@@ -270,5 +270,57 @@ export const CHECKLISTS = {
             }
         ],
         signatures: ['Master', 'Pilot']
+    },
+    'peer-review': {
+        title: 'Pilot Assessment Peer Review',
+        sections: [
+            {
+                id: 'header',
+                title: 'Assessment Details',
+                fields: [
+                    { id: 'trainee', label: 'Trainee Pilot / Pilot', type: 'text' },
+                    { id: 'vesselName', label: 'Vessel', type: 'text' },
+                    { id: 'area', label: 'Pilotage area', type: 'text' },
+                    { id: 'grt_loa', label: 'GRT/LOA', type: 'text' },
+                    { id: 'assessor', label: 'Assessor', type: 'text' },
+                    { id: 'master_name', label: 'Master', type: 'text' },
+                    { id: 'qualified_pilot', label: 'Qualified Fiordland Pilot', type: 'text' },
+                    { id: 'wx_sea', label: 'Weather - Sea', type: 'text', width: 'quarter' },
+                    { id: 'wx_swell', label: 'Swell', type: 'text', width: 'quarter' },
+                    { id: 'wx_wind', label: 'Wind', type: 'text', width: 'quarter' },
+                    { id: 'wx_vis', label: 'Vis', type: 'text', width: 'quarter' },
+                ]
+            },
+            {
+                id: 'assessment',
+                title: 'Assessment Tasks',
+                type: 'grading',
+                items: [
+                    { id: 'radio', task: 'Radio Contact', subtext: 'Correct Radio procedure adhered to' },
+                    { id: 'embarkation', task: 'Pilot embarkation', subtext: 'Ensure good lee and speed for transfer' },
+                    { id: 'exchange', task: 'Master/Pilot Exchange', subtext: 'Allow sufficient time and conduct in an open friendly manner!' },
+                    { id: 'plan', task: 'Passage Plan', subtext: 'Discuss route, "no go" areas, thrusters, expected wx, areas, manoeuvrability, etc' },
+                    { id: 'brm', task: 'BRM', subtext: 'Integrate into the bridge team, closed loop communications' },
+                    { id: 'navigation', task: 'Navigation of Vessel', subtext: 'Maintain Vessel in safe position at all times, maintain good communications with Bridge team' },
+                    { id: 'awareness', task: 'Positional Awareness', subtext: 'Maintain awareness of vessel position when manoeuvring' },
+                    { id: 'manoeuvre', task: 'Manoeuvre Vessel', subtext: 'Maintain control of vessel at all times when manoeuvring' },
+                    { id: 'debrief', task: 'Debrief', subtext: 'Conduct a debrief with the Master /Bridge team' },
+                    { id: 'disembark', task: 'Disembarking', subtext: 'Provide good lee and speed for transfer' },
+                ]
+            },
+            {
+                id: 'scoring',
+                title: 'Scoring Table',
+                type: 'info',
+                text: [
+                    "1 - Results achieved exceeded a standard for consistent safe operation",
+                    "2 - Results achieved meet the requirements and exceeded requirements in some aspects",
+                    "3 - Results achieved meet a standard for consistent safe operation",
+                    "4 - Results achieved meet the requirements but deficient in some aspects – not acceptable",
+                    "5 - Results achieved did not meet the standard for consistent safe operation – not acceptable"
+                ]
+            }
+        ],
+        signatures: ['Reviewer', 'Trainee Pilot/Pilot']
     }
 }

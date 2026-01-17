@@ -1,15 +1,15 @@
 import { useState, useEffect } from 'react';
 import { NavLink, Outlet, useLocation } from 'react-router-dom';
-import { Ship, FileText, Info, Menu, X, Wifi, WifiOff, BellRing, Compass, Phone, ChevronDown, CloudRain, Download } from 'lucide-react';
+import { Ship, FileText, Info, Menu, X, Wifi, WifiOff, BellRing, Compass, Phone, ChevronDown, CloudRain, Download, BookOpen, LogOut } from 'lucide-react';
+import { useAuth } from '../contexts/AuthContext';
 import { cn } from '../lib/utils';
 import { useOnlineStatus } from '../lib/hooks';
 import ShipAnimation from './ShipAnimation';
 
 export default function Layout() {
+    const { user, signOut } = useAuth();
     const [isSidebarOpen, setSidebarOpen] = useState(false);
     const isOnline = useOnlineStatus();
-
-
     const [installPrompt, setInstallPrompt] = useState<any>(null);
     const [isIOS, setIsIOS] = useState(false);
     const [isStandalone, setIsStandalone] = useState(false);
@@ -93,9 +93,28 @@ export default function Layout() {
                     <NavItem to="/emergency-contacts" icon={<Phone />} label="Emergency Contacts" onClick={() => setSidebarOpen(false)} />
                     <NavItem to="/weather" icon={<CloudRain />} label="Weather" onClick={() => setSidebarOpen(false)} />
                     <NavItem to="/documents" icon={<FileText />} label="Important Documents" onClick={() => setSidebarOpen(false)} />
+                    <NavItem to="/logbook" icon={<BookOpen />} label="Log Book" onClick={() => setSidebarOpen(false)} />
                 </nav>
 
                 <div className="p-4 border-t border-fiordland-700 mt-auto">
+                    {user && (
+                        <div className="flex items-center gap-3 mb-4 p-3 bg-fiordland-800 rounded-xl">
+                            <div className="w-10 h-10 rounded-full bg-brand-teal flex items-center justify-center text-white font-bold shrink-0 overflow-hidden">
+                                {user.avatar_url ? (
+                                    <img src={user.avatar_url} alt="Profile" className="w-full h-full object-cover" />
+                                ) : (
+                                    user.email?.[0].toUpperCase() || 'U'
+                                )}
+                            </div>
+                            <div className="flex-1 min-w-0">
+                                <p className="text-sm font-bold text-white truncate">{user.full_name || user.email?.split('@')[0] || 'User'}</p>
+                                <p className="text-xs text-fiordland-400 truncate">{user.email}</p>
+                            </div>
+                            <button onClick={signOut} className="text-fiordland-400 hover:text-white transition-colors" title="Logout">
+                                <LogOut className="w-5 h-5" />
+                            </button>
+                        </div>
+                    )}
                     <p className="text-xs text-fiordland-500 text-center">Version 1.0.0</p>
                 </div>
             </aside>
