@@ -117,8 +117,8 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
             if (error) throw error;
         } else {
             // Mock Mode: Verify OTP
-            // Accept any token for demo purposes, or '123456'
-            if (token === '123456' || token.length > 0) {
+            // Accept '888888' as the universal code for testing
+            if (token === '888888' || token === '123456') {
                 const mockUser = {
                     id: `mock-${email}`,
                     email: email,
@@ -127,7 +127,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
                 localStorage.setItem('mock_user', JSON.stringify(mockUser));
                 setUser(mockUser);
             } else {
-                throw new Error("Invalid code");
+                throw new Error("Invalid code. (Hint: Use 888888 for testing)");
             }
         }
     };

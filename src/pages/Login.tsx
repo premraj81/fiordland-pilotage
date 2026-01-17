@@ -154,6 +154,9 @@ export default function Login() {
                                 <p className="text-sm text-teal-100 text-center">
                                     We sent a code to <span className="font-bold text-white">{email}</span>
                                 </p>
+                                <p className="text-xs text-teal-200/50 text-center mt-1">
+                                    (Dev Mode: Use code <strong>888888</strong>)
+                                </p>
                             </div>
 
                             <div className="space-y-1">
