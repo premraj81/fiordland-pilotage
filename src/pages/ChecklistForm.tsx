@@ -371,22 +371,77 @@ export default function ChecklistForm() {
         }));
     };
 
-    const handleSave = async () => {
+    const handleSaveProgress = async () => {
         setSaving(true);
         try {
+            // Automatic Briefing Checkbox Logic (Only for Combined Passage Plan)
+            const updatedFormData = { ...formData };
+            if (type === 'combined') {
+                const routes = updatedFormData['header']?.['plannedRoute'] || [];
+
+                // Initialize briefings section if missing
+                if (!updatedFormData['briefings']) updatedFormData['briefings'] = {};
+
+                // Map Routes to Briefing Indices
+                // 0: Milford
+                // 1: Doubtful / Thompson
+                // 2: Breaksea / Dusky
+
+                const hasMilford = routes.includes('Milford');
+                const hasThompson = routes.some((r: string) => r.includes('Thompson') || r.includes('Doubtful'));
+                const hasBreaksea = routes.some((r: string) => r.includes('Breaksea') || r.includes('Dusky'));
+
+                if (hasMilford) updatedFormData['briefings']['item-0'] = true;
+                if (hasThompson) updatedFormData['briefings']['item-1'] = true;
+                if (hasBreaksea) updatedFormData['briefings']['item-2'] = true;
+
+                setFormData(updatedFormData);
+            }
+
             await saveChecklist({
                 type: type as any,
-                createdAt: new Date(), // Use current timestamp for sorting
-                data: { ...formData, signatures, names, date, showTrainee },
+                createdAt: new Date(),
+                data: { ...updatedFormData, signatures, names, date, showTrainee },
+            });
+
+            alert('Progress saved successfully.');
+        } catch (e) {
+            console.error(e);
+            alert('Failed to save progress');
+        } finally {
+            setSaving(false);
+        }
+    };
+
+    const handleComplete = async () => {
+        setSaving(true);
+        try {
+            // Apply the same logic just in case
+            const updatedFormData = { ...formData };
+            if (type === 'combined') {
+                const routes = updatedFormData['header']?.['plannedRoute'] || [];
+                if (!updatedFormData['briefings']) updatedFormData['briefings'] = {};
+
+                if (routes.includes('Milford')) updatedFormData['briefings']['item-0'] = true;
+                if (routes.some((r: string) => r.includes('Thompson') || r.includes('Doubtful'))) updatedFormData['briefings']['item-1'] = true;
+                if (routes.some((r: string) => r.includes('Breaksea') || r.includes('Dusky'))) updatedFormData['briefings']['item-2'] = true;
+                setFormData(updatedFormData);
+            }
+
+            // Save to DB
+            await saveChecklist({
+                type: type as any,
+                createdAt: new Date(),
+                data: { ...updatedFormData, signatures, names, date, showTrainee },
             });
 
             // Generate PDF
-            generatePDF({ data: { ...formData, signatures, names, date, showTrainee } }, schema);
+            generatePDF({ data: { ...updatedFormData, signatures, names, date, showTrainee } }, schema);
 
             navigate('/');
         } catch (e) {
             console.error(e);
-            alert('Failed to save');
+            alert('Failed to complete checklist');
         } finally {
             setSaving(false);
         }
@@ -547,14 +602,23 @@ export default function ChecklistForm() {
                     <span className="hidden sm:inline">Log Book</span>
                 </button>
                 <button
-                    onClick={handleSave}
+                    onClick={handleSaveProgress}
+                    disabled={saving}
+                    className="w-full lg:w-auto bg-white text-brand-teal border border-brand-teal px-6 py-4 rounded-xl font-bold shadow-sm hover:bg-teal-50 transition-all flex items-center justify-center gap-2"
+                >
+                    <Save className="w-5 h-5" />
+                    Save Progress
+                </button>
+
+                <button
+                    onClick={handleComplete}
                     disabled={saving}
                     className="w-full lg:w-auto bg-brand-teal text-white px-8 py-4 rounded-xl font-bold shadow-lg shadow-teal-500/20 hover:bg-teal-600 transition-all flex items-center justify-center gap-2"
                 >
-                    {saving ? 'Saving...' : (
+                    {saving ? 'Processing...' : (
                         <>
                             <CheckCircle className="w-5 h-5" />
-                            Complete & Save
+                            Complete & Sign
                         </>
                     )}
                 </button>
