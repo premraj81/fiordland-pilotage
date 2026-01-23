@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { ArrowLeft, CheckCircle, AlertTriangle, ArrowUpDown, UserPlus, X, Plus, Save, BookOpen, History } from 'lucide-react';
 import { CHECKLISTS } from '../lib/data';
-import { saveChecklist } from '../lib/db';
+import { saveChecklist, updateChecklist } from '../lib/db';
 import SignaturePad from '../components/SignaturePad';
 import { generatePDF } from '../lib/pdf';
 import { SHIPS, type ShipData } from '../lib/ships';
@@ -319,6 +319,7 @@ export default function ChecklistForm() {
     const [saving, setSaving] = useState(false);
     const [isRouteReversed, setIsRouteReversed] = useState(false);
     const [date, setDate] = useState(new Date().toISOString().split('T')[0]);
+    const [checklistId, setChecklistId] = useState<number | null>(null);
 
     // Log Book State
     const [isLogOpen, setIsLogOpen] = useState(false);
@@ -398,13 +399,34 @@ export default function ChecklistForm() {
                 setFormData(updatedFormData);
             }
 
-            await saveChecklist({
-                type: type as any,
-                createdAt: new Date(),
-                data: { ...updatedFormData, signatures, names, date, showTrainee },
+            // Save or Update
+            let id = checklistId;
+            const dataToSave = { ...updatedFormData, signatures, names, date, showTrainee };
+
+            if (id) {
+                await updateChecklist(id, dataToSave);
+            } else {
+                id = await saveChecklist({
+                    type: type as any,
+                    createdAt: new Date(),
+                    data: dataToSave,
+                });
+                setChecklistId(id);
+            }
+
+            // Clear specific sections for the next leg workflow
+            const sectionsToClear = ['vessel-elements', 'navigation-elements', 'brm-elements', 'pilots-radar', 'pilots-ecdis'];
+            const nextFormData = { ...updatedFormData };
+
+            sectionsToClear.forEach(secId => {
+                if (nextFormData[secId]) {
+                    nextFormData[secId] = {};
+                }
             });
 
-            alert('Progress saved successfully.');
+            setFormData(nextFormData);
+
+            alert('Progress saved. Checklist items cleared for next leg.');
         } catch (e) {
             console.error(e);
             alert('Failed to save progress');
@@ -428,12 +450,19 @@ export default function ChecklistForm() {
                 setFormData(updatedFormData);
             }
 
-            // Save to DB
-            await saveChecklist({
-                type: type as any,
-                createdAt: new Date(),
-                data: { ...updatedFormData, signatures, names, date, showTrainee },
-            });
+            // Save or Update to DB
+            let id = checklistId;
+            const dataToSave = { ...updatedFormData, signatures, names, date, showTrainee };
+
+            if (id) {
+                await updateChecklist(id, dataToSave);
+            } else {
+                await saveChecklist({
+                    type: type as any,
+                    createdAt: new Date(),
+                    data: dataToSave,
+                });
+            }
 
             // Generate PDF
             generatePDF({ data: { ...updatedFormData, signatures, names, date, showTrainee } }, schema);
