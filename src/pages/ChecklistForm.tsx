@@ -647,7 +647,7 @@ export default function ChecklistForm() {
                     {saving ? 'Processing...' : (
                         <>
                             <CheckCircle className="w-5 h-5" />
-                            Complete & Sign
+                            Sign & Complete
                         </>
                     )}
                 </button>
