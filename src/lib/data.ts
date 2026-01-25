@@ -58,6 +58,7 @@ export const CHECKLISTS = {
                     "Milford",
                     "Doubtful / Thompson",
                     "Breaksea / Dusky",
+                    "Stewart Island",
                     "Other"
                 ]
             },

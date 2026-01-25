@@ -387,14 +387,17 @@ export default function ChecklistForm() {
                 // 0: Milford
                 // 1: Doubtful / Thompson
                 // 2: Breaksea / Dusky
+                // 3: Stewart Island
 
                 const hasMilford = routes.includes('Milford');
                 const hasThompson = routes.some((r: string) => r.includes('Thompson') || r.includes('Doubtful'));
                 const hasBreaksea = routes.some((r: string) => r.includes('Breaksea') || r.includes('Dusky'));
+                const hasStewart = routes.includes('Stewart Island');
 
                 if (hasMilford) updatedFormData['briefings']['item-0'] = true;
                 if (hasThompson) updatedFormData['briefings']['item-1'] = true;
                 if (hasBreaksea) updatedFormData['briefings']['item-2'] = true;
+                if (hasStewart) updatedFormData['briefings']['item-3'] = true;
 
                 setFormData(updatedFormData);
             }
@@ -447,6 +450,7 @@ export default function ChecklistForm() {
                 if (routes.includes('Milford')) updatedFormData['briefings']['item-0'] = true;
                 if (routes.some((r: string) => r.includes('Thompson') || r.includes('Doubtful'))) updatedFormData['briefings']['item-1'] = true;
                 if (routes.some((r: string) => r.includes('Breaksea') || r.includes('Dusky'))) updatedFormData['briefings']['item-2'] = true;
+                if (routes.includes('Stewart Island')) updatedFormData['briefings']['item-3'] = true;
                 setFormData(updatedFormData);
             }
 
@@ -807,8 +811,8 @@ function RenderSection({ section, formData, handleInputChange, isRouteReversed, 
 
                     if (field.type === 'route-selector') {
                         const routes = isRouteReversed
-                            ? ['Dusky to Breaksea', 'Doubtful to Thompson', 'Milford']
-                            : ['Milford', 'Thompson to Doubtful', 'Breaksea to Dusky'];
+                            ? ['Dusky to Breaksea', 'Doubtful to Thompson', 'Milford', 'Stewart Island']
+                            : ['Milford', 'Thompson to Doubtful', 'Breaksea to Dusky', 'Stewart Island'];
 
                         const currentValues = formData[section.id]?.[field.id] || [];
 
