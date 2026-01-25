@@ -1,12 +1,31 @@
 import { useState } from 'react';
 import { cn } from '../lib/utils';
 
+type MapView =
+    | 'eastern-approach'
+    | 'eastern-departure'
+    | 'eastern-departure-south-ulva'
+    | 'northern-approach'
+    | 'northern-departure'
+    | 'northern-departure-south-ulva';
+
+const MAPS = [
+    { id: 'eastern-approach', label: 'Eastern Approach', src: '/maps/stewart_eastern_approach.jpg' },
+    { id: 'eastern-departure', label: 'Eastern Departure', src: '/maps/stewart_eastern_departure.jpg' },
+    { id: 'eastern-departure-south-ulva', label: 'Eastern Dep. (S of Ulva)', src: '/maps/stewart_eastern_departure_south_ulva.jpg' },
+    { id: 'northern-approach', label: 'Northern Approach', src: '/maps/stewart_northern_approach.jpg' },
+    { id: 'northern-departure', label: 'Northern Departure', src: '/maps/stewart_northern_departure.jpg' },
+    { id: 'northern-departure-south-ulva', label: 'Northern Dep. (S of Ulva)', src: '/maps/stewart_northern_departure_south_ulva.jpg' },
+] as const;
+
 export default function StewartIslandPassage() {
-    const [activeTab, setActiveTab] = useState<'eastern' | 'northern'>('eastern');
+    const [activeTab, setActiveTab] = useState<MapView>('eastern-approach');
+
+    const currentMap = MAPS.find(m => m.id === activeTab) || MAPS[0];
 
     return (
         <div className="max-w-7xl mx-auto pb-12 space-y-8">
-            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+            <div className="space-y-4">
                 <div>
                     <h1 className="text-3xl font-bold text-fiordland-900">
                         Stewart Island Passage
@@ -14,30 +33,22 @@ export default function StewartIslandPassage() {
                     <p className="text-fiordland-500">Separation Point / Paterson Inlet</p>
                 </div>
 
-                {/* Tabs */}
-                <div className="flex bg-gray-100 p-1.5 rounded-xl">
-                    <button
-                        onClick={() => setActiveTab('eastern')}
-                        className={cn(
-                            "flex-1 sm:flex-none flex items-center justify-center gap-2 px-6 py-3 rounded-lg text-sm font-bold transition-all duration-200",
-                            activeTab === 'eastern'
-                                ? "bg-brand-teal text-white shadow-md shadow-brand-teal/20"
-                                : "text-gray-600 hover:bg-gray-200 hover:text-gray-900"
-                        )}
-                    >
-                        Eastern Approach
-                    </button>
-                    <button
-                        onClick={() => setActiveTab('northern')}
-                        className={cn(
-                            "flex-1 sm:flex-none flex items-center justify-center gap-2 px-6 py-3 rounded-lg text-sm font-bold transition-all duration-200",
-                            activeTab === 'northern'
-                                ? "bg-brand-teal text-white shadow-md shadow-brand-teal/20"
-                                : "text-gray-600 hover:bg-gray-200 hover:text-gray-900"
-                        )}
-                    >
-                        Northern Departure
-                    </button>
+                {/* Tabs Grid */}
+                <div className="grid grid-cols-2 lg:grid-cols-3 gap-2 bg-gray-100 p-2 rounded-xl">
+                    {MAPS.map((map) => (
+                        <button
+                            key={map.id}
+                            onClick={() => setActiveTab(map.id as MapView)}
+                            className={cn(
+                                "px-4 py-3 rounded-lg text-sm font-bold transition-all duration-200",
+                                activeTab === map.id
+                                    ? "bg-brand-teal text-white shadow-md shadow-brand-teal/20"
+                                    : "bg-white/50 text-gray-600 hover:bg-white hover:text-gray-900"
+                            )}
+                        >
+                            {map.label}
+                        </button>
+                    ))}
                 </div>
             </div>
 
@@ -45,14 +56,15 @@ export default function StewartIslandPassage() {
             <div className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden p-6 animate-in slide-in-from-bottom-4 fade-in duration-500">
                 <div className="w-full relative bg-gray-50 rounded-lg overflow-hidden border border-gray-200">
                     <img
-                        src={activeTab === 'eastern' ? "/maps/stewart_eastern_approach.jpg" : "/maps/stewart_northern_departure.jpg"}
-                        alt={activeTab === 'eastern' ? "Stewart Island Eastern Approach Map" : "Stewart Island Northern Departure Map"}
+                        key={currentMap.src} // Force re-render for clean transition
+                        src={currentMap.src}
+                        alt={`Map of ${currentMap.label}`}
                         className="w-full h-auto object-contain"
                     />
                 </div>
                 <div className="mt-6 flex justify-center">
                     <p className="text-sm font-medium text-fiordland-600 bg-fiordland-50 px-4 py-2 rounded-full border border-fiordland-100">
-                        {activeTab === 'eastern' ? "Map: Stewart Island - Eastern Approach" : "Map: Stewart Island - Northern Departure"}
+                        Map: Stewart Island - {currentMap.label}
                     </p>
                 </div>
             </div>
