@@ -11,6 +11,7 @@ import PassagePlan from './pages/PassagePlan';
 import MilfordPassage from './pages/MilfordPassage';
 import ThompsonDoubtfulPassage from './pages/ThompsonDoubtfulPassage';
 import BreakseaDuskyPassage from './pages/BreakseaDuskyPassage';
+import StewartIslandPassage from './pages/StewartIslandPassage';
 import MedicalEvacuation from './pages/MedicalEvacuation';
 import DistanceCalculator from './pages/DistanceCalculator';
 import EmergencyContacts from './pages/EmergencyContacts';
@@ -52,6 +53,7 @@ function App() {
         <Route path="passage-plan/milford" element={<MilfordPassage />} />
         <Route path="passage-plan/thompson-doubtful" element={<ThompsonDoubtfulPassage />} />
         <Route path="passage-plan/breaksea-dusky" element={<BreakseaDuskyPassage />} />
+        <Route path="passage-plan/stewart-island" element={<StewartIslandPassage />} />
         <Route path="medical-evacuation" element={<MedicalEvacuation />} />
         <Route path="distance-calculator" element={<DistanceCalculator />} />
         <Route path="emergency-contacts" element={<EmergencyContacts />} />

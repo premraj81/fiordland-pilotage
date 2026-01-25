@@ -90,7 +90,8 @@ export default function Layout() {
                             { to: "/passage-plan", label: "PDF Plan" },
                             { to: "/passage-plan/milford", label: "Milford Sound" },
                             { to: "/passage-plan/thompson-doubtful", label: "Thompson / Doubtful" },
-                            { to: "/passage-plan/breaksea-dusky", label: "Breaksea / Dusky" }
+                            { to: "/passage-plan/breaksea-dusky", label: "Breaksea / Dusky" },
+                            { to: "/passage-plan/stewart-island", label: "Stewart Island" }
                         ]}
                     />
 
