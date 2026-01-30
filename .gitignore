@@ -22,3 +22,8 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+# Security and Local Data
+.env
+storage/
+fiordland.db

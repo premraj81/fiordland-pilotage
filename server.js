@@ -1,0 +1,195 @@
+import express from 'express';
+import cors from 'cors';
+import multer from 'multer';
+import path from 'path';
+import fs from 'fs';
+import { fileURLToPath } from 'url';
+import { dirname } from 'path';
+import Database from 'better-sqlite3';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
+
+const app = express();
+const port = process.env.PORT || 3000;
+
+// Setup Middleware
+app.use(cors());
+app.use(express.json());
+
+// Setup Storage for Uploads
+const uploadDir = path.join(__dirname, 'storage', 'uploads');
+if (!fs.existsSync(uploadDir)) {
+    fs.mkdirSync(uploadDir, { recursive: true });
+}
+
+const storage = multer.diskStorage({
+    destination: function (req, file, cb) {
+        cb(null, uploadDir)
+    },
+    filename: function (req, file, cb) {
+        // Sanitize filename
+        const cleanName = file.originalname.replace(/[^a-zA-Z0-9.-]/g, '_');
+        cb(null, `${Date.now()}-${cleanName}`)
+    }
+});
+
+const upload = multer({ storage: storage });
+
+// Setup Database (SQLite)
+const dbDir = path.join(__dirname, 'storage');
+if (!fs.existsSync(dbDir)) {
+    fs.mkdirSync(dbDir);
+}
+const dbPath = path.join(dbDir, 'fiordland.db');
+const db = new Database(dbPath);
+
+// Initialize Tables
+db.exec(`
+  CREATE TABLE IF NOT EXISTS checklists (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    user_id TEXT NOT NULL,
+    type TEXT NOT NULL,
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+    data TEXT,
+    synced INTEGER DEFAULT 1,
+    pdf_url TEXT,
+    email_sent INTEGER DEFAULT 0,
+    archived INTEGER DEFAULT 0,
+    archived_at DATETIME
+  );
+  
+  CREATE TABLE IF NOT EXISTS users (
+    id TEXT PRIMARY KEY,
+    email TEXT UNIQUE NOT NULL,
+    full_name TEXT,
+    password_hash TEXT, -- Storing simple password for now
+    avatar_url TEXT
+  );
+`);
+
+// --- API Routes ---
+
+// Upload PDF
+app.post('/api/upload', upload.single('file'), (req, res) => {
+    if (!req.file) {
+        return res.status(400).send('No file uploaded.');
+    }
+    // Return the URL to access this file
+    // In production (Render), this URL must be relative to the domain
+    const fileUrl = `/uploads/${req.file.filename}`;
+    res.json({ url: fileUrl });
+});
+
+// Serve Uploaded Files
+app.use('/uploads', express.static(path.join(__dirname, 'storage', 'uploads')));
+
+// Save Checklist
+app.post('/api/checklists', (req, res) => {
+    const { user_id, type, data, pdf_url, email_sent, archived } = req.body;
+
+    try {
+        const stmt = db.prepare(`
+            INSERT INTO checklists (user_id, type, data, pdf_url, email_sent, archived, created_at)
+            VALUES (?, ?, ?, ?, ?, ?, datetime('now'))
+        `);
+        const info = stmt.run(user_id, type, JSON.stringify(data), pdf_url, email_sent ? 1 : 0, archived ? 1 : 0);
+        res.json({ id: info.lastInsertRowid });
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({ error: 'Failed to save checklist' });
+    }
+});
+
+// Update Checklist
+app.put('/api/checklists/:id', (req, res) => {
+    const { id } = req.params;
+    const { data, pdf_url, email_sent, archived, archived_at } = req.body;
+
+    // Dynamic update builder
+    const updates = [];
+    const values = [];
+
+    if (data !== undefined) { updates.push('data = ?'); values.push(JSON.stringify(data)); }
+    if (pdf_url !== undefined) { updates.push('pdf_url = ?'); values.push(pdf_url); }
+    if (email_sent !== undefined) { updates.push('email_sent = ?'); values.push(email_sent ? 1 : 0); }
+    if (archived !== undefined) { updates.push('archived = ?'); values.push(archived ? 1 : 0); }
+    if (archived_at !== undefined) { updates.push('archived_at = ?'); values.push(archived_at); }
+
+    if (updates.length === 0) return res.json({ success: true });
+
+    values.push(id);
+
+    try {
+        const stmt = db.prepare(`UPDATE checklists SET ${updates.join(', ')} WHERE id = ?`);
+        stmt.run(...values);
+        res.json({ success: true });
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({ error: 'Failed to update checklist' });
+    }
+});
+
+// Get Checklists
+app.get('/api/checklists', (req, res) => {
+    const { user_id } = req.query;
+    try {
+        const stmt = db.prepare('SELECT * FROM checklists WHERE user_id = ? ORDER BY created_at DESC');
+        const rows = stmt.all(user_id);
+        const results = rows.map(row => ({
+            ...row,
+            data: JSON.parse(row.data),
+            synced: true,
+            emailSent: !!row.email_sent,
+            archived: !!row.archived,
+            pdfUrl: row.pdf_url,
+            userId: row.user_id,
+            createdAt: new Date(row.created_at)
+        }));
+        res.json(results);
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({ error: 'Failed to fetch checklists' });
+    }
+});
+
+// Auth (Simple)
+app.post('/api/auth/login', (req, res) => {
+    const { email, password } = req.body;
+    // For this pilot app, we'll auto-create users if they don't exist for simplicity,
+    // or just check against a hardcoded list/DB.
+
+    // Check if user exists
+    let user = db.prepare('SELECT * FROM users WHERE email = ?').get(email);
+
+    if (!user) {
+        // Create new user (Demo Mode: Password is just saved plain or simple hash)
+        // In real app: Hash password with bcrypt
+        const id = Math.random().toString(36).substring(7);
+        db.prepare('INSERT INTO users (id, email, password_hash) VALUES (?, ?, ?)').run(id, email, password);
+        user = { id, email, full_name: email.split('@')[0] };
+    } else {
+        // Verify password (Simple check)
+        if (user.password_hash !== password) {
+            return res.status(401).json({ error: 'Invalid credentials' });
+        }
+    }
+
+    res.json({ user: { id: user.id, email: user.email, full_name: user.full_name, avatar_url: user.avatar_url } });
+});
+
+
+// Serve Frontend in Production
+if (process.env.NODE_ENV === 'production') {
+    app.use(express.static(path.join(__dirname, 'dist')));
+    app.get('*', (req, res) => {
+        res.sendFile(path.join(__dirname, 'dist', 'index.html'));
+    });
+}
+
+// Start Server
+app.listen(port, () => {
+    console.log(`Server running at http://localhost:${port}`);
+    console.log(`Storage path: ${uploadDir}`);
+    console.log(`Database path: ${dbPath}`);
+});

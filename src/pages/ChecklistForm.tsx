@@ -5,6 +5,7 @@ import { CHECKLISTS } from '../lib/data';
 import { saveChecklist, updateChecklist } from '../lib/db';
 import SignaturePad from '../components/SignaturePad';
 import { generatePDF } from '../lib/pdf';
+import { uploadPdfReport } from '../lib/storage';
 import { SHIPS, type ShipData } from '../lib/ships';
 import { addLogEntry, getLogEntries, type LogEntry } from '../lib/logbook';
 import { LogEntryTable } from '../components/LogEntryTable';
@@ -454,22 +455,33 @@ export default function ChecklistForm() {
                 setFormData(updatedFormData);
             }
 
+            // Generate PDF Blob for upload
+            // @ts-ignore
+            const pdfBlob = generatePDF({ data: { ...updatedFormData, signatures, names, date, showTrainee } }, schema, 'blob');
+            let uploadedPdfUrl = undefined;
+            if (pdfBlob) {
+                const fileName = `${type}-${Date.now()}.pdf`;
+                const url = await uploadPdfReport(pdfBlob as Blob, fileName);
+                if (url) uploadedPdfUrl = url;
+            }
+
             // Save or Update to DB
             let id = checklistId;
             const dataToSave = { ...updatedFormData, signatures, names, date, showTrainee };
 
             if (id) {
-                await updateChecklist(id, dataToSave);
+                await updateChecklist(id, { data: dataToSave, pdfUrl: uploadedPdfUrl });
             } else {
                 await saveChecklist({
                     type: type as any,
                     createdAt: new Date(),
                     data: dataToSave,
+                    pdfUrl: uploadedPdfUrl
                 });
             }
 
-            // Generate PDF
-            generatePDF({ data: { ...updatedFormData, signatures, names, date, showTrainee } }, schema);
+            // Generate PDF for download
+            generatePDF({ data: dataToSave }, schema);
 
             navigate('/');
         } catch (e) {

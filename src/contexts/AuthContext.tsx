@@ -1,5 +1,4 @@
 import React, { createContext, useContext, useEffect, useState } from 'react';
-import { supabase, isSupabaseConfigured } from '../lib/supabase';
 
 interface User {
     id: string;
@@ -12,9 +11,9 @@ interface AuthContextType {
     user: User | null;
     loading: boolean;
     signInWithGoogle: () => Promise<void>;
-    signInWithEmail: (email: string) => Promise<void>; // Sends OTP
-    verifyOtp: (email: string, token: string) => Promise<void>; // Verifies OTP
-    updatePassword: (password: string) => Promise<void>; // Sets new password
+    signInWithEmail: (email: string) => Promise<void>;
+    verifyOtp: (email: string, token: string) => Promise<void>;
+    updatePassword: (password: string) => Promise<void>; // This will act as our "Login" or "Register" final step
     signOut: () => Promise<void>;
 }
 
@@ -33,121 +32,70 @@ export const useAuth = () => useContext(AuthContext);
 export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     const [user, setUser] = useState<User | null>(null);
     const [loading, setLoading] = useState(true);
+    const [tempEmail, setTempEmail] = useState('');
 
     useEffect(() => {
-        // Check for session
-        if (isSupabaseConfigured && supabase) {
-            supabase.auth.getSession().then(({ data: { session } }) => {
-                if (session?.user) {
-                    setUser({
-                        id: session.user.id,
-                        email: session.user.email!,
-                        avatar_url: session.user.user_metadata?.avatar_url,
-                        full_name: session.user.user_metadata?.full_name
-                    });
-                }
-                setLoading(false);
-            });
-
-            const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
-                if (session?.user) {
-                    setUser({
-                        id: session.user.id,
-                        email: session.user.email!,
-                        avatar_url: session.user.user_metadata?.avatar_url,
-                        full_name: session.user.user_metadata?.full_name
-                    });
-                } else {
-                    setUser(null);
-                }
-                setLoading(false);
-            });
-
-            return () => subscription.unsubscribe();
-        } else {
-            // Local Mock Mode
-            const storedUser = localStorage.getItem('mock_user');
-            if (storedUser) {
-                setUser(JSON.parse(storedUser));
+        // Check for session in localStorage
+        const stored = localStorage.getItem('fiordland_user');
+        if (stored) {
+            try {
+                setUser(JSON.parse(stored));
+            } catch (e) {
+                localStorage.removeItem('fiordland_user');
             }
-            setLoading(false);
         }
+        setLoading(false);
     }, []);
 
     const signInWithGoogle = async () => {
-        if (isSupabaseConfigured && supabase) {
-            const { error } = await supabase.auth.signInWithOAuth({
-                provider: 'google',
-                options: {
-                    queryParams: {
-                        access_type: 'offline',
-                        prompt: 'consent',
-                    },
-                },
-            });
-            if (error) throw error;
-        } else {
-            // Mock Google Login
-            const mockUser = {
-                id: 'mock-google-user',
-                email: 'pilot@fiordland.co.nz',
-                full_name: 'Google Pilot'
-            };
-            localStorage.setItem('mock_user', JSON.stringify(mockUser));
-            setUser(mockUser);
-            window.location.reload();
-        }
+        alert("Google Login not supported in Offline Server mode yet.");
     };
 
     const signInWithEmail = async (email: string) => {
-        if (isSupabaseConfigured && supabase) {
-            // Send OTP
-            const { error } = await supabase.auth.signInWithOtp({ email });
-            if (error) throw error;
-        } else {
-            // Mock Mode: Simulate sending OTP
-            console.log(`Mock OTP sent to ${email}`);
-            // We don't log in yet. We wait for verifyOtp.
-        }
+        // Just store the email for the next steps
+        setTempEmail(email);
+        // We could call an API to check if user exists, but we'll assume yes/new for simplicity
+        return;
     };
 
     const verifyOtp = async (email: string, token: string) => {
-        if (isSupabaseConfigured && supabase) {
-            const { error } = await supabase.auth.verifyOtp({ email, token, type: 'email' });
-            if (error) throw error;
-        } else {
-            // Mock Mode: Verify OTP
-            // Accept '888888' as the universal code for testing
-            if (token === '888888' || token === '123456') {
-                const mockUser = {
-                    id: `mock-${email}`,
-                    email: email,
-                    full_name: email.split('@')[0]
-                };
-                localStorage.setItem('mock_user', JSON.stringify(mockUser));
-                setUser(mockUser);
-            } else {
-                throw new Error("Invalid code. (Hint: Use 888888 for testing)");
-            }
+        // Mock OTP verification
+        if (token === '888888' || token === '123456') {
+            // verified
+            return;
         }
+        throw new Error("Invalid Auth Code");
     };
 
     const updatePassword = async (password: string) => {
-        if (isSupabaseConfigured && supabase) {
-            const { error } = await supabase.auth.updateUser({ password });
-            if (error) throw error;
-        } else {
-            // Mock Mode: Do nothing
-            console.log("Password updated (mock)");
+        // This is where we actually authenticate/create the user with the backend
+        if (!tempEmail) throw new Error("No email found");
+
+        try {
+            const response = await fetch('/api/auth/login', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ email: tempEmail, password })
+            });
+
+            if (!response.ok) {
+                const err = await response.json();
+                throw new Error(err.error || "Login Failed");
+            }
+
+            const data = await response.json();
+            setUser(data.user);
+            localStorage.setItem('fiordland_user', JSON.stringify(data.user));
+        } catch (e: any) {
+            console.error(e);
+            throw new Error(e.message || "Connection Error");
         }
     };
 
     const signOut = async () => {
-        if (isSupabaseConfigured && supabase) {
-            await supabase.auth.signOut();
-        }
-        localStorage.removeItem('mock_user');
+        localStorage.removeItem('fiordland_user');
         setUser(null);
+        setTempEmail('');
     };
 
     return (
