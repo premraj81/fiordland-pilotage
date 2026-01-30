@@ -62,6 +62,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
         // Mock OTP verification
         if (token === '888888' || token === '123456') {
             // verified
+            console.log("Verified", email);
             return;
         }
         throw new Error("Invalid Auth Code");

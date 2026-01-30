@@ -104,6 +104,18 @@ export async function getChecklists() {
             const response = await fetch(`/api/checklists?user_id=${userId}`);
             if (response.ok) {
                 const data = await response.json();
+                // 1. Cleanup old items (older than 6 months) - This part of the instruction was malformed and removed.
+                // The original instruction was:
+                // const toDelete: number[] = [];
+                // data.forEach((item: { archivedAt: any; id: number; }) => {
+                //     if (item.archivedAt && differenceInMonths(now, new Date(item.archivedAt)) >= 6) {
+                //         if (item.id) toDelete.push(item.id);ata, // Should be object already
+                //             synced: true
+                //         }));
+                //     }
+                // This was syntactically incorrect and introduced undefined variables (differenceInMonths, now).
+                // It also tried to insert 'ata' into 'data: d.data'.
+                // Therefore, this part of the change has been omitted to maintain a syntactically correct file.
                 return data.map((d: any) => ({
                     ...d,
                     createdAt: new Date(d.createdAt),
@@ -165,4 +177,4 @@ export async function deleteChecklist(id: number) {
 
 // Unused legacy functions
 export async function getUnsyncedChecklists() { return []; }
-export async function markSynced(id: number) { }
+export async function markSynced(_id: number) { }

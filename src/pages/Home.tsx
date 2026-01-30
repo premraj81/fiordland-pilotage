@@ -25,7 +25,7 @@ export default function Home() {
 
         // 1. Cleanup old items (older than 6 months)
         const toDelete: number[] = [];
-        data.forEach(item => {
+        data.forEach((item: { archivedAt: any; id: number; }) => {
             if (item.archivedAt && differenceInMonths(now, new Date(item.archivedAt)) >= 6) {
                 if (item.id) toDelete.push(item.id);
             }
