@@ -132,10 +132,21 @@ app.put('/api/checklists/:id', (req, res) => {
 
 // Get Checklists
 app.get('/api/checklists', (req, res) => {
-    const { user_id } = req.query;
+    const { user_id, type } = req.query;
     try {
-        const stmt = db.prepare('SELECT * FROM checklists WHERE user_id = ? ORDER BY created_at DESC');
-        const rows = stmt.all(user_id);
+        let stmt;
+        let rows;
+
+        if (type === 'entry_exit') {
+            // For Logbook: Fetch ALL records of type 'entry_exit', ignoring user_id
+            stmt = db.prepare('SELECT * FROM checklists WHERE type = ? ORDER BY created_at DESC');
+            rows = stmt.all('entry_exit');
+        } else {
+            // For Checklists: Fetch only USER specific records
+            stmt = db.prepare('SELECT * FROM checklists WHERE user_id = ? AND type != ? ORDER BY created_at DESC');
+            rows = stmt.all(user_id, 'entry_exit');
+        }
+
         const results = rows.map(row => ({
             ...row,
             data: JSON.parse(row.data),

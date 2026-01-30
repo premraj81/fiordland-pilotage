@@ -1,15 +1,44 @@
 import { useState, useEffect } from 'react';
-import { getLogEntries, type LogEntry } from '../lib/logbook';
 import { Search, FileText } from 'lucide-react';
 import { LogEntryTable } from '../components/LogEntryTable';
+import { getChecklists } from '../lib/db';
+
+export interface LogEntry {
+    id: string;
+    date: string;
+    vesselName: string;
+    activity: 'Entry' | 'Exit' | 'Shift';
+    location: string;
+    author: string;
+    content: string;
+}
 
 export default function LogBook() {
     const [entries, setEntries] = useState<LogEntry[]>([]);
     const [search, setSearch] = useState('');
 
     useEffect(() => {
-        setEntries(getLogEntries());
+        loadEntries();
     }, []);
+
+    const loadEntries = async () => {
+        // Fetch all checklists of type 'entry_exit' from Server
+        // We bypass the type signature issue by casting or using a dedicated function if we had one,
+        // but for now reusing getChecklists with a filter param is easiest.
+        // We need to modify getChecklists to accept a type filter first.
+        const allData = await getChecklists('entry_exit');
+
+        const mapped: LogEntry[] = allData.map((d: any) => ({
+            id: d.id.toString(),
+            date: d.createdAt.toISOString(),
+            vesselName: d.data?.vesselName || 'Unknown',
+            activity: d.data?.activity || 'Entry',
+            location: d.data?.location || '',
+            author: d.userId || 'Unknown', // Ideally replicate user name join on server, but ID is start
+            content: d.data?.notes || ''
+        }));
+        setEntries(mapped);
+    };
 
     const filteredEntries = entries.filter(e =>
         e.vesselName.toLowerCase().includes(search.toLowerCase()) ||
@@ -39,7 +68,7 @@ export default function LogBook() {
                 </div>
             </div>
 
-            <LogEntryTable entries={filteredEntries} onEntriesChange={() => setEntries(getLogEntries())} />
+            <LogEntryTable entries={filteredEntries} onEntriesChange={loadEntries} />
         </div>
     );
 }

@@ -95,27 +95,19 @@ export async function saveChecklist(checklist: Omit<FiordlandDB['checklists']['v
     return db.add('checklists', { ...checklist, userId: userId || 'anonymous', synced: false });
 }
 
-export async function getChecklists() {
+export async function getChecklists(type?: string) {
     const userId = await getCurrentUserId();
 
     // API Mode
     if (USE_API && userId) {
         try {
-            const response = await fetch(`/api/checklists?user_id=${userId}`);
+            const url = new URL('/api/checklists', window.location.origin);
+            if (userId) url.searchParams.append('user_id', userId);
+            if (type) url.searchParams.append('type', type);
+
+            const response = await fetch(url.toString());
             if (response.ok) {
                 const data = await response.json();
-                // 1. Cleanup old items (older than 6 months) - This part of the instruction was malformed and removed.
-                // The original instruction was:
-                // const toDelete: number[] = [];
-                // data.forEach((item: { archivedAt: any; id: number; }) => {
-                //     if (item.archivedAt && differenceInMonths(now, new Date(item.archivedAt)) >= 6) {
-                //         if (item.id) toDelete.push(item.id);ata, // Should be object already
-                //             synced: true
-                //         }));
-                //     }
-                // This was syntactically incorrect and introduced undefined variables (differenceInMonths, now).
-                // It also tried to insert 'ata' into 'data: d.data'.
-                // Therefore, this part of the change has been omitted to maintain a syntactically correct file.
                 return data.map((d: any) => ({
                     ...d,
                     createdAt: new Date(d.createdAt),
@@ -131,10 +123,21 @@ export async function getChecklists() {
     // Local IDB Mode
     const db = await initDB();
     const all = await db.getAllFromIndex('checklists', 'by-date');
+
+    // Filter locally if needed
+    let filtered = all;
     if (userId) {
-        return all.filter(c => c.userId === userId);
+        // If requesting a specific type (like logbook), ignore user ID constraint? 
+        // Or keep it? The requirement is Logbook = Global.
+        if (type === 'entry_exit') {
+            // @ts-ignore
+            filtered = all.filter(c => c.type === 'entry_exit');
+        } else {
+            // @ts-ignore
+            filtered = all.filter(c => c.userId === userId && (!type || c.type === type));
+        }
     }
-    return all;
+    return filtered;
 }
 
 export async function updateChecklist(id: number, updates: Partial<FiordlandDB['checklists']['value']>) {
