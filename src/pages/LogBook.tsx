@@ -2,16 +2,7 @@ import { useState, useEffect } from 'react';
 import { Search, FileText } from 'lucide-react';
 import { LogEntryTable } from '../components/LogEntryTable';
 import { getChecklists } from '../lib/db';
-
-export interface LogEntry {
-    id: string;
-    date: string;
-    vesselName: string;
-    activity: 'Entry' | 'Exit' | 'Shift';
-    location: string;
-    author: string;
-    content: string;
-}
+import { type LogEntry } from '../lib/logbook';
 
 export default function LogBook() {
     const [entries, setEntries] = useState<LogEntry[]>([]);
@@ -30,12 +21,16 @@ export default function LogBook() {
 
         const mapped: LogEntry[] = allData.map((d: any) => ({
             id: d.id.toString(),
-            date: d.createdAt.toISOString(),
+            timestamp: d.createdAt.toISOString(),
             vesselName: d.data?.vesselName || 'Unknown',
-            activity: d.data?.activity || 'Entry',
-            location: d.data?.location || '',
-            author: d.userId || 'Unknown', // Ideally replicate user name join on server, but ID is start
-            content: d.data?.notes || ''
+            author: d.data?.author || d.userId || 'Unknown',
+            content: d.data?.notes || d.data?.content || '',
+            loa: d.data?.loa,
+            beam: d.data?.beam,
+            masterName: d.data?.masterName,
+            arrivalDate: d.data?.arrivalDate,
+            cruiseLine: d.data?.cruiseLine,
+            traineeName: d.data?.traineeName
         }));
         setEntries(mapped);
     };
