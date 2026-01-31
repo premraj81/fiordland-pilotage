@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { ArrowLeft, CheckCircle, AlertTriangle, ArrowUpDown, UserPlus, X, Plus, Save, BookOpen, History } from 'lucide-react';
 import { CHECKLISTS } from '../lib/data';
@@ -335,7 +335,7 @@ const PILOTS = ["Premraj Pillai", "Josh Osborne", "Sumanth Surendran", "Lawrence
 const TRAINEES = ["Julien Charptner", "Andrew Kerr Fox"];
 
 export default function ChecklistForm() {
-    const { type } = useParams();
+    const { type, id } = useParams();
     const navigate = useNavigate();
     // @ts-ignore
     const schema = CHECKLISTS[type];
@@ -347,7 +347,35 @@ export default function ChecklistForm() {
     const [saving, setSaving] = useState(false);
     const [isRouteReversed, setIsRouteReversed] = useState(false);
     const [date, setDate] = useState(new Date().toISOString().split('T')[0]);
-    const [checklistId, setChecklistId] = useState<number | null>(null);
+    const [checklistId, setChecklistId] = useState<number | null>(id ? parseInt(id) : null);
+    const [uploadedPdfUrl, setUploadedPdfUrl] = useState<string | null>(null);
+
+    // Initial Data Load for Edit Mode
+    useEffect(() => {
+        if (id) {
+            loadchecklistData(parseInt(id));
+        }
+    }, [id]);
+
+    const loadchecklistData = async (cid: number) => {
+        try {
+            // @ts-ignore
+            const checklist = await getChecklist(cid);
+            if (checklist) {
+                setFormData(checklist.data || {});
+                setSignatures(checklist.data?.signatures || {});
+                setNames(checklist.data?.names || {});
+                setDate(checklist.data?.date?.split('T')[0] || new Date().toISOString().split('T')[0]);
+                setShowTrainee(checklist.data?.showTrainee || false);
+                setUploadedPdfUrl(checklist.pdfUrl || null);
+                // Ensure checklistId is set
+                setChecklistId(cid);
+            }
+        } catch (e) {
+            console.error("Failed to load checklist", e);
+            alert("Could not load checklist for editing");
+        }
+    };
 
     // Log Book State
     const [isLogOpen, setIsLogOpen] = useState(false);
