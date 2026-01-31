@@ -326,7 +326,7 @@ export default function ChecklistForm() {
     const [isLogOpen, setIsLogOpen] = useState(false);
     const [logContent, setLogContent] = useState('');
 
-    const handleAddLog = () => {
+    const handleAddLog = async () => {
         const vesselName = formData.header?.vesselName;
         if (!vesselName) {
             alert("Please enter a vessel name first.");
