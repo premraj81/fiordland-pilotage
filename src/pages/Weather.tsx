@@ -21,21 +21,54 @@ const WEATHER_STATIONS = [
                 url: 'https://www.metdata.net.nz/es/stanne/cam1/'
             }
         ]
+    {
+        id: 'cooper-pt',
+        title: "Cooper Point / Environment Southland",
+        tabs: [
+            {
+                id: 'es-main',
+                label: 'Dashboard',
+                icon: <ExternalLink className="w-4 h-4" />,
+                url: 'https://metdata.net.nz/es/'
+            }
+        ]
     }
 ];
 
 export default function Weather() {
-    const [activeStation] = useState(WEATHER_STATIONS[0]);
+    const [activeStation, setActiveStation] = useState(WEATHER_STATIONS[0]);
     const [activeTab, setActiveTab] = useState(activeStation.tabs[0]);
 
     return (
         <div className="max-w-6xl mx-auto space-y-6 pb-20">
             <h1 className="text-3xl font-bold text-fiordland-900">Weather Info</h1>
 
+            {/* Station Selector */}
+            <div className="flex flex-wrap gap-2">
+                {WEATHER_STATIONS.map(station => (
+                    <button
+                        key={station.id}
+                        onClick={() => {
+                            setActiveStation(station);
+                            setActiveTab(station.tabs[0]);
+                        }}
+                        className={cn(
+                            "px-4 py-2 rounded-lg font-semibold transition-all shadow-sm",
+                            activeStation.id === station.id
+                                ? "bg-brand-teal text-white shadow-brand-teal/20"
+                                : "bg-white text-gray-600 hover:bg-gray-50 border border-gray-100"
+                        )}
+                    >
+                        {station.title}
+                    </button>
+                ))}
+            </div>
+
             <div className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
                 <div className="p-6 border-b border-gray-100 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
                     <h2 className="text-xl font-bold text-fiordland-800 flex items-center gap-2">
                         {activeStation.title}
+                        {activeStation.id === 'cooper-pt' && <span className="text-xs font-normal text-gray-500 bg-gray-100 px-2 py-1 rounded-full">Includes Cooper Point</span>}
                     </h2>
 
                     <div className="flex bg-gray-100 p-1 rounded-lg self-start">
@@ -57,7 +90,7 @@ export default function Weather() {
                     </div>
                 </div>
 
-                <div className="relative bg-gray-50 h-[600px] w-full">
+                <div className="relative bg-gray-50 h-[800px] w-full">
                     {/* Toolbar for external link fallback */}
                     <div className="absolute top-0 right-0 p-2 z-10">
                         <a
