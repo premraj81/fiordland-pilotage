@@ -71,7 +71,8 @@ function VesselNameInput({ value, onChange }: { value: string, onChange: (val: s
 
     const handleViewHistory = () => {
         if (!selectedShip) return;
-        setHistoryEntries(getLogEntries(selectedShip.name));
+        // TODO: Fetch vessel history from server API
+        setHistoryEntries([]);
         setIsHistoryOpen(true);
     };
 
@@ -285,7 +286,7 @@ function VesselNameInput({ value, onChange }: { value: string, onChange: (val: s
                         <div className="flex-1 overflow-y-auto p-6 bg-gray-50">
                             <LogEntryTable
                                 entries={historyEntries}
-                                onEntriesChange={() => selectedShip && setHistoryEntries(getLogEntries(selectedShip.name))}
+                                onEntriesChange={() => setHistoryEntries([])}
                             />
                         </div>
 
