@@ -137,14 +137,24 @@ app.get('/api/checklists', (req, res) => {
         let stmt;
         let rows;
 
+        // Check if requesting user is Admin
+        const user = db.prepare('SELECT email FROM users WHERE id = ?').get(user_id);
+        const isAdmin = user && user.email === 'fiordlandpilotage@gmail.com';
+
         if (type === 'entry_exit') {
             // For Logbook: Fetch ALL records of type 'entry_exit', ignoring user_id
             stmt = db.prepare('SELECT * FROM checklists WHERE type = ? ORDER BY created_at DESC');
             rows = stmt.all('entry_exit');
         } else {
-            // For Checklists: Fetch only USER specific records
-            stmt = db.prepare('SELECT * FROM checklists WHERE user_id = ? AND type != ? ORDER BY created_at DESC');
-            rows = stmt.all(user_id, 'entry_exit');
+            if (isAdmin) {
+                // Admin: Fetch ALL checklists from ALL users
+                stmt = db.prepare('SELECT * FROM checklists WHERE type != ? ORDER BY created_at DESC');
+                rows = stmt.all('entry_exit');
+            } else {
+                // Regular User: Fetch only THEIR records
+                stmt = db.prepare('SELECT * FROM checklists WHERE user_id = ? AND type != ? ORDER BY created_at DESC');
+                rows = stmt.all(user_id, 'entry_exit');
+            }
         }
 
         const results = rows.map(row => ({

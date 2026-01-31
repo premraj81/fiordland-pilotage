@@ -1,7 +1,8 @@
 export const ALLOWED_USERS = [
     "premraj81@gmail.com",
     "81prem@gmail.com",
-    "billyjar87@gmail.com"
+    "billyjar87@gmail.com",
+    "fiordlandpilotage@gmail.com"
 ];
 
 export function isUserAllowed(email: string): boolean {
