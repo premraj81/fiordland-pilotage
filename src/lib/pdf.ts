@@ -269,7 +269,16 @@ const generatePassagePlanPDF = (checklistData: any, schema: any, outputType: 'sa
 
     const renderChecklistSection = (sectionId: string, title?: string) => {
         const section = schema.sections.find((s: any) => s.id === sectionId);
-        if (!section) return;
+        if (!section) {
+            console.warn(`[PDF] Section not found in schema: ${sectionId}`);
+            return;
+        }
+
+        console.log(`[PDF] Rendering section: ${sectionId}`, {
+            section,
+            dataForSection: checklistData.data[sectionId],
+            fullData: checklistData.data
+        });
 
         if (title) {
             doc.setFont("helvetica", "bold");
@@ -280,6 +289,7 @@ const generatePassagePlanPDF = (checklistData: any, schema: any, outputType: 'sa
         doc.setFont("helvetica", "normal");
         section.items?.forEach((item: string, idx: number) => {
             const isChecked = checklistData.data[sectionId]?.[`item-${idx}`];
+            console.log(`[PDF] ${sectionId} item-${idx}:`, isChecked);
             drawCheckbox(20, currentY - 4, !!isChecked);
             doc.text(item, 35, currentY);
             currentY += 7;
