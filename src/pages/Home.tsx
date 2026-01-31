@@ -5,7 +5,7 @@ import { getChecklists, updateChecklist, deleteChecklist } from '../lib/db';
 import { CHECKLISTS } from '../lib/data';
 import { generatePDF } from '../lib/pdf';
 import { cn } from '../lib/utils';
-import { format, differenceInMonths } from 'date-fns';
+import { format } from 'date-fns';
 import { useOnlineStatus } from '../lib/hooks';
 import CruiseSchedule from '../components/CruiseSchedule';
 
@@ -21,7 +21,7 @@ export default function Home() {
 
     async function loadData() {
         const data = await getChecklists();
-        const now = new Date();
+
 
         setHistory(data.reverse());
     }
