@@ -469,7 +469,7 @@ export default function ChecklistForm() {
             const dataToSave = { ...updatedFormData, signatures, names, date, showTrainee };
 
             if (id) {
-                await updateChecklist(id, dataToSave);
+                await updateChecklist(id, { data: dataToSave, pdfUrl: uploadedPdfUrl || undefined });
             } else {
                 id = await saveChecklist({
                     type: type as any,
@@ -519,11 +519,11 @@ export default function ChecklistForm() {
             // Generate PDF Blob for upload
             // @ts-ignore
             const pdfBlob = generatePDF({ data: { ...updatedFormData, signatures, names, date, showTrainee } }, schema, 'blob');
-            let uploadedPdfUrl = undefined;
+            let newPdfUrl = undefined;
             if (pdfBlob) {
                 const fileName = `${type}-${Date.now()}.pdf`;
                 const url = await uploadPdfReport(pdfBlob as Blob, fileName);
-                if (url) uploadedPdfUrl = url;
+                if (url) newPdfUrl = url;
             }
 
             // Save or Update to DB
@@ -531,13 +531,13 @@ export default function ChecklistForm() {
             const dataToSave = { ...updatedFormData, signatures, names, date, showTrainee };
 
             if (id) {
-                await updateChecklist(id, { data: dataToSave, pdfUrl: uploadedPdfUrl });
+                await updateChecklist(id, { data: dataToSave, pdfUrl: newPdfUrl });
             } else {
                 await saveChecklist({
                     type: type as any,
                     createdAt: new Date(),
                     data: dataToSave,
-                    pdfUrl: uploadedPdfUrl
+                    pdfUrl: newPdfUrl
                 });
             }
 
