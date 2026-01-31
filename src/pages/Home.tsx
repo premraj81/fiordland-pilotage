@@ -23,22 +23,7 @@ export default function Home() {
         const data = await getChecklists();
         const now = new Date();
 
-        // 1. Cleanup old items (older than 6 months)
-        const toDelete: number[] = [];
-        data.forEach((item: { archivedAt: any; id: number; }) => {
-            if (item.archivedAt && differenceInMonths(now, new Date(item.archivedAt)) >= 6) {
-                if (item.id) toDelete.push(item.id);
-            }
-        });
-
-        if (toDelete.length > 0) {
-            await Promise.all(toDelete.map(id => deleteChecklist(id)));
-            // Reload data after cleanup
-            const freshData = await getChecklists();
-            setHistory(freshData.reverse());
-        } else {
-            setHistory(data.reverse());
-        }
+        setHistory(data.reverse());
     }
 
     const handleShare = async (item: any) => {
