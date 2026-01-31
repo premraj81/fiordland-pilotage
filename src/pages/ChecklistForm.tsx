@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { ArrowLeft, CheckCircle, AlertTriangle, ArrowUpDown, UserPlus, X, Plus, Save, BookOpen, History } from 'lucide-react';
 import { CHECKLISTS } from '../lib/data';
-import { saveChecklist, updateChecklist } from '../lib/db';
+import { saveChecklist, updateChecklist, getChecklists } from '../lib/db';
 import SignaturePad from '../components/SignaturePad';
 import { generatePDF } from '../lib/pdf';
 import { uploadPdfReport } from '../lib/storage';
@@ -69,11 +69,37 @@ function VesselNameInput({ value, onChange }: { value: string, onChange: (val: s
     const [isHistoryOpen, setIsHistoryOpen] = useState(false);
     const [historyEntries, setHistoryEntries] = useState<LogEntry[]>([]);
 
-    const handleViewHistory = () => {
+    const handleViewHistory = async () => {
         if (!selectedShip) return;
-        // TODO: Fetch vessel history from server API
-        setHistoryEntries([]);
         setIsHistoryOpen(true);
+        setHistoryEntries([]); // Clear while loading
+
+        try {
+            // Fetch ALL log entries from server
+            const allLogs = await getChecklists('entry_exit');
+
+            // Filter strictly by vessel name on client side
+            const filtered = allLogs
+                .map((d: any) => ({
+                    id: d.id.toString(),
+                    timestamp: d.createdAt.toISOString(),
+                    vesselName: d.data?.vesselName || 'Unknown',
+                    author: d.data?.author || d.userId || 'Unknown',
+                    content: d.data?.notes || d.data?.content || '',
+                    loa: d.data?.loa,
+                    beam: d.data?.beam,
+                    masterName: d.data?.masterName,
+                    arrivalDate: d.data?.arrivalDate,
+                    cruiseLine: d.data?.cruiseLine,
+                    traineeName: d.data?.traineeName
+                }))
+                .filter((e: LogEntry) => e.vesselName.toLowerCase() === selectedShip.name.toLowerCase())
+                .sort((a: LogEntry, b: LogEntry) => new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime());
+
+            setHistoryEntries(filtered);
+        } catch (e) {
+            console.error("Failed to load history", e);
+        }
     };
 
     return (
