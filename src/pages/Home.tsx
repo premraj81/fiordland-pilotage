@@ -155,6 +155,13 @@ export default function Home() {
         }
     };
 
+    const handleArchiveItem = async (id: number) => {
+        if (confirm("Are you sure you want to archive this checklist?")) {
+            await updateChecklist(id, { archived: true, archivedAt: new Date() });
+            loadData();
+        }
+    };
+
     // Filter items based on tab
     const filteredItems = history.filter(item => {
         if (activeTab === 'active') {
@@ -309,6 +316,15 @@ export default function Home() {
                                     >
                                         <Trash2 className="w-5 h-5" />
                                     </button>
+                                    {activeTab === 'active' && (
+                                        <button
+                                            onClick={() => handleArchiveItem(item.id)}
+                                            className="p-2 text-gray-400 hover:text-fiordland-600 hover:bg-gray-100 rounded-lg transition-colors"
+                                            title="Archive Checklist"
+                                        >
+                                            <Archive className="w-5 h-5" />
+                                        </button>
+                                    )}
                                     <button
                                         onClick={() => handleReview(item)}
                                         className="flex items-center gap-2 px-4 py-2 rounded-lg font-medium text-gray-700 bg-gray-100 hover:bg-gray-200 transition-colors"

@@ -24,7 +24,7 @@ const WEATHER_STATIONS = [
     },
     {
         id: 'cooper-pt',
-        title: "Cooper Point / Environment Southland",
+        title: "Copper Point / Environment Southland",
         tabs: [
             {
                 id: 'es-main',
