@@ -7,7 +7,7 @@ import SignaturePad from '../components/SignaturePad';
 import { generatePDF } from '../lib/pdf';
 import { uploadPdfReport } from '../lib/storage';
 import { SHIPS, type ShipData } from '../lib/ships';
-import { addLogEntry, getLogEntries, type LogEntry } from '../lib/logbook';
+import { addLogEntry, type LogEntry } from '../lib/logbook';
 import { LogEntryTable } from '../components/LogEntryTable';
 
 function VesselNameInput({ value, onChange }: { value: string, onChange: (val: string) => void }) {
