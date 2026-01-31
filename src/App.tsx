@@ -46,7 +46,7 @@ function App() {
 
       <Route element={<RequireAuth><Layout /></RequireAuth>}>
         <Route index element={<Home />} />
-        <Route path="checklist/:type" element={<ChecklistForm />} />
+        <Route path="checklist/:type/:id?" element={<ChecklistForm />} />
         <Route path="info" element={<Info />} />
         <Route path="vhf-notification" element={<VHFNotification />} />
         <Route path="passage-plan" element={<PassagePlan />} />

@@ -140,6 +140,27 @@ export async function getChecklists(type?: string) {
     return filtered;
 }
 
+export async function getChecklist(id: number) {
+    if (USE_API) {
+        try {
+            const response = await fetch(`/api/checklists/${id}`);
+            if (response.ok) {
+                const d = await response.json();
+                return {
+                    ...d,
+                    createdAt: new Date(d.createdAt),
+                    data: d.data,
+                    synced: true
+                };
+            }
+        } catch (error) {
+            console.error("API Read Error:", error);
+        }
+    }
+    const db = await initDB();
+    return db.get('checklists', id);
+}
+
 export async function updateChecklist(id: number, updates: Partial<FiordlandDB['checklists']['value']>) {
     // API Mode
     if (USE_API) {

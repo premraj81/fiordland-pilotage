@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { ArrowLeft, CheckCircle, AlertTriangle, ArrowUpDown, UserPlus, X, Plus, Save, BookOpen, History } from 'lucide-react';
 import { CHECKLISTS } from '../lib/data';
-import { saveChecklist, updateChecklist, getChecklists } from '../lib/db';
+import { saveChecklist, updateChecklist, getChecklists, getChecklist } from '../lib/db';
 import SignaturePad from '../components/SignaturePad';
 import { generatePDF } from '../lib/pdf';
 import { uploadPdfReport } from '../lib/storage';

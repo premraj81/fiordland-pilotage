@@ -130,7 +130,32 @@ app.put('/api/checklists/:id', (req, res) => {
     }
 });
 
-// Get Checklists
+// Get Single Checklist
+app.get('/api/checklists/:id', (req, res) => {
+    const { id } = req.params;
+    try {
+        const row = db.prepare('SELECT * FROM checklists WHERE id = ?').get(id);
+        if (!row) {
+            return res.status(404).json({ error: 'Checklist not found' });
+        }
+        const result = {
+            ...row,
+            data: JSON.parse(row.data),
+            synced: true,
+            emailSent: !!row.email_sent,
+            archived: !!row.archived,
+            pdfUrl: row.pdf_url,
+            userId: row.user_id,
+            createdAt: new Date(row.created_at)
+        };
+        res.json(result);
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({ error: 'Failed to fetch checklist' });
+    }
+});
+
+// Get Checklists collection
 app.get('/api/checklists', (req, res) => {
     const { user_id, type } = req.query;
     try {
