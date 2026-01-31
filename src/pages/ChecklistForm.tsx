@@ -344,17 +344,23 @@ export default function ChecklistForm() {
             } catch (e) { }
         }
 
-        addLogEntry({
-            vesselName,
-            author,
-            content: logContent,
-            loa: ship?.length,
-            beam: ship?.beam,
-            masterName: names.master || '',
-            arrivalDate: date,
-            cruiseLine: ship?.cruiseLine,
-            traineeName: names.trainee
-        });
+        try {
+            await addLogEntry({
+                vesselName,
+                author,
+                content: logContent,
+                loa: ship?.length,
+                beam: ship?.beam,
+                masterName: names.master || '',
+                arrivalDate: date,
+                cruiseLine: ship?.cruiseLine,
+                traineeName: names.trainee
+            });
+        } catch (error) {
+            console.error('Failed to save log entry:', error);
+            alert('Failed to save log entry. Please try again.');
+            return; // Don't close the modal if save failed
+        }
 
         setLogContent('');
         setIsLogOpen(false);

@@ -12,42 +12,96 @@ export interface LogEntry {
     traineeName?: string;
 }
 
-const STORAGE_KEY = 'logbook_entries';
-
-export function getLogEntries(vesselName?: string): LogEntry[] {
+// Helper to get current user
+function getCurrentUser() {
     try {
-        const stored = localStorage.getItem(STORAGE_KEY);
-        const entries: LogEntry[] = stored ? JSON.parse(stored) : [];
-        if (vesselName) {
-            return entries.filter(e => e.vesselName.toLowerCase() === vesselName.toLowerCase())
-                .sort((a, b) => new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime());
+        const userStr = localStorage.getItem('fiordland_user');
+        if (userStr) {
+            return JSON.parse(userStr);
         }
-        return entries.sort((a, b) => new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime());
-    } catch {
-        return [];
+    } catch (e) {
+        console.error('Failed to get current user', e);
     }
+    return null;
 }
 
-export function addLogEntry(entry: Omit<LogEntry, 'id' | 'timestamp'>) {
-    const entries = getLogEntries();
+export async function addLogEntry(entry: Omit<LogEntry, 'id' | 'timestamp'>) {
+    const user = getCurrentUser();
+    if (!user) {
+        throw new Error('User not logged in');
+    }
+
     const newEntry: LogEntry = {
         ...entry,
         id: crypto.randomUUID(),
         timestamp: new Date().toISOString()
     };
-    entries.push(newEntry);
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(entries));
-    return newEntry;
+
+    // Save to server database with type 'entry_exit'
+    try {
+        const response = await fetch('/api/checklists', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                user_id: user.id,
+                type: 'entry_exit',
+                data: {
+                    vesselName: entry.vesselName,
+                    author: entry.author,
+                    content: entry.content,
+                    loa: entry.loa,
+                    beam: entry.beam,
+                    masterName: entry.masterName,
+                    arrivalDate: entry.arrivalDate,
+                    cruiseLine: entry.cruiseLine,
+                    traineeName: entry.traineeName
+                },
+                pdf_url: null,
+                email_sent: false,
+                archived: false
+            })
+        });
+
+        if (!response.ok) {
+            throw new Error('Failed to save log entry');
+        }
+
+        return newEntry;
+    } catch (error) {
+        console.error('Failed to save log entry to server:', error);
+        throw error;
+    }
 }
 
-export function deleteLogEntry(id: string) {
-    const entries = getLogEntries();
-    const newEntries = entries.filter(e => e.id !== id);
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(newEntries));
+export async function deleteLogEntry(id: string) {
+    // Note: The server API doesn't have a delete endpoint yet
+    // For now, we'll update the entry to mark it as archived
+    try {
+        const response = await fetch(`/api/checklists/${id}`, {
+            method: 'PUT',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                archived: true,
+                archived_at: new Date().toISOString()
+            })
+        });
+
+        if (!response.ok) {
+            throw new Error('Failed to delete log entry');
+        }
+    } catch (error) {
+        console.error('Failed to delete log entry:', error);
+        throw error;
+    }
+}
+
+// Legacy localStorage functions - kept for compatibility but deprecated
+export function getLogEntries(): LogEntry[] {
+    console.warn('getLogEntries is deprecated - use getChecklists from db.ts instead');
+    return [];
 }
 
 export function getUniqueVessels(): string[] {
-    const entries = getLogEntries();
-    const names = new Set(entries.map(e => e.vesselName));
-    return Array.from(names).sort();
+    console.warn('getUniqueVessels is deprecated');
+    return [];
 }
