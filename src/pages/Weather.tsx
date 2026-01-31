@@ -21,6 +21,7 @@ const WEATHER_STATIONS = [
                 url: 'https://www.metdata.net.nz/es/stanne/cam1/'
             }
         ]
+    },
     {
         id: 'cooper-pt',
         title: "Cooper Point / Environment Southland",
