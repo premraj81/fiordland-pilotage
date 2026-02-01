@@ -294,13 +294,15 @@ export default function Home() {
                                     </div>
                                 </div>
                                 <div className="flex items-center gap-3">
-                                    <button
-                                        onClick={() => handleDeleteItem(item.id)}
-                                        className="p-2 text-gray-400 hover:text-red-500 hover:bg-red-50 rounded-lg transition-colors"
-                                        title="Delete Checklist"
-                                    >
-                                        <Trash2 className="w-5 h-5" />
-                                    </button>
+                                    {activeTab === 'archived' && (
+                                        <button
+                                            onClick={() => handleDeleteItem(item.id)}
+                                            className="p-2 text-gray-400 hover:text-red-500 hover:bg-red-50 rounded-lg transition-colors"
+                                            title="Delete Checklist"
+                                        >
+                                            <Trash2 className="w-5 h-5" />
+                                        </button>
+                                    )}
                                     {activeTab === 'active' && (
                                         <button
                                             onClick={() => handleArchiveItem(item.id)}
@@ -318,7 +320,7 @@ export default function Home() {
                                         <Eye className="w-4 h-4" />
                                         <span className="hidden sm:inline">View</span>
                                     </button>
-                                    {!item.pdfUrl && (
+                                    {!item.pdfUrl && activeTab === 'active' && (
                                         <button
                                             onClick={() => navigate(`/checklist/${item.type}/${item.id}`)}
                                             className="flex items-center gap-2 px-4 py-2 rounded-lg font-medium text-white bg-fiordland-600 hover:bg-fiordland-700 transition-colors"
