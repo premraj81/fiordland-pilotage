@@ -318,14 +318,16 @@ export default function Home() {
                                         <Eye className="w-4 h-4" />
                                         <span className="hidden sm:inline">View</span>
                                     </button>
-                                    <button
-                                        onClick={() => navigate(`/checklist/${item.type}/${item.id}`)}
-                                        className="flex items-center gap-2 px-4 py-2 rounded-lg font-medium text-white bg-fiordland-600 hover:bg-fiordland-700 transition-colors"
-                                        title="Edit Checklist"
-                                    >
-                                        <Edit className="w-4 h-4" />
-                                        <span className="hidden sm:inline">Edit</span>
-                                    </button>
+                                    {!item.pdfUrl && (
+                                        <button
+                                            onClick={() => navigate(`/checklist/${item.type}/${item.id}`)}
+                                            className="flex items-center gap-2 px-4 py-2 rounded-lg font-medium text-white bg-fiordland-600 hover:bg-fiordland-700 transition-colors"
+                                            title="Edit Checklist"
+                                        >
+                                            <Edit className="w-4 h-4" />
+                                            <span className="hidden sm:inline">Edit</span>
+                                        </button>
+                                    )}
                                     <button
                                         onClick={() => handleShare(item)}
                                         disabled={activeTab === 'archived'} // Disable resend from archive? User didn't specify, but safer.
