@@ -98,15 +98,41 @@ export async function saveChecklist(checklist: Omit<FiordlandDB['checklists']['v
 export async function getChecklists(type?: string) {
     const userId = await getCurrentUserId();
 
-    // Offline-First Strategy: Pull Replication
-    // 1. Fetch Server Data (if online)
-    // 2. Update Local DB with Server Data
-    // 3. Return Combined Local Data
-
+    // Offline-First Strategy: Bidirectional Sync (Push + Pull)
     const db = await initDB();
 
     if (USE_API && userId) {
         try {
+            // 1. PUSH: Upload Unsynced Local Items
+            if (window.navigator.onLine) {
+                const allLocal = await db.getAll('checklists');
+                const unsynced = allLocal.filter(c => !c.synced && c.userId === userId);
+
+                for (const item of unsynced) {
+                    try {
+                        const response = await fetch('/api/checklists', {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify({
+                                user_id: userId,
+                                type: item.type,
+                                data: item.data,
+                                pdf_url: item.pdfUrl,
+                                email_sent: item.emailSent,
+                                archived: item.archived
+                            })
+                        });
+                        if (response.ok) {
+                            // If successful, delete local temp item so it can be re-fetched cleanly
+                            if (item.id) await db.delete('checklists', item.id);
+                        }
+                    } catch (e) {
+                        // Ignore
+                    }
+                }
+            }
+
+            // 2. PULL: Fetch Server Data & Update Content
             const url = new URL('/api/checklists', window.location.origin);
             if (userId) url.searchParams.append('user_id', userId);
             if (type) url.searchParams.append('type', type);
@@ -117,19 +143,23 @@ export async function getChecklists(type?: string) {
 
                 // Cache Server Data to Local DB
                 const tx = db.transaction('checklists', 'readwrite');
-                // We use Promise.all to await all puts? Or sequential.
-                // Note: This overrides local changes if conflicts exist, but we assume
-                // 'synced: true' items are authoritative from server.
-                // 'synced: false' items (local created) should have unique IDs (offline IDs).
-                // Existing Server items: key = id.
+
+                // Fetch current unsynced IDs to prevent overwrite
+                const currentUnsyncedIds = new Set(
+                    (await db.getAll('checklists'))
+                        .filter(c => !c.synced)
+                        .map(c => c.id)
+                );
 
                 for (const d of serverData) {
+                    if (currentUnsyncedIds.has(d.id)) {
+                        continue;
+                    }
                     await tx.store.put({
                         ...d,
                         createdAt: new Date(d.createdAt),
                         data: d.data,
                         synced: true,
-                        // Ensure we use the correct key
                         id: d.id
                     });
                 }
@@ -137,7 +167,6 @@ export async function getChecklists(type?: string) {
             }
         } catch (error) {
             console.error("Sync Failed (Offline?):", error);
-            // Ignore error, serve from local
         }
     }
 
@@ -183,9 +212,6 @@ export async function updateChecklist(id: number, updates: Partial<FiordlandDB['
     // API Mode
     if (USE_API) {
         try {
-            // Note: ID in API mode is the server ID (number). 
-            // If the item was created offline, it might have a local ID that doesn't exist on server yet.
-            // We assume mixed usage is minimal for this demo, or handled by a separate sync process.
             await fetch(`/api/checklists/${id}`, {
                 method: 'PUT',
                 headers: { 'Content-Type': 'application/json' },
@@ -194,7 +220,7 @@ export async function updateChecklist(id: number, updates: Partial<FiordlandDB['
                     pdf_url: updates.pdfUrl,
                     email_sent: updates.emailSent,
                     archived: updates.archived,
-                    archived_at: updates.archivedAt // Date stringify handled by JSON.stringify
+                    archived_at: updates.archivedAt
                 })
             });
             return;
@@ -222,8 +248,6 @@ export async function deleteChecklist(id: number) {
             });
         } catch (e) {
             console.error("API Delete failed", e);
-            // If offline, maybe mark for deletion?
-            // For now, allow local delete.
         }
     }
 
