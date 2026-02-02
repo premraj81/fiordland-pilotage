@@ -98,7 +98,13 @@ export async function saveChecklist(checklist: Omit<FiordlandDB['checklists']['v
 export async function getChecklists(type?: string) {
     const userId = await getCurrentUserId();
 
-    // API Mode
+    // Offline-First Strategy: Pull Replication
+    // 1. Fetch Server Data (if online)
+    // 2. Update Local DB with Server Data
+    // 3. Return Combined Local Data
+
+    const db = await initDB();
+
     if (USE_API && userId) {
         try {
             const url = new URL('/api/checklists', window.location.origin);
@@ -107,28 +113,40 @@ export async function getChecklists(type?: string) {
 
             const response = await fetch(url.toString());
             if (response.ok) {
-                const data = await response.json();
-                return data.map((d: any) => ({
-                    ...d,
-                    createdAt: new Date(d.createdAt),
-                    data: d.data, // Should be object already
-                    synced: true
-                }));
+                const serverData = await response.json();
+
+                // Cache Server Data to Local DB
+                const tx = db.transaction('checklists', 'readwrite');
+                // We use Promise.all to await all puts? Or sequential.
+                // Note: This overrides local changes if conflicts exist, but we assume
+                // 'synced: true' items are authoritative from server.
+                // 'synced: false' items (local created) should have unique IDs (offline IDs).
+                // Existing Server items: key = id.
+
+                for (const d of serverData) {
+                    await tx.store.put({
+                        ...d,
+                        createdAt: new Date(d.createdAt),
+                        data: d.data,
+                        synced: true,
+                        // Ensure we use the correct key
+                        id: d.id
+                    });
+                }
+                await tx.done;
             }
         } catch (error) {
-            console.error("API Read Error:", error);
+            console.error("Sync Failed (Offline?):", error);
+            // Ignore error, serve from local
         }
     }
 
-    // Local IDB Mode
-    const db = await initDB();
+    // Always valid source of truth is now Local DB (which is cached from server)
     const all = await db.getAllFromIndex('checklists', 'by-date');
 
-    // Filter locally if needed
+    // Filter
     let filtered = all;
     if (userId) {
-        // If requesting a specific type (like logbook), ignore user ID constraint? 
-        // Or keep it? The requirement is Logbook = Global.
         if (type === 'entry_exit') {
             // @ts-ignore
             filtered = all.filter(c => c.type === 'entry_exit');
@@ -194,7 +212,22 @@ export async function updateChecklist(id: number, updates: Partial<FiordlandDB['
 }
 
 export async function deleteChecklist(id: number) {
-    // Implement delete if needed (not currently used much)
+    const userId = await getCurrentUserId();
+    if (USE_API && userId) {
+        try {
+            await fetch(`/api/checklists/${id}`, {
+                method: 'DELETE',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ user_id: userId })
+            });
+        } catch (e) {
+            console.error("API Delete failed", e);
+            // If offline, maybe mark for deletion?
+            // For now, allow local delete.
+        }
+    }
+
+    // Always delete locally
     const db = await initDB();
     await db.delete('checklists', id);
 }

@@ -199,6 +199,26 @@ app.get('/api/checklists', (req, res) => {
     }
 });
 
+const ADMIN_EMAIL = 'fiordlandpilotage@gmail.com';
+
+app.delete('/api/checklists/:id', (req, res) => {
+    const { id } = req.params;
+    const { user_id } = req.body;
+
+    try {
+        const user = db.prepare('SELECT email FROM users WHERE id = ?').get(user_id);
+        if (!user || user.email !== ADMIN_EMAIL) {
+            return res.status(403).json({ error: 'Unauthorized' });
+        }
+
+        db.prepare('DELETE FROM checklists WHERE id = ?').run(id);
+        res.json({ success: true });
+    } catch (e) {
+        console.error(e);
+        res.status(500).json({ error: 'Delete failed' });
+    }
+});
+
 // Auth (Simple)
 app.post('/api/auth/login', (req, res) => {
     const { email, password } = req.body;
