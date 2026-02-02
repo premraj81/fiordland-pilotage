@@ -196,7 +196,8 @@ export async function getChecklists(type?: string) {
             filtered = all.filter(c => c.type === 'entry_exit');
         } else {
             // @ts-ignore
-            filtered = all.filter(c => c.userId === userId && (!type || c.type === type));
+            // FORCE STRING COMPARISON TO AVOID TYPE MISMATCHES
+            filtered = all.filter(c => String(c.userId) === String(userId) && (!type || c.type === type));
         }
     } else if (isAdmin) {
         // Admin sees EVERYTHING
