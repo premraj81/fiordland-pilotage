@@ -38,6 +38,18 @@ async function getCurrentUserId(): Promise<string | null> {
     return null;
 }
 
+async function getCurrentUserEmail(): Promise<string | null> {
+    const userStr = localStorage.getItem('fiordland_user');
+    if (userStr) {
+        try {
+            return JSON.parse(userStr).email;
+        } catch (e) {
+            return null;
+        }
+    }
+    return null;
+}
+
 export async function initDB() {
     return openDB<FiordlandDB>(DB_NAME, 2, {
         upgrade(db, oldVersion, _newVersion, transaction) {
@@ -97,6 +109,8 @@ export async function saveChecklist(checklist: Omit<FiordlandDB['checklists']['v
 
 export async function getChecklists(type?: string) {
     const userId = await getCurrentUserId();
+    const userEmail = await getCurrentUserEmail();
+    const isAdmin = userEmail === 'fiordlandpilotage@gmail.com';
 
     // Offline-First Strategy: Bidirectional Sync (Push + Pull)
     const db = await initDB();
@@ -175,7 +189,8 @@ export async function getChecklists(type?: string) {
 
     // Filter
     let filtered = all;
-    if (userId) {
+    if (userId && !isAdmin) {
+        // Strict filtering for regular users
         if (type === 'entry_exit') {
             // @ts-ignore
             filtered = all.filter(c => c.type === 'entry_exit');
@@ -183,7 +198,18 @@ export async function getChecklists(type?: string) {
             // @ts-ignore
             filtered = all.filter(c => c.userId === userId && (!type || c.type === type));
         }
+    } else if (isAdmin) {
+        // Admin sees EVERYTHING
+        if (type) {
+            // @ts-ignore
+            filtered = all.filter(c => c.type === type);
+        } else {
+            filtered = all;
+        }
     }
+    // If no userId (not logged in), we return everything? Or nothing?
+    // Current logic: filtered = all. (So anonymous sees everything local). Correct for offline.
+
     return filtered;
 }
 
