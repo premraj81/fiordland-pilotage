@@ -7,6 +7,7 @@ import { generatePDF } from '../lib/pdf';
 import { cn } from '../lib/utils';
 import { format } from 'date-fns';
 import { useOnlineStatus } from '../lib/hooks';
+import { useAuth } from '../contexts/AuthContext';
 import CruiseSchedule from '../components/CruiseSchedule';
 
 export default function Home() {
@@ -14,6 +15,7 @@ export default function Home() {
     const [history, setHistory] = useState<any[]>([]);
     const [activeTab, setActiveTab] = useState<'active' | 'archived'>('active');
     const isOnline = useOnlineStatus();
+    const { user } = useAuth();
 
     useEffect(() => {
         loadData();
@@ -294,7 +296,7 @@ export default function Home() {
                                     </div>
                                 </div>
                                 <div className="flex items-center gap-3">
-                                    {activeTab === 'archived' && (
+                                    {activeTab === 'archived' && user?.email === 'fiordlandpilotage@gmail.com' && (
                                         <button
                                             onClick={() => handleDeleteItem(item.id)}
                                             className="p-2 text-gray-400 hover:text-red-500 hover:bg-red-50 rounded-lg transition-colors"
