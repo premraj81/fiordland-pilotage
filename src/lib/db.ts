@@ -95,6 +95,17 @@ export async function saveChecklist(checklist: Omit<FiordlandDB['checklists']['v
             if (!response.ok) throw new Error("API Save Failed");
 
             const result = await response.json();
+
+            // Cache immediately to Local DB so it appears instantly
+            const db = await initDB();
+            await db.put('checklists', {
+                ...checklist,
+                id: result.id,
+                userId: userId,
+                synced: true,
+                createdAt: checklist.createdAt || new Date()
+            });
+
             return result.id; // Return server ID
         } catch (error) {
             console.error("API Error, falling back to local:", error);
