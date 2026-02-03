@@ -57,6 +57,7 @@ function RequireAdmin({ children }: { children: React.ReactNode }) {
 import AdminLayout from './pages/admin/AdminLayout';
 import AdminDashboard from './pages/admin/AdminDashboard';
 // Import editors later as I create them
+import ChecklistEditor from './pages/admin/ChecklistEditor';
 
 function App() {
   return (
@@ -73,7 +74,7 @@ function App() {
       }>
         <Route index element={<AdminDashboard />} />
         <Route path="ships" element={<div className="p-8">Ships Manager (Coming Soon)</div>} />
-        <Route path="checklists" element={<div className="p-8">Checklist Editor (Coming Soon)</div>} />
+        <Route path="checklists" element={<ChecklistEditor />} />
         <Route path="documents" element={<div className="p-8">Document Manager (Coming Soon)</div>} />
         <Route path="settings" element={<div className="p-8">Settings (Coming Soon)</div>} />
       </Route>
