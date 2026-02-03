@@ -7,6 +7,9 @@ import { fileURLToPath } from 'url';
 import { dirname } from 'path';
 import Database from 'better-sqlite3';
 
+// Import Seeds
+import { SEED_SHIPS, SEED_CHECKLISTS } from './seeds.js';
+
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
@@ -66,7 +69,65 @@ db.exec(`
     password_hash TEXT, -- Storing simple password for now
     avatar_url TEXT
   );
+
+  CREATE TABLE IF NOT EXISTS app_config (
+    key TEXT PRIMARY KEY,
+    value TEXT
+  );
+
+  CREATE TABLE IF NOT EXISTS ships (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    name TEXT,
+    cruise_line TEXT,
+    imo TEXT,
+    length TEXT,
+    beam TEXT,
+    gross_tonnage TEXT,
+    draft TEXT
+  );
+
+  CREATE TABLE IF NOT EXISTS documents (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    title TEXT,
+    file_url TEXT,
+    category TEXT,
+    uploaded_at DATETIME DEFAULT CURRENT_TIMESTAMP
+  );
 `);
+
+// --- Seed Data Migration ---
+try {
+    // Seed Ships
+    const shipCount = db.prepare('SELECT count(*) as count FROM ships').get().count;
+    if (shipCount === 0) {
+        console.log("Seeding Ships...");
+        const insertShip = db.prepare(`
+            INSERT INTO ships (name, cruise_line, imo, length, beam, gross_tonnage, draft)
+            VALUES (@name, @cruiseLine, @imo, @length, @beam, @grossTonnage, @draft)
+        `);
+        const insertMany = db.transaction((ships) => {
+            for (const ship of ships) insertShip.run(ship);
+        });
+        insertMany(SEED_SHIPS);
+        console.log(`Seeded ${SEED_SHIPS.length} ships.`);
+    }
+
+    // Seed Config (Checklists)
+    const checklistConfig = db.prepare('SELECT value FROM app_config WHERE key = ?').get('checklist_schema');
+    if (!checklistConfig) {
+        console.log("Seeding Checklists Schema...");
+        db.prepare('INSERT INTO app_config (key, value) VALUES (?, ?)').run('checklist_schema', JSON.stringify(SEED_CHECKLISTS));
+        // Also seed routes configuration
+        const routesConfig = {
+            reversed: ['Dusky to Breaksea', 'Doubtful to Thompson', 'Milford', 'Stewart Island'],
+            normal: ['Milford', 'Thompson to Doubtful', 'Breaksea to Dusky', 'Stewart Island']
+        };
+        db.prepare('INSERT INTO app_config (key, value) VALUES (?, ?)').run('routes_config', JSON.stringify(routesConfig));
+        console.log("Seeded Config.");
+    }
+} catch (error) {
+    console.error("Seeding Failed:", error);
+}
 
 // --- API Routes ---
 
@@ -252,6 +313,89 @@ if (process.env.NODE_ENV === 'production') {
         res.sendFile(path.join(__dirname, 'dist', 'index.html'));
     });
 }
+
+// --- Admin Panel API Routes ---
+
+// Config API
+app.get('/api/config/:key', (req, res) => {
+    try {
+        const row = db.prepare('SELECT value FROM app_config WHERE key = ?').get(req.params.key);
+        if (row) res.json(JSON.parse(row.value));
+        else res.status(404).json({ error: 'Key not found' });
+    } catch (e) { res.status(500).json({ error: e.message }); }
+});
+
+app.post('/api/config', (req, res) => {
+    const { key, value } = req.body;
+    try {
+        db.prepare('INSERT OR REPLACE INTO app_config (key, value) VALUES (?, ?)').run(key, JSON.stringify(value));
+        res.json({ success: true });
+    } catch (e) { res.status(500).json({ error: e.message }); }
+});
+
+// Ships API
+app.get('/api/ships', (req, res) => {
+    try {
+        const ships = db.prepare('SELECT * FROM ships ORDER BY name ASC').all();
+        res.json(ships);
+    } catch (e) { res.status(500).json({ error: e.message }); }
+});
+
+app.post('/api/ships', (req, res) => {
+    const { name, cruise_line, imo, length, beam, gross_tonnage, draft } = req.body;
+    try {
+        const stmt = db.prepare(`
+            INSERT INTO ships (name, cruise_line, imo, length, beam, gross_tonnage, draft)
+            VALUES (?, ?, ?, ?, ?, ?, ?)
+        `);
+        const info = stmt.run(name, cruise_line, imo, length, beam, gross_tonnage, draft);
+        res.json({ id: info.lastInsertRowid });
+    } catch (e) { res.status(500).json({ error: e.message }); }
+});
+
+app.put('/api/ships/:id', (req, res) => {
+    const { id } = req.params;
+    const { name, cruise_line, imo, length, beam, gross_tonnage, draft } = req.body;
+    try {
+        const stmt = db.prepare(`
+            UPDATE ships SET name=?, cruise_line=?, imo=?, length=?, beam=?, gross_tonnage=?, draft=?
+            WHERE id=?
+        `);
+        stmt.run(name, cruise_line, imo, length, beam, gross_tonnage, draft, id);
+        res.json({ success: true });
+    } catch (e) { res.status(500).json({ error: e.message }); }
+});
+
+app.delete('/api/ships/:id', (req, res) => {
+    try {
+        db.prepare('DELETE FROM ships WHERE id = ?').run(req.params.id);
+        res.json({ success: true });
+    } catch (e) { res.status(500).json({ error: e.message }); }
+});
+
+// Documents API
+app.get('/api/documents', (req, res) => {
+    try {
+        const docs = db.prepare('SELECT * FROM documents ORDER BY uploaded_at DESC').all();
+        res.json(docs);
+    } catch (e) { res.status(500).json({ error: e.message }); }
+});
+
+app.post('/api/documents', (req, res) => {
+    const { title, file_url, category } = req.body;
+    try {
+        const stmt = db.prepare('INSERT INTO documents (title, file_url, category) VALUES (?, ?, ?)');
+        const info = stmt.run(title, file_url, category);
+        res.json({ id: info.lastInsertRowid });
+    } catch (e) { res.status(500).json({ error: e.message }); }
+});
+
+app.delete('/api/documents/:id', (req, res) => {
+    try {
+        db.prepare('DELETE FROM documents WHERE id = ?').run(req.params.id);
+        res.json({ success: true });
+    } catch (e) { res.status(500).json({ error: e.message }); }
+});
 
 // Start Server
 app.listen(port, () => {
