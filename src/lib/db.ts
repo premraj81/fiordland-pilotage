@@ -261,7 +261,7 @@ export async function updateChecklist(id: number, updates: Partial<FiordlandDB['
                     archived_at: updates.archivedAt
                 })
             });
-            return;
+            // Proceed to update local DB for instant UI feedback
         } catch (e) {
             console.error("Update API failed", e);
         }
