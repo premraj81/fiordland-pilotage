@@ -39,11 +39,46 @@ function RequireAuth({ children }: { children: React.ReactNode }) {
   return children;
 }
 
+const ADMIN_EMAIL = 'fiordlandpilotage@gmail.com';
+
+function RequireAdmin({ children }: { children: React.ReactNode }) {
+  const { user, loading } = useAuth();
+
+  if (loading) return null; // Or Loader
+
+  if (!user || user.email !== ADMIN_EMAIL) {
+    return <Navigate to="/" replace />;
+  }
+
+  return children;
+}
+
+// Lazy load Admin Pages (Optional, but good practice)
+import AdminLayout from './pages/admin/AdminLayout';
+import AdminDashboard from './pages/admin/AdminDashboard';
+// Import editors later as I create them
+
 function App() {
   return (
     <Routes>
       <Route path="/login" element={<Login />} />
 
+      {/* Admin Routes */}
+      <Route path="/admin" element={
+        <RequireAuth>
+          <RequireAdmin>
+            <AdminLayout />
+          </RequireAdmin>
+        </RequireAuth>
+      }>
+        <Route index element={<AdminDashboard />} />
+        <Route path="ships" element={<div className="p-8">Ships Manager (Coming Soon)</div>} />
+        <Route path="checklists" element={<div className="p-8">Checklist Editor (Coming Soon)</div>} />
+        <Route path="documents" element={<div className="p-8">Document Manager (Coming Soon)</div>} />
+        <Route path="settings" element={<div className="p-8">Settings (Coming Soon)</div>} />
+      </Route>
+
+      {/* Normal App Routes */}
       <Route element={<RequireAuth><Layout /></RequireAuth>}>
         <Route index element={<Home />} />
         <Route path="checklist/:type/:id?" element={<ChecklistForm />} />
