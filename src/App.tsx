@@ -61,6 +61,8 @@ import ChecklistEditor from './pages/admin/ChecklistEditor';
 
 import DocumentManager from './pages/admin/DocumentManager';
 
+import ShipsManager from './pages/admin/ShipsManager';
+
 function App() {
   return (
     <Routes>
@@ -75,7 +77,7 @@ function App() {
         </RequireAuth>
       }>
         <Route index element={<AdminDashboard />} />
-        <Route path="ships" element={<div className="p-8">Ships Manager (Coming Soon)</div>} />
+        <Route path="ships" element={<ShipsManager />} />
         <Route path="checklists" element={<ChecklistEditor />} />
         <Route path="documents" element={<DocumentManager />} />
         <Route path="settings" element={<div className="p-8">Settings (Coming Soon)</div>} />
