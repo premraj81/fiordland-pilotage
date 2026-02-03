@@ -1,10 +1,9 @@
-import React from 'react';
 import { Outlet, NavLink, useNavigate } from 'react-router-dom';
 import { useAuth } from '../../contexts/AuthContext';
 import { LayoutDashboard, Ship, ClipboardList, FileText, Settings, LogOut, ArrowLeft } from 'lucide-react';
 
 export default function AdminLayout() {
-    const { logout } = useAuth();
+    const { signOut } = useAuth();
     const navigate = useNavigate();
 
     const navItems = [
@@ -54,7 +53,7 @@ export default function AdminLayout() {
                         Back to App
                     </button>
                     <button
-                        onClick={logout}
+                        onClick={signOut}
                         className="flex items-center gap-3 px-4 py-3 text-red-400 hover:bg-red-900/20 hover:text-red-300 rounded-lg w-full transition-colors"
                     >
                         <LogOut className="w-5 h-5" />

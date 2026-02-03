@@ -1,4 +1,3 @@
-import React from 'react';
 import { Ship, ClipboardList, FileText, Database } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
@@ -45,7 +44,7 @@ export default function AdminDashboard() {
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                     <StatusItem label="Database" value="Connected (SQLite)" status="good" />
                     <StatusItem label="Assets" value="Served Locally" status="good" />
-                    <StatusItem label="Environment" value={process.env.NODE_ENV === 'production' ? 'Production' : 'Development'} status="neutral" />
+                    <StatusItem label="Environment" value={import.meta.env.MODE === 'production' ? 'Production' : 'Development'} status="neutral" />
                 </div>
             </div>
         </div>
