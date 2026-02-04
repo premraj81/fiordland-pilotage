@@ -1,30 +1,36 @@
 import { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { ArrowLeft, CheckCircle, AlertTriangle, ArrowUpDown, UserPlus, X, Plus, Save, BookOpen, History } from 'lucide-react';
-import { CHECKLISTS } from '../lib/data';
+import { ArrowLeft, CheckCircle, AlertTriangle, ArrowUpDown, UserPlus, X, Plus, Save, BookOpen, History, Loader } from 'lucide-react';
+// import { CHECKLISTS } from '../lib/data'; // REMOVED
 import { saveChecklist, updateChecklist, getChecklists, getChecklist } from '../lib/db';
 import SignaturePad from '../components/SignaturePad';
 import { generatePDF } from '../lib/pdf';
 import { uploadPdfReport } from '../lib/storage';
-import { SHIPS, type ShipData } from '../lib/ships';
+// import { SHIPS, type ShipData } from '../lib/ships'; // REMOVED
 import { addLogEntry, type LogEntry } from '../lib/logbook';
 import { LogEntryTable } from '../components/LogEntryTable';
 
-function VesselNameInput({ value, onChange }: { value: string, onChange: (val: string) => void }) {
+// Define Interface locally or import if shared
+interface ShipData {
+    id?: number;
+    name: string;
+    cruise_line?: string;
+    imo?: string;
+    length?: string;
+    beam?: string;
+    gross_tonnage?: string;
+    draft?: string;
+}
+
+function VesselNameInput({ value, onChange, knownShips = [] }: { value: string, onChange: (val: string) => void, knownShips: ShipData[] }) {
     const [showSuggestions, setShowSuggestions] = useState(false);
-    const [customShips, setCustomShips] = useState<ShipData[]>(() => {
-        try {
-            const saved = localStorage.getItem('custom_ships');
-            return saved ? JSON.parse(saved) : [];
-        } catch (e) {
-            return [];
-        }
-    });
+    // Custom ships now handled by Admin Panel mostly, but keeping local override optional or removing?
+    // For now, let's purely rely on the passed `knownShips` which comes from DB.
 
     const [isAddingOpen, setIsAddingOpen] = useState(false);
     const [newShip, setNewShip] = useState<Partial<ShipData>>({});
 
-    const allShips = [...customShips, ...SHIPS];
+    const allShips = knownShips; // Use DB ships
 
     // Filter suggestions based on input
     const suggestions = value && value.length > 0
@@ -40,31 +46,15 @@ function VesselNameInput({ value, onChange }: { value: string, onChange: (val: s
     const showAddButton = value && value.length > 0 && !selectedShip;
 
     const handleAddNew = () => {
-        setNewShip({ name: value, cruiseLine: '', imo: '', length: '', beam: '', grossTonnage: '', draft: '' });
-        setIsAddingOpen(true);
+        // In this dynamic version, adding a ship should probably go to Admin Panel?
+        // Or we can simple allow typing a custom name without saving it to DB globally for now.
+        // Let's just allow using the value as is.
+        onChange(value);
         setShowSuggestions(false);
     };
 
-    const saveNewShip = () => {
-        if (!newShip.name) return;
+    // Legacy saveNewShip removed - users should use Admin Panel or just type free text.
 
-        const shipToAdd: ShipData = {
-            name: newShip.name || '',
-            cruiseLine: newShip.cruiseLine || '',
-            imo: newShip.imo || '',
-            length: newShip.length || '',
-            beam: newShip.beam || '',
-            grossTonnage: newShip.grossTonnage || '',
-            draft: newShip.draft || ''
-        };
-
-        const updated = [...customShips, shipToAdd];
-        setCustomShips(updated);
-        localStorage.setItem('custom_ships', JSON.stringify(updated));
-
-        onChange(shipToAdd.name);
-        setIsAddingOpen(false);
-    };
 
     const [isHistoryOpen, setIsHistoryOpen] = useState(false);
     const [historyEntries, setHistoryEntries] = useState<LogEntry[]>([]);
