@@ -1,4 +1,5 @@
 import express from 'express';
+import crypto from 'crypto';
 import cors from 'cors';
 import multer from 'multer';
 import path from 'path';
@@ -292,7 +293,8 @@ app.post('/api/auth/login', (req, res) => {
     if (!user) {
         // Create new user (Demo Mode: Password is just saved plain or simple hash)
         // In real app: Hash password with bcrypt
-        const id = Math.random().toString(36).substring(7);
+        // Generate deterministic ID based on email to survive DB resets
+        const id = crypto.createHash('md5').update(email.toLowerCase().trim()).digest('hex');
         db.prepare('INSERT INTO users (id, email, password_hash) VALUES (?, ?, ?)').run(id, email, password);
         user = { id, email, full_name: email.split('@')[0] };
     } else {

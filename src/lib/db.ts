@@ -294,6 +294,22 @@ export async function deleteChecklist(id: number) {
     await db.delete('checklists', id);
 }
 
+export async function migrateUserRecords(oldId: string, newId: string) {
+    console.log(`Migrating local records from ${oldId} to ${newId}`);
+    const db = await initDB();
+    const tx = db.transaction('checklists', 'readwrite');
+    // @ts-ignore
+    const all = await tx.store.getAll();
+
+    for (const item of all) {
+        if (item.userId === oldId) {
+            const updated = { ...item, userId: newId, synced: false }; // Mark as unsynced so they get pushed!
+            await tx.store.put(updated);
+        }
+    }
+    await tx.done;
+}
+
 // Unused legacy functions
 export async function getUnsyncedChecklists() { return []; }
 export async function markSynced(_id: number) { }

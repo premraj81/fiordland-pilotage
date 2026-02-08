@@ -1,4 +1,5 @@
 import React, { createContext, useContext, useEffect, useState } from 'react';
+import { migrateUserRecords } from '../lib/db';
 
 interface User {
     id: string;
@@ -41,6 +42,15 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     }, []);
 
     const signIn = async (email: string, password: string) => {
+        // preserve old user ID to check for migration
+        const stored = localStorage.getItem('fiordland_user');
+        let oldUser: User | null = null;
+        if (stored) {
+            try {
+                oldUser = JSON.parse(stored);
+            } catch (e) { }
+        }
+
         const response = await fetch('/api/auth/login', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
@@ -53,8 +63,16 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
         }
 
         const data = await response.json();
-        setUser(data.user);
-        localStorage.setItem('fiordland_user', JSON.stringify(data.user));
+        const newUser = data.user;
+
+        // Check migration
+        if (oldUser && oldUser.email === newUser.email && oldUser.id !== newUser.id) {
+            console.log("User ID mismatch detected (Server reset?), migrating local records...");
+            await migrateUserRecords(oldUser.id, newUser.id);
+        }
+
+        setUser(newUser);
+        localStorage.setItem('fiordland_user', JSON.stringify(newUser));
     };
 
     const signOut = async () => {
